@@ -1,0 +1,7 @@
+name: ElytraBooster
+version: 1.1
+main: com.github.zamponimarco.elytrabooster.core.ElytraBooster
+author: jummes
+api-version: 1.13
+commands:
+  eb:
