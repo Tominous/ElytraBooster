@@ -1,12 +1,13 @@
 package com.github.zamponimarco.elytrabooster.portals;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Particle;
-import org.bukkit.entity.Player;
 
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 import com.github.zamponimarco.elytrabooster.events.PlayerBoostEvent;
@@ -19,6 +20,8 @@ import com.github.zamponimarco.elytrabooster.events.PlayerBoostEvent;
  */
 public abstract class AbstractPortal {
 
+	// Instance variables area ---
+
 	protected ElytraBooster plugin;
 	protected String id;
 	protected boolean isBlock;
@@ -28,13 +31,18 @@ public abstract class AbstractPortal {
 	protected double finalVelocity;
 	protected int boostDuration;
 	protected String outlineType;
+	protected List<AbstractPortal> portalsUnion;
+	protected boolean hasSuperior;
 
 	protected int taskNumber;
 	protected List<Location> points;
 
+	// ---
+
 	// TODO rewatch code, add other things
 	public AbstractPortal(ElytraBooster plugin, String id, boolean isBlock, Location center, char axis,
-			double initialVelocity, double finalVelocity, int boostDuration, String outlineType) {
+			double initialVelocity, double finalVelocity, int boostDuration, String outlineType,
+			List<AbstractPortal> portalsUnion, boolean hasSuperior) {
 		super();
 		this.plugin = plugin;
 		this.id = id;
@@ -45,7 +53,11 @@ public abstract class AbstractPortal {
 		this.finalVelocity = finalVelocity;
 		this.boostDuration = boostDuration;
 		this.outlineType = outlineType;
+		this.portalsUnion = portalsUnion;
+		this.hasSuperior = hasSuperior;
 	}
+
+	// Abstract methods area ---
 
 	/**
 	 * Depends on portal shape -> abstract method
@@ -57,12 +69,31 @@ public abstract class AbstractPortal {
 	/**
 	 * Depends on portal shape -> abstract method
 	 * 
-	 * Checks if the player is in the portal area
-	 * 
-	 * @param player
-	 * @return true if the player is in the portal area
+	 * @param location
+	 * @param epsilon
+	 * @return true if the location is in the portal area
 	 */
-	protected abstract boolean isInPortalArea(Player player);
+	protected abstract boolean isInPortalArea(Location location, double epsilon);
+
+	// ---
+
+	protected boolean isUnion() {
+		return !portalsUnion.isEmpty();
+	}
+
+	/**
+	 * Runs the timer task that checks for users inside the portal and draws the
+	 * outline
+	 */
+	protected void runPortalTask() {
+		if (!hasSuperior) {
+			points = isUnion() ? getUnionPoints() : getPoints();
+			taskNumber = plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
+				checkPlayersPassing();
+				drawOutline(outlineType);
+			}, 1, 1).getTaskId();
+		}
+	}
 
 	/**
 	 * Doesn't depend on portal shape -> not abstract method
@@ -70,11 +101,17 @@ public abstract class AbstractPortal {
 	 * Checks if a player passes in the portal area
 	 */
 	protected void checkPlayersPassing() {
-		plugin.getStatusMap().keySet().forEach(player -> {
-			if (isInPortalArea(player) && !plugin.getStatusMap().get(player)) {
-				Bukkit.getPluginManager().callEvent(new PlayerBoostEvent(plugin, player, this));
-			}
-		});
+		if (!isUnion()) {
+			plugin.getStatusMap().keySet().forEach(player -> {
+				if (isInPortalArea(player.getLocation(), 0) && !plugin.getStatusMap().get(player))
+					Bukkit.getPluginManager().callEvent(new PlayerBoostEvent(plugin, player, this));
+			});
+		} else {
+			plugin.getStatusMap().keySet().forEach(player -> {
+				if (isInUnionPortalArea(player.getLocation(), 0) && !plugin.getStatusMap().get(player))
+					Bukkit.getPluginManager().callEvent(new PlayerBoostEvent(plugin, player, this));
+			});
+		}
 	}
 
 	/**
@@ -93,22 +130,36 @@ public abstract class AbstractPortal {
 	}
 
 	/**
-	 * Runs the timer task that checks for users inside the portal and draws the
-	 * outline
+	 * Stops the portal task
 	 */
-	protected void runPortalTask() {
-		taskNumber = plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
-			checkPlayersPassing();
-			drawOutline(outlineType);
-		}, 1, 1).getTaskId();
-	}
-
 	public void stopPortalTask() {
-		if (isBlock) {
+		if (isBlock && !hasSuperior) {
 			drawOutline("AIR");
 		}
 		plugin.getServer().getScheduler().cancelTask(taskNumber);
 	}
+
+	protected boolean isInUnionPortalArea(Location location, double epsilon) {
+		if (isInPortalArea(location, epsilon)) {
+			return true;
+		}
+		for (AbstractPortal portal : portalsUnion) {
+			if (portal.isInPortalArea(location, epsilon)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	protected List<Location> getUnionPoints() {
+		List<Location> unionPoints = new ArrayList<Location>();
+		double epsilon = isBlock ? 1.0 : 0.05;
+		unionPoints.addAll(getPoints());
+		portalsUnion.forEach(portal -> unionPoints.addAll(portal.getPoints()));
+		return unionPoints.stream().filter(point -> !isInUnionPortalArea(point, epsilon)).collect(Collectors.toList());
+	}
+
+	// Getters and setters area ---
 
 	/**
 	 * @return the initialVelocity
@@ -130,5 +181,14 @@ public abstract class AbstractPortal {
 	public int getBoostDuration() {
 		return boostDuration;
 	}
+
+	/**
+	 * @return the hasSuperior
+	 */
+	public boolean hasSuperior() {
+		return hasSuperior;
+	}
+
+	// ---
 
 }

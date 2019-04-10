@@ -32,7 +32,6 @@ public class ElytraBoosterMoveCommand extends AbstractCommand {
 		Double x = arguments.length == 4 ? Double.valueOf(arguments[1]) : player.getLocation().getBlockX();
 		Double y = arguments.length == 4 ? Double.valueOf(arguments[2]) : player.getLocation().getBlockY();
 		Double z = arguments.length == 4 ? Double.valueOf(arguments[3]) : player.getLocation().getBlockZ();
-		
 		section.set("world", world);
 		section.set("x", x);
 		section.set("y", y);
@@ -40,7 +39,7 @@ public class ElytraBoosterMoveCommand extends AbstractCommand {
 
 		portalManager.saveConfig();
 		portalManager.setPortal(id,
-				PortalBuilder.buildPortal(plugin, portalManager.getDataYaml().getConfigurationSection(id)));
+				PortalBuilder.buildPortal(plugin, portalManager, portalManager.getDataYaml().getConfigurationSection(id)));
 
 	}
 

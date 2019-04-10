@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 import com.github.zamponimarco.elytrabooster.manager.PortalManager;
@@ -23,22 +24,61 @@ public class ElytraBoosterSetCommand extends AbstractCommand {
 		PortalManager portalManager = plugin.getPortalManager();
 		String id = arguments[0];
 		AbstractPortal portal = portalManager.getPortal(id);
-		portal.stopPortalTask();
+		portal = portal.hasSuperior() ? null : portal;
+
+		if (portal == null || portal.hasSuperior()) {
+			throw new IllegalArgumentException("Portal passed in input is invalid");
+		}
+
 
 		List<String> toModify = Arrays.asList(arguments[1].split(","));
 		toModify.forEach(string -> {
 			String[] argument = string.split(":");
-			portalManager.getDataYaml().set(id + "." + argument[0], argument[1]);
+			setParam(id, argument[0], argument[1]);
 		});
 		portalManager.saveConfig();
-		portalManager.setPortal(id,
-				PortalBuilder.buildPortal(plugin, portalManager.getDataYaml().getConfigurationSection(id)));
+		portal.stopPortalTask();
+		portalManager.setPortal(id, PortalBuilder.buildPortal(plugin, portalManager,
+				portalManager.getDataYaml().getConfigurationSection(id)));
 
 	}
 
 	@Override
 	protected boolean isOnlyPlayer() {
 		return false;
+	}
+
+	private void setParam(String id, String param, String value) {
+		ConfigurationSection portal = plugin.getPortalManager().getDataYaml().getConfigurationSection(id);
+		switch (param) {
+		case "x":
+		case "y":
+		case "z":
+		case "initialVelocity":
+		case "finalVelocity":
+			portal.set(param, Double.valueOf(value));
+			break;
+		case "boostDuration":
+			portal.set(param, Integer.valueOf(value));
+			break;
+		case "world":
+		case "axis":
+		case "outlineType":
+		case "shape":
+		case "measures":
+			portal.set(param, value);
+			break;
+		case "isBlockOutline":
+			boolean isBlock = Boolean.valueOf(value);
+			portal.set(param, isBlock);
+			Runnable cons = isBlock ? () -> setParam(id, "outlineType", "STONE")
+					: () -> setParam(id, "outlineType", "FLAME");
+			cons.run();
+			break;
+		default:
+			System.err.println("Unknown portal parameter");
+		}
+
 	}
 
 }

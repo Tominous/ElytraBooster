@@ -2,6 +2,7 @@ package com.github.zamponimarco.elytrabooster.manager;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -67,7 +68,7 @@ public class PortalManager implements DataManager {
 	public void loadData() {
 		portals = new HashMap<String, AbstractPortal>();
 		dataYaml.getKeys(false).forEach(
-				id -> portals.put(id, PortalBuilder.buildPortal(plugin, dataYaml.getConfigurationSection(id))));
+				id -> portals.put(id, PortalBuilder.buildPortal(plugin, this, dataYaml.getConfigurationSection(id))));
 	}
 
 	// TODO add default settings
@@ -90,21 +91,23 @@ public class PortalManager implements DataManager {
 		newPortal.set("finalVelocity", 1.0);
 		newPortal.set("boostDuration", 30);
 		newPortal.set("outlineType", "FLAME");
+		newPortal.set("portalsUnion", new ArrayList<String>());
 		newPortal.set("shape", "circle");
 		newPortal.set("measures", 10);
 		saveConfig();
 		return newPortal;
 	}
-	
+
 	/**
 	 * Saves the config
 	 */
-	public void saveConfig(){
+	public void saveConfig() {
 		try {
 			dataYaml.save(dataFile);
 		} catch (IOException e) {
 			e.printStackTrace();
-		};
+		}
+		;
 	}
 
 	/**
@@ -129,6 +132,15 @@ public class PortalManager implements DataManager {
 		Objects.requireNonNull(id);
 		Objects.requireNonNull(portal);
 		portals.put(id, portal);
+	}
+
+	/**
+	 * Remove portal from the portals map
+	 * 
+	 * @param id
+	 */
+	public void removePortal(String id) {
+		portals.remove(id);
 	}
 
 	/**

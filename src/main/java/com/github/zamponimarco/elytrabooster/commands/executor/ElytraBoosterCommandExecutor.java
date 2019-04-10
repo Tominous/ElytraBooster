@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 import com.github.zamponimarco.elytrabooster.commands.builder.CommandBuilder;
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 
-public class ElytraBoosterCommandExecutor implements CommandExecutor {
+public class ElytraBoosterCommandExecutor implements CommandExecutor{
 	
 	private ElytraBooster plugin;
 	

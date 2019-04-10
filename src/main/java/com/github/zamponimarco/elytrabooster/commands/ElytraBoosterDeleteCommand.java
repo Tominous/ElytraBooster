@@ -17,16 +17,17 @@ public class ElytraBoosterDeleteCommand extends AbstractCommand {
 	@Override
 	protected void commandExecution() {
 		PortalManager portalManager = plugin.getPortalManager();
-		AbstractPortal portal = portalManager.getPortal(arguments[0]);
+		String id = arguments[0];
+		AbstractPortal portal = portalManager.getPortal(id);
 		portal.stopPortalTask();
-		portalManager.getPortalsMap().remove(arguments[0]);
-		portalManager.getDataYaml().set(arguments[0], null);
+		portalManager.removePortal(id);
+		portalManager.getDataYaml().set(id, null);
 		portalManager.saveConfig();
 	}
 
 	@Override
 	protected boolean isOnlyPlayer() {
-		return false;
+		return true;
 	}
 
 }

@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Location;
-import org.bukkit.entity.Player;
 
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 
@@ -21,10 +20,11 @@ public class SquarePortal extends AbstractPortal {
 	double halfWidth;
 
 	public SquarePortal(ElytraBooster plugin, String id, boolean isBlock, Location center, char axis,
-			double initialVelocity, double finalVelocity, int boostDuration, String outlineType, double halfWidth) {
-		super(plugin, id, isBlock, center, axis, initialVelocity, finalVelocity, boostDuration, outlineType);
+			double initialVelocity, double finalVelocity, int boostDuration, String outlineType,
+			List<AbstractPortal> portalsUnion, boolean hasSuperior, double halfWidth) {
+		super(plugin, id, isBlock, center, axis, initialVelocity, finalVelocity, boostDuration, outlineType,
+				portalsUnion, hasSuperior);
 		this.halfWidth = halfWidth;
-		this.points = getPoints();
 
 		super.runPortalTask();
 	}
@@ -35,15 +35,15 @@ public class SquarePortal extends AbstractPortal {
 	}
 
 	@Override
-	protected boolean isInPortalArea(Player player) {
-		Location distance = player.getLocation().subtract(center);
+	protected boolean isInPortalArea(Location location, double epsilon) {
+		Location distance = location.clone().subtract(center);
 		double distanceX = Math.abs(distance.getX());
 		double distanceY = Math.abs(distance.getY());
 		double distanceZ = Math.abs(distance.getZ());
 
-		boolean isInX = axis == 'x' ? distanceX <= 1 : distanceX <= halfWidth / 2;
-		boolean isInY = axis == 'y' ? distanceY <= 1 : distanceY <= halfWidth / 2;
-		boolean isInZ = axis == 'z' ? distanceZ <= 1 : distanceZ <= halfWidth / 2;
+		boolean isInX = axis == 'x' ? distanceX <= 1 : distanceX < halfWidth;
+		boolean isInY = axis == 'y' ? distanceY <= 1 : distanceY < halfWidth;
+		boolean isInZ = axis == 'z' ? distanceZ <= 1 : distanceZ < halfWidth;
 
 		return isInX && isInY && isInZ;
 	}
@@ -88,7 +88,7 @@ public class SquarePortal extends AbstractPortal {
 	}
 
 	private List<Location> splitLine(Location[] line) {
-		int amount = isBlock ? (int) halfWidth : 2 * (int) halfWidth;
+		int amount = 2 * (int) halfWidth;
 		Location decrement = line[0].clone().subtract(line[1]).multiply(1.0 / amount);
 		List<Location> linePoints = new ArrayList<Location>();
 		Location loc = line[0].clone();
