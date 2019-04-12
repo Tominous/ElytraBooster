@@ -24,7 +24,7 @@ public class CirclePortal extends AbstractPortal {
 			List<AbstractPortal> portalsUnion, boolean hasSuperior, double radius) {
 		super(plugin, id, isBlock, center, axis, initialVelocity, finalVelocity, boostDuration, outlineType,
 				portalsUnion, hasSuperior);
-		this.radius = isBlock ? radius + 0.1 : radius;
+		this.radius = radius;
 
 		super.runPortalTask();
 	}
@@ -52,7 +52,6 @@ public class CirclePortal extends AbstractPortal {
 		return false;
 	}
 
-	// TODO improve code readability
 	private List<Location> getCircle() {
 		World world = center.getWorld();
 		int amount = isBlock ? 50 * (int) radius : (int) Math.floor(2 * Math.PI * radius);
@@ -69,7 +68,9 @@ public class CirclePortal extends AbstractPortal {
 				newY = center.getY() + (radius * Math.sin(angle));
 			}
 
-			Location newLocation = isBlock ? new Location(world, newX, newY, newZ).getBlock().getLocation()
+			Location newLocation = isBlock
+					? world.getBlockAt((int) Math.round(newX), (int) Math.round(newY), (int) Math.round(newZ))
+							.getLocation()
 					: new Location(world, newX, newY, newZ);
 			if (!locations.contains(newLocation)) {
 				locations.add(newLocation);
