@@ -20,8 +20,9 @@ public class ElytraBoosterCreateCommand extends AbstractCommand {
 		Player player = (Player) sender;
 		PortalManager portalManager = plugin.getPortalManager();
 		String id = arguments[0];
-		portalManager.setPortal(id,
-				PortalBuilder.buildPortal(plugin, portalManager, portalManager.defaultPortalConfiguration(player, id)));
+		if (!portalManager.getPortalsMap().containsKey(id))
+			portalManager.setPortal(id, PortalBuilder.buildPortal(plugin, portalManager,
+					portalManager.defaultPortalConfiguration(player, id)));
 	}
 
 	@Override

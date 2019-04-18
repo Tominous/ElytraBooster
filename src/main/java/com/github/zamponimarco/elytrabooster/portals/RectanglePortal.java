@@ -15,16 +15,19 @@ import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
  * @author Marco
  *
  */
-public class SquarePortal extends AbstractPortal {
+public class RectanglePortal extends AbstractPortal {
 
-	double halfWidth;
+	double halfLength;
+	double halfHeight;
 
-	public SquarePortal(ElytraBooster plugin, String id, boolean isBlock, Location center, char axis,
+	public RectanglePortal(ElytraBooster plugin, String id, boolean isBlock, Location center, char axis,
 			double initialVelocity, double finalVelocity, int boostDuration, String outlineType,
-			List<AbstractPortal> portalsUnion, boolean hasSuperior, double halfWidth) {
+			List<AbstractPortal> portalsUnion, boolean hasSuperior, String measures) {
 		super(plugin, id, isBlock, center, axis, initialVelocity, finalVelocity, boostDuration, outlineType,
 				portalsUnion, hasSuperior);
-		this.halfWidth = halfWidth;
+		String[] measuresArray = measures.split(";");
+		this.halfLength = Double.valueOf(measuresArray[0]);
+		this.halfHeight = Double.valueOf(measuresArray[1]);
 
 		super.runPortalTask();
 	}
@@ -41,9 +44,10 @@ public class SquarePortal extends AbstractPortal {
 		double distanceY = Math.abs(distance.getY());
 		double distanceZ = Math.abs(distance.getZ());
 
-		boolean isInX = axis == 'x' ? distanceX <= 1 : distanceX < halfWidth;
-		boolean isInY = axis == 'y' ? distanceY <= 1 : distanceY < halfWidth;
-		boolean isInZ = axis == 'z' ? distanceZ <= 1 : distanceZ < halfWidth;
+		boolean isInX = axis == 'x' ? distanceX <= 1 : distanceX < halfLength;
+		boolean isInY = axis == 'y' ? distanceY <= 1 : distanceY < halfLength;
+		isInY = axis == 'z' ? distanceY < halfHeight : isInY;
+		boolean isInZ = axis == 'z' ? distanceZ <= 1 : distanceZ < halfHeight;
 
 		return isInX && isInY && isInZ;
 	}
@@ -62,22 +66,22 @@ public class SquarePortal extends AbstractPortal {
 		Location point4 = null;
 		switch (axis) {
 		case 'x':
-			point1 = center.clone().add(0, -halfWidth, -halfWidth);
-			point2 = center.clone().add(0, halfWidth, -halfWidth);
-			point3 = center.clone().add(0, halfWidth, halfWidth);
-			point4 = center.clone().add(0, -halfWidth, halfWidth);
+			point1 = center.clone().add(0, -halfLength, -halfHeight);
+			point2 = center.clone().add(0, halfLength, -halfHeight);
+			point3 = center.clone().add(0, halfLength, halfHeight);
+			point4 = center.clone().add(0, -halfLength, halfHeight);
 			break;
 		case 'y':
-			point1 = center.clone().add(-halfWidth, 0, -halfWidth);
-			point2 = center.clone().add(halfWidth, 0, -halfWidth);
-			point3 = center.clone().add(halfWidth, 0, halfWidth);
-			point4 = center.clone().add(-halfWidth, 0, halfWidth);
+			point1 = center.clone().add(-halfLength, 0, -halfHeight);
+			point2 = center.clone().add(halfLength, 0, -halfHeight);
+			point3 = center.clone().add(halfLength, 0, halfHeight);
+			point4 = center.clone().add(-halfLength, 0, halfHeight);
 			break;
 		case 'z':
-			point1 = center.clone().add(-halfWidth, -halfWidth, 0);
-			point2 = center.clone().add(halfWidth, -halfWidth, 0);
-			point3 = center.clone().add(halfWidth, halfWidth, 0);
-			point4 = center.clone().add(-halfWidth, halfWidth, 0);
+			point1 = center.clone().add(-halfLength, -halfHeight, 0);
+			point2 = center.clone().add(halfLength, -halfHeight, 0);
+			point3 = center.clone().add(halfLength, halfHeight, 0);
+			point4 = center.clone().add(-halfLength, halfHeight, 0);
 			break;
 		}
 		linesSet.add(new Location[] { point1, point2 });
@@ -88,7 +92,7 @@ public class SquarePortal extends AbstractPortal {
 	}
 
 	private List<Location> splitLine(Location[] line) {
-		int amount = 2 * (int) halfWidth;
+		int amount = (int) line[0].distance(line[1]);
 		Location decrement = line[0].clone().subtract(line[1]).multiply(1.0 / amount);
 		List<Location> linePoints = new ArrayList<Location>();
 		Location loc = line[0].clone();

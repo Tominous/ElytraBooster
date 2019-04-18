@@ -11,7 +11,7 @@ import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 import com.github.zamponimarco.elytrabooster.manager.PortalManager;
 import com.github.zamponimarco.elytrabooster.portals.AbstractPortal;
 import com.github.zamponimarco.elytrabooster.portals.CirclePortal;
-import com.github.zamponimarco.elytrabooster.portals.SquarePortal;
+import com.github.zamponimarco.elytrabooster.portals.RectanglePortal;
 
 /**
  * Manages the creation of portals from a ConfigurationSection of portals.yml
@@ -32,41 +32,41 @@ public class PortalBuilder {
 	 */
 	public static AbstractPortal buildPortal(ElytraBooster plugin, PortalManager portalManager,
 			ConfigurationSection portalConfiguration) {
-		
+
 		// Portal id
 		String id = portalConfiguration.getName();
-		
+
 		// IsBlockOutline
 		boolean isBlock = portalConfiguration.getBoolean("isBlockOutline");
-		
+
 		// Portal center location
 		World world = plugin.getServer().getWorld(portalConfiguration.getString("world"));
 		double x = portalConfiguration.getDouble("x");
 		double y = portalConfiguration.getDouble("y");
 		double z = portalConfiguration.getDouble("z");
 		Location center = new Location(world, x, y, z);
-		
+
 		// Portal axis
 		char axis = portalConfiguration.getString("axis").charAt(0);
-		
+
 		// Portal initial velocity
 		double initialVelocity = portalConfiguration.getDouble("initialVelocity");
-		
+
 		// Portal final velocity
 		double finalVelocity = portalConfiguration.getDouble("finalVelocity");
-		
+
 		// Portal boost duration
 		int boostDuration = portalConfiguration.getInt("boostDuration");
-		
+
 		// Portal Outline type
 		String outlineType = portalConfiguration.getString("outlineType");
-		
+
 		// Portal shape
 		String shape = portalConfiguration.getString("shape");
-		
+
 		// Portal outline measures
 		String measures = portalConfiguration.getString("measures");
-		
+
 		// Union of portals
 		List<String> portalsUnionString = portalConfiguration.getStringList("portalsUnion");
 		List<AbstractPortal> portalsUnion = new ArrayList<AbstractPortal>();
@@ -82,7 +82,7 @@ public class PortalBuilder {
 			portalsUnion.add(portal);
 			portalManager.setPortal(subPortalId, portal);
 		}
-		
+
 		// Build portal
 		return buildPortal(plugin, id, isBlock, center, axis, initialVelocity, finalVelocity, boostDuration,
 				outlineType, portalsUnion, shape, measures, false);
@@ -96,8 +96,11 @@ public class PortalBuilder {
 			return new CirclePortal(plugin, id, isBlock, center, axis, initialVelocity, finalVelocity, boostDuration,
 					outlineType, portalsUnion, hasSuperior, Double.valueOf(measures));
 		case "square":
-			return new SquarePortal(plugin, id, isBlock, center, axis, initialVelocity, finalVelocity, boostDuration,
-					outlineType, portalsUnion, hasSuperior, Double.valueOf(measures));
+			return new RectanglePortal(plugin, id, isBlock, center, axis, initialVelocity, finalVelocity, boostDuration,
+					outlineType, portalsUnion, hasSuperior, measures + ";" + measures);
+		case "rectangle":
+			return new RectanglePortal(plugin, id, isBlock, center, axis, initialVelocity, finalVelocity, boostDuration,
+					outlineType, portalsUnion, hasSuperior, measures);
 		}
 		throw new NullPointerException("Portal creation failed, id: " + id);
 	}
