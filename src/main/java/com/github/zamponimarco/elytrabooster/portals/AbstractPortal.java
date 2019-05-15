@@ -13,7 +13,7 @@ import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 import com.github.zamponimarco.elytrabooster.events.PlayerBoostEvent;
 
 /**
- * Generic portal class
+ * Handles portal boost process
  * 
  * @author Marco
  *
@@ -31,18 +31,16 @@ public abstract class AbstractPortal {
 	protected double finalVelocity;
 	protected int boostDuration;
 	protected String outlineType;
-	protected List<AbstractPortal> portalsUnion;
-	protected boolean hasSuperior;
+	protected List<UnionPortal> portalsUnion;
 
 	protected int taskNumber;
 	protected List<Location> points;
 
 	// ---
 
-	// TODO rewatch code, add other things
 	public AbstractPortal(ElytraBooster plugin, String id, boolean isBlock, Location center, char axis,
 			double initialVelocity, double finalVelocity, int boostDuration, String outlineType,
-			List<AbstractPortal> portalsUnion, boolean hasSuperior) {
+			List<UnionPortal> portalsUnion) {
 		super();
 		this.plugin = plugin;
 		this.id = id;
@@ -54,7 +52,6 @@ public abstract class AbstractPortal {
 		this.boostDuration = boostDuration;
 		this.outlineType = outlineType;
 		this.portalsUnion = portalsUnion;
-		this.hasSuperior = hasSuperior;
 	}
 
 	// Abstract methods area ---
@@ -65,6 +62,8 @@ public abstract class AbstractPortal {
 	 * @return The sets of point of the portal
 	 */
 	protected abstract List<Location> getPoints();
+
+	// ---
 
 	/**
 	 * Depends on portal shape -> abstract method
@@ -77,22 +76,28 @@ public abstract class AbstractPortal {
 
 	// ---
 
-	protected boolean isUnion() {
-		return !portalsUnion.isEmpty();
-	}
-
 	/**
 	 * Runs the timer task that checks for users inside the portal and draws the
 	 * outline
 	 */
 	protected void runPortalTask() {
-		if (!hasSuperior) {
-			points = isUnion() ? getUnionPoints() : getPoints();
-			taskNumber = plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
-				checkPlayersPassing();
-				drawOutline(outlineType);
-			}, 1, 1).getTaskId();
+		points = isUnion() ? getUnionPoints() : getPoints();
+		taskNumber = plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
+			checkPlayersPassing();
+			drawOutline();
+		}, 1, 1).getTaskId();
+	}
+
+	// Getters and setters area ---
+
+	/**
+	 * Stops the portal task
+	 */
+	public void stopPortalTask() {
+		if (isBlock) {
+			drawOutline("AIR");
 		}
+		plugin.getServer().getScheduler().cancelTask(taskNumber);
 	}
 
 	/**
@@ -129,37 +134,65 @@ public abstract class AbstractPortal {
 		}
 	}
 
-	/**
-	 * Stops the portal task
-	 */
-	public void stopPortalTask() {
-		if (isBlock && !hasSuperior) {
-			drawOutline("AIR");
-		}
-		plugin.getServer().getScheduler().cancelTask(taskNumber);
+	protected void drawOutline() {
+		drawOutline(outlineType);
 	}
 
+	// ---
+
+	protected boolean isUnion() {
+		return !portalsUnion.isEmpty();
+	}
+
+	// Getters and setters area ---
+
 	protected boolean isInUnionPortalArea(Location location, double epsilon) {
+		boolean test = false;
 		if (isInPortalArea(location, epsilon)) {
-			return true;
+			test = true;
 		}
-		for (AbstractPortal portal : portalsUnion) {
-			if (portal.isInPortalArea(location, epsilon)) {
-				return true;
+		for (UnionPortal p : portalsUnion) {
+			if (p.isIntersecate()) {
+				test = test && p.isInPortalArea(location, epsilon);
+			} else{
+				test = test || p.isInPortalArea(location, epsilon);
 			}
 		}
-		return false;
+		return test;
 	}
 
 	protected List<Location> getUnionPoints() {
 		List<Location> unionPoints = new ArrayList<Location>();
-		double epsilon = isBlock ? 1.0 : 0.05;
+		double epsilon = isBlock ? 1 : 0.05;
 		unionPoints.addAll(getPoints());
-		portalsUnion.forEach(portal -> unionPoints.addAll(portal.getPoints()));
-		return unionPoints.stream().filter(point -> !isInUnionPortalArea(point, epsilon)).collect(Collectors.toList());
+		for (UnionPortal portal : portalsUnion) {
+			unionPoints.addAll(portal.getPoints());
+			if(portal.isIntersecate()) {
+				unionPoints = unionPoints.stream().filter(point -> isInUnionPortalArea(point, -epsilon)).collect(Collectors.toList());
+			} else {
+				unionPoints = unionPoints.stream().filter(point -> !isInUnionPortalArea(point, epsilon)).collect(Collectors.toList());
+			}
+		}
+		return unionPoints;
+	}
+
+	/**
+	 * Generates a string that represents the portal
+	 */
+	@Override
+	public String toString() {
+		return id + "\n";
 	}
 
 	// Getters and setters area ---
+
+	/**
+	 * 
+	 * @return the center of the portal
+	 */
+	public Location getCenter() {
+		return center;
+	}
 
 	/**
 	 * @return the initialVelocity
@@ -180,13 +213,6 @@ public abstract class AbstractPortal {
 	 */
 	public int getBoostDuration() {
 		return boostDuration;
-	}
-
-	/**
-	 * @return the hasSuperior
-	 */
-	public boolean hasSuperior() {
-		return hasSuperior;
 	}
 
 	// ---

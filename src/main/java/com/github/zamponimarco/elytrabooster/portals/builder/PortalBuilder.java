@@ -2,6 +2,7 @@ package com.github.zamponimarco.elytrabooster.portals.builder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -12,6 +13,7 @@ import com.github.zamponimarco.elytrabooster.manager.PortalManager;
 import com.github.zamponimarco.elytrabooster.portals.AbstractPortal;
 import com.github.zamponimarco.elytrabooster.portals.CirclePortal;
 import com.github.zamponimarco.elytrabooster.portals.RectanglePortal;
+import com.github.zamponimarco.elytrabooster.portals.UnionPortal;
 
 /**
  * Manages the creation of portals from a ConfigurationSection of portals.yml
@@ -68,40 +70,53 @@ public class PortalBuilder {
 		String measures = portalConfiguration.getString("measures");
 
 		// Union of portals
-		List<String> portalsUnionString = portalConfiguration.getStringList("portalsUnion");
-		List<AbstractPortal> portalsUnion = new ArrayList<AbstractPortal>();
-		for (int i = 0; i < portalsUnionString.size(); i++) {
-			String portalString = portalsUnionString.get(i);
+		List<String> portalsUnionStringList = portalConfiguration.getStringList("portalsUnion");
+
+		List<UnionPortal> portalsUnion = new ArrayList<UnionPortal>();
+		IntStream.range(0, portalsUnionStringList.size()).forEach(i -> {
+			String portalString = portalsUnionStringList.get(i);
 			String[] portalArray = portalString.split(":");
 			String subPortalId = id + "_" + i;
-			AbstractPortal portal = buildPortal(plugin, subPortalId, isBlock,
-					new Location(world, Double.valueOf(portalArray[1]), Double.valueOf(portalArray[2]),
-							Double.valueOf(portalArray[3])),
-					axis, initialVelocity, finalVelocity, boostDuration, outlineType, new ArrayList<AbstractPortal>(),
-					portalArray[0], portalArray[4], true);
+			double unionX = Double.valueOf(portalArray[1]);
+			double unionY = Double.valueOf(portalArray[2]);
+			double unionZ = Double.valueOf(portalArray[3]);
+			String unionShape = portalArray[0];
+			String unionMeasures = portalArray[4];
+			boolean intersecate = Boolean.valueOf(portalArray[5]);
+
+			UnionPortal portal = buildUnionPortal(plugin, subPortalId, isBlock, new Location(world, unionX, unionY, unionZ),
+					axis, initialVelocity, finalVelocity, boostDuration, outlineType, new ArrayList<UnionPortal>(),
+					unionShape, unionMeasures, intersecate);
 			portalsUnion.add(portal);
 			portalManager.setPortal(subPortalId, portal);
-		}
+		});
 
 		// Build portal
 		return buildPortal(plugin, id, isBlock, center, axis, initialVelocity, finalVelocity, boostDuration,
-				outlineType, portalsUnion, shape, measures, false);
+				outlineType, portalsUnion, shape, measures);
 	}
 
 	private static AbstractPortal buildPortal(ElytraBooster plugin, String id, boolean isBlock, Location center,
 			char axis, double initialVelocity, double finalVelocity, int boostDuration, String outlineType,
-			List<AbstractPortal> portalsUnion, String shape, String measures, boolean hasSuperior) {
+			List<UnionPortal> portalsUnion, String shape, String measures) {
 		switch (shape) {
 		case "circle":
 			return new CirclePortal(plugin, id, isBlock, center, axis, initialVelocity, finalVelocity, boostDuration,
-					outlineType, portalsUnion, hasSuperior, Double.valueOf(measures));
+					outlineType, portalsUnion, Double.valueOf(measures));
 		case "square":
 			return new RectanglePortal(plugin, id, isBlock, center, axis, initialVelocity, finalVelocity, boostDuration,
-					outlineType, portalsUnion, hasSuperior, measures + ";" + measures);
+					outlineType, portalsUnion, measures + ";" + measures);
 		case "rectangle":
 			return new RectanglePortal(plugin, id, isBlock, center, axis, initialVelocity, finalVelocity, boostDuration,
-					outlineType, portalsUnion, hasSuperior, measures);
+					outlineType, portalsUnion, measures);
 		}
 		throw new NullPointerException("Portal creation failed, id: " + id);
+	}
+
+	private static UnionPortal buildUnionPortal(ElytraBooster plugin, String id, boolean isBlock, Location center,
+			char axis, double initialVelocity, double finalVelocity, int boostDuration, String outlineType,
+			List<UnionPortal> portalsUnion, String shape, String measures, boolean intersecate) {
+		return new UnionPortal(plugin, id, isBlock, center, axis, initialVelocity, finalVelocity, boostDuration,
+				outlineType, portalsUnion, shape, measures, intersecate);
 	}
 }

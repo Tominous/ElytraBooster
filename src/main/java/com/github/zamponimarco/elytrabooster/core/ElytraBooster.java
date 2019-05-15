@@ -15,18 +15,28 @@ public class ElytraBooster extends JavaPlugin {
 	private PortalManager portalManager;
 	private Map<Player, Boolean> statusMap;
 	
-	// TODO tidy up
 	public void onEnable() {
-		statusMap = new HashMap<Player, Boolean>();
-		portalManager = new PortalManager(this);
-		getCommand("eb").setExecutor(new ElytraBoosterCommandExecutor(this));
-		getServer().getPluginManager().registerEvents(new PlayerGlideListener(this), this);
+		setUpFolder();
+		startupTasks();
 	}
 
 	public void onDisable() {
 		portalManager.getPortalsMap().forEach((id, portal) -> portal.stopPortalTask());
 	}
 	
+	private void setUpFolder() {
+		if (!getDataFolder().exists()) {
+			getDataFolder().mkdir();
+		}
+	}
+
+	private void startupTasks() {
+		statusMap = new HashMap<Player, Boolean>();
+		portalManager = new PortalManager(this);
+		getCommand("eb").setExecutor(new ElytraBoosterCommandExecutor(this));
+		getServer().getPluginManager().registerEvents(new PlayerGlideListener(this), this);
+	}
+
 	/**
 	 * @return the portalManager of the plugin
 	 */

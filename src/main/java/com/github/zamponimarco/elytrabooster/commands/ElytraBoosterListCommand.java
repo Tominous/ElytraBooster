@@ -15,7 +15,7 @@ public class ElytraBoosterListCommand extends AbstractCommand {
 	@Override
 	protected void commandExecution() {
 		
-		plugin.getPortalManager().getPortalsMap().forEach((id, portal) -> sender.sendMessage(id + "\n"));
+		plugin.getPortalManager().getPortalsMap().forEach((id, portal) -> sender.sendMessage(portal.toString()));
 
 	}
 

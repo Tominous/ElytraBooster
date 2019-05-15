@@ -1,7 +1,6 @@
 package com.github.zamponimarco.elytrabooster.commands;
 
 import java.util.Arrays;
-import java.util.List;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
@@ -21,22 +20,22 @@ public class ElytraBoosterSetCommand extends AbstractCommand {
 	// TODO urgh
 	@Override
 	protected void commandExecution() {
+		
 		PortalManager portalManager = plugin.getPortalManager();
 		String id = arguments[0];
 		AbstractPortal portal = portalManager.getPortal(id);
-		portal = portal.hasSuperior() ? null : portal;
 
-		if (portal == null || portal.hasSuperior()) {
+		// Checks if input portal is null or has superior
+		if (portal == null) {
 			throw new IllegalArgumentException("Portal passed in input is invalid");
 		}
 
-
-		List<String> toModify = Arrays.asList(arguments[1].split(","));
-		toModify.forEach(string -> {
+		Arrays.asList(arguments[1].split(",")).forEach(string -> {
 			String[] argument = string.split(":");
 			setParam(id, argument[0], argument[1]);
 		});
 		portalManager.saveConfig();
+
 		portal.stopPortalTask();
 		portalManager.setPortal(id, PortalBuilder.buildPortal(plugin, portalManager,
 				portalManager.getDataYaml().getConfigurationSection(id)));

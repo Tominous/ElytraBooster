@@ -12,7 +12,6 @@ public class ElytraBoosterReloadCommand extends AbstractCommand {
 		super(plugin, sender, subCommand, arguments, isSenderPlayer);
 	}
 
-	// TODO pretty ok but rewatch
 	@Override
 	protected void commandExecution() {
 		

@@ -71,7 +71,18 @@ public class PortalManager implements DataManager {
 				id -> portals.put(id, PortalBuilder.buildPortal(plugin, this, dataYaml.getConfigurationSection(id))));
 	}
 
-	// TODO add default settings
+	/**
+	 * Saves the config
+	 */
+	public void saveConfig() {
+		try {
+			dataYaml.save(dataFile);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		;
+	}
+
 	/**
 	 * Return the configuration for a default portal
 	 * 
@@ -79,7 +90,7 @@ public class PortalManager implements DataManager {
 	 * @param id
 	 * @return configuration for a default portal
 	 */
-	public ConfigurationSection defaultPortalConfiguration(Player creator, String id) {
+	public ConfigurationSection createDefaultPortalConfiguration(Player creator, String id) {
 		ConfigurationSection newPortal = dataYaml.createSection(id);
 		newPortal.set("isBlockOutline", false);
 		newPortal.set("world", creator.getWorld().getName());
@@ -96,18 +107,6 @@ public class PortalManager implements DataManager {
 		newPortal.set("measures", 10);
 		saveConfig();
 		return newPortal;
-	}
-
-	/**
-	 * Saves the config
-	 */
-	public void saveConfig() {
-		try {
-			dataYaml.save(dataFile);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		;
 	}
 
 	/**
