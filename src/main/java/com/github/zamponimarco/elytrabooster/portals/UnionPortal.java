@@ -36,6 +36,11 @@ public class UnionPortal extends AbstractPortal {
 			double halfLength = Double.valueOf(measuresArray[0]);
 			double halfHeight = Double.valueOf(measuresArray[1]);
 			return PortalUtils.getRectangle(center, axis, halfLength, halfHeight);
+		case "triangle":
+			Location [] points = initMeasures(measures);
+			Location point2 = points[0];
+			Location point3 = points[1];
+			return PortalUtils.getTriangle(center, point2, point3, axis);
 		}
 		return points;
 	}
@@ -52,12 +57,43 @@ public class UnionPortal extends AbstractPortal {
 			double halfLength = Double.valueOf(measuresArray[0]);
 			double halfHeight = Double.valueOf(measuresArray[1]);
 			return PortalUtils.isInRectanglePortalArea(location, halfHeight, halfLength, axis, location, epsilon);
+		case "triangle":
+			Location[] points = initMeasures(measures);
+			Location point2 = points[0];
+			Location point3 = points[1];
+			return PortalUtils.isInTrianglePortalArea(location, center, point2, point3, axis, epsilon);
 		}
-		return false;
+			return false;
 	}
 
 	public boolean isIntersecate() {
 		return intersecate;
 	}
 
+	private Location[] initMeasures(String measures2) {
+		String[] measuresTriangleArray = measures.split(";");
+		Location point2 = null;
+		Location point3 = null;
+		switch (axis) {
+		case 'x':
+			point2 = new Location(center.getWorld(), center.getX(), Double.valueOf(measuresTriangleArray[0]),
+					Double.valueOf(measuresTriangleArray[1]));
+			point3 = new Location(center.getWorld(), center.getX(), Double.valueOf(measuresTriangleArray[2]),
+					Double.valueOf(measuresTriangleArray[3]));
+			break;
+		case 'y':
+			point2 = new Location(center.getWorld(), Double.valueOf(measuresTriangleArray[0]), center.getY(),
+					Double.valueOf(measuresTriangleArray[1]));
+			point3 = new Location(center.getWorld(), Double.valueOf(measuresTriangleArray[2]), center.getY(),
+					Double.valueOf(measuresTriangleArray[3]));
+			break;
+		case 'z':
+			point2 = new Location(center.getWorld(), Double.valueOf(measuresTriangleArray[0]), Double.valueOf(measuresTriangleArray[1]),
+					center.getZ());
+			point3 = new Location(center.getWorld(), Double.valueOf(measuresTriangleArray[2]), Double.valueOf(measuresTriangleArray[3]),
+					center.getZ());
+			break;
+		}
+		return new Location[]{point2, point3};
+	}
 }

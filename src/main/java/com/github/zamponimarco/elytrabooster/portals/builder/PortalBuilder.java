@@ -13,6 +13,7 @@ import com.github.zamponimarco.elytrabooster.manager.PortalManager;
 import com.github.zamponimarco.elytrabooster.portals.AbstractPortal;
 import com.github.zamponimarco.elytrabooster.portals.CirclePortal;
 import com.github.zamponimarco.elytrabooster.portals.RectanglePortal;
+import com.github.zamponimarco.elytrabooster.portals.TrianglePortal;
 import com.github.zamponimarco.elytrabooster.portals.UnionPortal;
 
 /**
@@ -84,9 +85,9 @@ public class PortalBuilder {
 			String unionMeasures = portalArray[4];
 			boolean intersecate = Boolean.valueOf(portalArray[5]);
 
-			UnionPortal portal = buildUnionPortal(plugin, subPortalId, isBlock, new Location(world, unionX, unionY, unionZ),
-					axis, initialVelocity, finalVelocity, boostDuration, outlineType, new ArrayList<UnionPortal>(),
-					unionShape, unionMeasures, intersecate);
+			UnionPortal portal = buildUnionPortal(plugin, subPortalId, isBlock,
+					new Location(world, unionX, unionY, unionZ), axis, initialVelocity, finalVelocity, boostDuration,
+					outlineType, new ArrayList<UnionPortal>(), unionShape, unionMeasures, intersecate);
 			portalsUnion.add(portal);
 			portalManager.setPortal(subPortalId, portal);
 		});
@@ -108,6 +109,9 @@ public class PortalBuilder {
 					outlineType, portalsUnion, measures + ";" + measures);
 		case "rectangle":
 			return new RectanglePortal(plugin, id, isBlock, center, axis, initialVelocity, finalVelocity, boostDuration,
+					outlineType, portalsUnion, measures);
+		case "triangle":
+			return new TrianglePortal(plugin, id, isBlock, center, axis, initialVelocity, finalVelocity, boostDuration,
 					outlineType, portalsUnion, measures);
 		}
 		throw new NullPointerException("Portal creation failed, id: " + id);
