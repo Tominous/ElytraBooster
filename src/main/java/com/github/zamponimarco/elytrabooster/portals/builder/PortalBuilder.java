@@ -89,7 +89,6 @@ public class PortalBuilder {
 					new Location(world, unionX, unionY, unionZ), axis, initialVelocity, finalVelocity, boostDuration,
 					outlineType, new ArrayList<UnionPortal>(), unionShape, unionMeasures, intersecate);
 			portalsUnion.add(portal);
-			portalManager.setPortal(subPortalId, portal);
 		});
 
 		// Build portal

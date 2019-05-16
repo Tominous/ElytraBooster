@@ -5,3 +5,50 @@ author: jummes
 api-version: 1.13
 commands:
   eb:
+    description: Base ElytraBooster command
+permissions:
+  eb.admin.create:
+    description: Portal creation permission
+    default: op
+  eb.admin.delete:
+    description: Portal deletion permission
+    default: op
+  eb.admin.help:
+    description: Show help message permission
+    default: op
+  eb.admin.list:
+    description: List existing portals permission
+    default: op
+  eb.admin.move:
+    description: Portal moving permission
+    default: op
+  eb.admin.near:
+    description: List near portals permissio
+    default: op
+  eb.admin.reload: 
+    description: Reload plugin data permission
+    default: op
+  eb.admin.set:
+    description: Set portal parameters
+    default: op
+  eb.portals.*:
+    description: Wildcard portal usage permission
+    default: true
+  eb.admin.*:
+    description: Wildcard portal editing permission
+    default: op
+    children:
+      eb.admin.create: true
+      eb.admin.delete: true
+      eb.admin.help: true
+      eb.admin.list: true
+      eb.admin.move: true
+      eb.admin.near: true
+      eb.admin.reload: true
+      eb.admin.set: true
+  eb.*:
+    description: Wildcard ElytraBooster permission
+    default: op
+    children: 
+      eb.portals.*: true
+      eb.admin.*: true

@@ -31,6 +31,7 @@ public class ElytraBooster extends JavaPlugin {
 	}
 
 	private void startupTasks() {
+		new Metrics(this);
 		statusMap = new HashMap<Player, Boolean>();
 		portalManager = new PortalManager(this);
 		getCommand("eb").setExecutor(new ElytraBoosterCommandExecutor(this));
