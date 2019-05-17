@@ -5,6 +5,8 @@ import java.util.List;
 import org.bukkit.Location;
 
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
+import com.github.zamponimarco.elytrabooster.outline.BlockPortalOutline;
+import com.github.zamponimarco.elytrabooster.outline.PortalOutline;
 import com.github.zamponimarco.elytrabooster.portals.utils.PortalUtils;
 import com.github.zamponimarco.elytrabooster.trails.BoostTrail;
 
@@ -14,11 +16,11 @@ public class UnionPortal extends AbstractPortal {
 	private String measures;
 	private boolean intersecate;
 
-	public UnionPortal(ElytraBooster plugin, String id, boolean isBlock, Location center, char axis,
-			double initialVelocity, double finalVelocity, int boostDuration, String outlineType,
-			List<UnionPortal> portalsUnion, BoostTrail trail, String shape, String measures, boolean intersecate) {
-		super(plugin, id, isBlock, center, axis, initialVelocity, finalVelocity, boostDuration, outlineType,
-				portalsUnion, trail);
+	public UnionPortal(ElytraBooster plugin, String id, Location center, char axis,
+			double initialVelocity, double finalVelocity, int boostDuration, PortalOutline outline,
+			List<UnionPortal> portalsUnion, BoostTrail trail, String shape, int cooldown, String measures, boolean intersecate) {
+		super(plugin, id, center, axis, initialVelocity, finalVelocity, boostDuration, outline,
+				portalsUnion, trail, cooldown);
 		this.shape = shape;
 		this.measures = measures;
 		this.intersecate = intersecate;
@@ -29,7 +31,7 @@ public class UnionPortal extends AbstractPortal {
 	protected List<Location> getPoints() {
 		switch (shape) {
 		case "circle":
-			return PortalUtils.getCircle(center, isBlock, Double.valueOf(measures), axis);
+			return PortalUtils.getCircle(center, outline instanceof BlockPortalOutline, Double.valueOf(measures), axis);
 		case "square":
 			return PortalUtils.getRectangle(center, axis, Double.valueOf(measures), Double.valueOf(measures));
 		case "rectangle":

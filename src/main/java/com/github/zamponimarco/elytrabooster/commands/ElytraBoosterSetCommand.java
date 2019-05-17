@@ -65,6 +65,7 @@ public class ElytraBoosterSetCommand extends AbstractCommand {
 		case "outlineType":
 		case "shape":
 		case "measures":
+		case "trail":
 			portal.set(param, value);
 			break;
 		case "isBlockOutline":

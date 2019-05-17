@@ -9,6 +9,8 @@ import org.bukkit.configuration.ConfigurationSection;
 
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 import com.github.zamponimarco.elytrabooster.manager.PortalManager;
+import com.github.zamponimarco.elytrabooster.outline.PortalOutline;
+import com.github.zamponimarco.elytrabooster.outline.factory.PortalOutlineFactory;
 import com.github.zamponimarco.elytrabooster.portals.AbstractPortal;
 import com.github.zamponimarco.elytrabooster.portals.CirclePortal;
 import com.github.zamponimarco.elytrabooster.portals.RectanglePortal;
@@ -71,11 +73,17 @@ public class PortalFactory {
 		// Portal outline measures
 		String measures = portalConfiguration.getString("measures");
 
-		// Optional fields
+		// Other fields
 
 		// BoostTrail
 		String trailString = portalConfiguration.getString("trail");
 		BoostTrail trail = BoostTrailFactory.buildBoostTrail(trailString);
+		
+		// Portal Outline
+		PortalOutline outline = PortalOutlineFactory.buildPortalOutline(isBlock, outlineType);
+		
+		// cooldown
+		int cooldown = portalConfiguration.getInt("cooldown", 0); 
 		
 		// Union of portals
 		List<UnionPortal> portalsUnion = new ArrayList<UnionPortal>();
@@ -93,43 +101,43 @@ public class PortalFactory {
 				String unionMeasures = portalArray[4];
 				boolean intersecate = Boolean.valueOf(portalArray[5]);
 
-				UnionPortal portal = buildUnionPortal(plugin, subPortalId, isBlock,
+				UnionPortal portal = buildUnionPortal(plugin, subPortalId,
 						new Location(world, unionX, unionY, unionZ), axis, initialVelocity, finalVelocity,
-						boostDuration, outlineType, new ArrayList<UnionPortal>(), trail, unionShape, unionMeasures,
+						boostDuration, outline, new ArrayList<UnionPortal>(), trail, unionShape, cooldown, unionMeasures,
 						intersecate);
 				portalsUnion.add(portal);
 			}
 		}
 
 		// Build portal
-		return buildPortal(plugin, id, isBlock, center, axis, initialVelocity, finalVelocity, boostDuration,
-				outlineType, portalsUnion, trail, shape, measures);
+		return buildPortal(plugin, id, center, axis, initialVelocity, finalVelocity, boostDuration,
+				outline, portalsUnion, trail, shape, cooldown, measures);
 	}
 
-	private static AbstractPortal buildPortal(ElytraBooster plugin, String id, boolean isBlock, Location center,
-			char axis, double initialVelocity, double finalVelocity, int boostDuration, String outlineType,
-			List<UnionPortal> portalsUnion, BoostTrail trail, String shape, String measures) {
+	private static AbstractPortal buildPortal(ElytraBooster plugin, String id, Location center,
+			char axis, double initialVelocity, double finalVelocity, int boostDuration, PortalOutline outline,
+			List<UnionPortal> portalsUnion, BoostTrail trail, String shape, int cooldown, String measures) {
 		switch (shape) {
 		case "circle":
-			return new CirclePortal(plugin, id, isBlock, center, axis, initialVelocity, finalVelocity, boostDuration,
-					outlineType, portalsUnion, trail, Double.valueOf(measures));
+			return new CirclePortal(plugin, id, center, axis, initialVelocity, finalVelocity, boostDuration,
+					outline, portalsUnion, trail, cooldown, Double.valueOf(measures));
 		case "square":
-			return new RectanglePortal(plugin, id, isBlock, center, axis, initialVelocity, finalVelocity, boostDuration,
-					outlineType, portalsUnion, trail, measures + ";" + measures);
+			return new RectanglePortal(plugin, id, center, axis, initialVelocity, finalVelocity, boostDuration,
+					outline, portalsUnion, trail, cooldown, measures + ";" + measures);
 		case "rectangle":
-			return new RectanglePortal(plugin, id, isBlock, center, axis, initialVelocity, finalVelocity, boostDuration,
-					outlineType, portalsUnion, trail, measures);
+			return new RectanglePortal(plugin, id, center, axis, initialVelocity, finalVelocity, boostDuration,
+					outline, portalsUnion, trail, cooldown, measures);
 		case "triangle":
-			return new TrianglePortal(plugin, id, isBlock, center, axis, initialVelocity, finalVelocity, boostDuration,
-					outlineType, portalsUnion, trail, measures);
+			return new TrianglePortal(plugin, id, center, axis, initialVelocity, finalVelocity, boostDuration,
+					outline, portalsUnion, trail, cooldown, measures);
 		}
 		throw new NullPointerException("Portal creation failed, id: " + id);
 	}
 
-	private static UnionPortal buildUnionPortal(ElytraBooster plugin, String id, boolean isBlock, Location center,
-			char axis, double initialVelocity, double finalVelocity, int boostDuration, String outlineType,
-			List<UnionPortal> portalsUnion, BoostTrail trail, String shape, String measures, boolean intersecate) {
-		return new UnionPortal(plugin, id, isBlock, center, axis, initialVelocity, finalVelocity, boostDuration,
-				outlineType, portalsUnion, trail, shape, measures, intersecate);
+	private static UnionPortal buildUnionPortal(ElytraBooster plugin, String id, Location center,
+			char axis, double initialVelocity, double finalVelocity, int boostDuration, PortalOutline outline,
+			List<UnionPortal> portalsUnion, BoostTrail trail, String shape, int cooldown, String measures, boolean intersecate) {
+		return new UnionPortal(plugin, id, center, axis, initialVelocity, finalVelocity, boostDuration,
+				outline, portalsUnion, trail, shape, cooldown, measures, intersecate);
 	}
 }

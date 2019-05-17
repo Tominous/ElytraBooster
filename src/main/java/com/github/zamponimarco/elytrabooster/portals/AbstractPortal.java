@@ -6,11 +6,12 @@ import java.util.stream.Collectors;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.Particle;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 import com.github.zamponimarco.elytrabooster.events.PlayerBoostEvent;
+import com.github.zamponimarco.elytrabooster.outline.BlockPortalOutline;
+import com.github.zamponimarco.elytrabooster.outline.PortalOutline;
 import com.github.zamponimarco.elytrabooster.settings.Settings;
 import com.github.zamponimarco.elytrabooster.trails.BoostTrail;
 
@@ -26,42 +27,46 @@ public abstract class AbstractPortal {
 
 	protected ElytraBooster plugin;
 	protected String id;
-	protected boolean isBlock;
 	protected Location center;
 	protected char axis;
 	protected double initialVelocity;
 	protected double finalVelocity;
 	protected int boostDuration;
-	protected String outlineType;
+	protected PortalOutline outline;
 	protected List<UnionPortal> portalsUnion;
 	protected BoostTrail trail;
+	protected int cooldown;
 
 	protected int outlineTaskNumber;
 	protected int checkTaskNumber;
 	protected List<Location> points;
+	protected int currCooldown;
 
 	private int outlineInterval;
 	private int checkInterval;
 
 	// ---
 
-	public AbstractPortal(ElytraBooster plugin, String id, boolean isBlock, Location center, char axis,
-			double initialVelocity, double finalVelocity, int boostDuration, String outlineType,
-			List<UnionPortal> portalsUnion, BoostTrail trail) {
+	public AbstractPortal(ElytraBooster plugin, String id, Location center, char axis, double initialVelocity,
+			double finalVelocity, int boostDuration, PortalOutline outline, List<UnionPortal> portalsUnion,
+			BoostTrail trail, int cooldown) {
 		super();
 		this.plugin = plugin;
 		this.id = id;
-		this.isBlock = isBlock;
 		this.center = center;
 		this.axis = axis;
 		this.initialVelocity = initialVelocity;
 		this.finalVelocity = finalVelocity;
 		this.boostDuration = boostDuration;
-		this.outlineType = outlineType;
+		this.outline = outline;
 		this.portalsUnion = portalsUnion;
 		this.trail = trail;
+		this.cooldown = cooldown;
 
-		this.outlineInterval = Integer.valueOf(plugin.getSettingsManager().getSetting(Settings.PORTAL_OUTLINE_INTERVAL));
+		currCooldown = 0;
+
+		this.outlineInterval = Integer
+				.valueOf(plugin.getSettingsManager().getSetting(Settings.PORTAL_OUTLINE_INTERVAL));
 		this.checkInterval = Integer.valueOf(plugin.getSettingsManager().getSetting(Settings.PORTAL_CHECK_INTERVAL));
 	}
 
@@ -99,70 +104,53 @@ public abstract class AbstractPortal {
 				.runTaskTimer(plugin, () -> checkPlayersPassing(), 1, checkInterval).getTaskId();
 	}
 
-	// Getters and setters area ---
-
 	/**
 	 * Stops the portal task
 	 */
 	public void stopPortalTask() {
-		if (isBlock) {
-			drawOutline("AIR");
-		}
+		outline.eraseOutline(points);
 		plugin.getServer().getScheduler().cancelTask(outlineTaskNumber);
 		plugin.getServer().getScheduler().cancelTask(checkTaskNumber);
 	}
 
-	/**
-	 * Doesn't depend on portal shape -> not abstract method
-	 * 
-	 * Checks if a player passes in the portal area
-	 */
 	protected void checkPlayersPassing() {
-		if (!isUnion()) {
-			plugin.getStatusMap().keySet().forEach(player -> {
-				if (isInPortalArea(player.getLocation(), 0) && !plugin.getStatusMap().get(player))
-					Bukkit.getPluginManager().callEvent(new PlayerBoostEvent(plugin, player, this));
-			});
-		} else {
-			plugin.getStatusMap().keySet().forEach(player -> {
-				if (isInUnionPortalArea(player.getLocation(), 0) && !plugin.getStatusMap().get(player))
-					Bukkit.getPluginManager().callEvent(new PlayerBoostEvent(plugin, player, this));
-			});
-		}
-	}
-
-	/**
-	 * Doesn't depend on portal shape -> not abstract method
-	 * 
-	 * Draws the outline of the portal
-	 */
-	protected void drawOutline(String outlineType) {
-		if (isBlock) {
-			Material m = Material.valueOf(outlineType);
-			points.forEach(point -> point.getBlock().setType(m));
-		} else {
-			Particle p = Particle.valueOf(outlineType);
-			points.forEach(point -> point.getWorld().spawnParticle(p, point, 0));
-		}
+		plugin.getStatusMap().keySet().forEach(player -> {
+			if (isInUnionPortalArea(player.getLocation(), 0) && !plugin.getStatusMap().get(player) && !onCooldown()) {
+				Bukkit.getPluginManager().callEvent(new PlayerBoostEvent(plugin, player, this));
+				cooldown();
+			}
+		});
 	}
 
 	protected void drawOutline() {
-		drawOutline(outlineType);
+		outline.drawOutline(points);
 	}
 
-	// ---
+	protected void cooldown() {
+		currCooldown = cooldown;
+		BukkitRunnable cooldownProcess = new BukkitRunnable() {
+			@Override
+			public void run() {
+				if (currCooldown > 0) {
+					currCooldown--;
+				} else {
+					this.cancel();
+				}
+			}
+		};
+		cooldownProcess.runTaskTimer(plugin, 0, 1);
+	}
+
+	protected boolean onCooldown() {
+		return currCooldown > 0;
+	}
 
 	protected boolean isUnion() {
 		return !portalsUnion.isEmpty();
 	}
 
-	// Getters and setters area ---
-
 	protected boolean isInUnionPortalArea(Location location, double epsilon) {
-		boolean test = false;
-		if (isInPortalArea(location, epsilon)) {
-			test = true;
-		}
+		boolean test = isInPortalArea(location, epsilon);
 		for (UnionPortal p : portalsUnion) {
 			if (p.isIntersecate()) {
 				test = test && p.isInPortalArea(location, epsilon);
@@ -175,7 +163,7 @@ public abstract class AbstractPortal {
 
 	protected List<Location> getUnionPoints() {
 		List<Location> unionPoints = new ArrayList<Location>();
-		double epsilon = isBlock ? 1 : 0.05;
+		double epsilon = outline instanceof BlockPortalOutline ? 1 : 0.05;
 		unionPoints.addAll(getPoints());
 		for (UnionPortal portal : portalsUnion) {
 			unionPoints.addAll(portal.getPoints());
