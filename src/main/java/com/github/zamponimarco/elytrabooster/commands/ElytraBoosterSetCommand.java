@@ -9,6 +9,7 @@ import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 import com.github.zamponimarco.elytrabooster.manager.PortalManager;
 import com.github.zamponimarco.elytrabooster.portals.AbstractPortal;
 import com.github.zamponimarco.elytrabooster.portals.builder.PortalBuilder;
+import com.github.zamponimarco.elytrabooster.utils.MessagesUtil;
 
 public class ElytraBoosterSetCommand extends AbstractCommand {
 
@@ -25,7 +26,6 @@ public class ElytraBoosterSetCommand extends AbstractCommand {
 		String id = arguments[0];
 		AbstractPortal portal = portalManager.getPortal(id);
 
-		// Checks if input portal is null or has superior
 		if (portal == null) {
 			throw new IllegalArgumentException("Portal passed in input is invalid");
 		}
@@ -75,9 +75,10 @@ public class ElytraBoosterSetCommand extends AbstractCommand {
 			cons.run();
 			break;
 		default:
-			System.err.println("Unknown portal parameter");
+			sender.sendMessage(MessagesUtil.color("&cUnknown parameter"));
+			return;
 		}
-
+		sender.sendMessage(MessagesUtil.color("&aPortal modified, &6ID: &a" + id));
 	}
 
 }

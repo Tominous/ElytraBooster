@@ -4,6 +4,7 @@ import org.bukkit.command.CommandSender;
 
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 import com.github.zamponimarco.elytrabooster.manager.PortalManager;
+import com.github.zamponimarco.elytrabooster.utils.MessagesUtil;
 
 public class ElytraBoosterReloadCommand extends AbstractCommand {
 
@@ -14,12 +15,13 @@ public class ElytraBoosterReloadCommand extends AbstractCommand {
 
 	@Override
 	protected void commandExecution() {
-		
+		sender.sendMessage(MessagesUtil.color("&cReloading &6ElytraBooster"));
 		PortalManager portalManager = plugin.getPortalManager();
 		
 		portalManager.getPortalsMap().forEach((id, portal) -> portal.stopPortalTask());
 		plugin.getPortalManager().reloadData();
-
+		
+		sender.sendMessage(MessagesUtil.color("&aReloaded &6ElytraBooster"));
 	}
 
 	@Override

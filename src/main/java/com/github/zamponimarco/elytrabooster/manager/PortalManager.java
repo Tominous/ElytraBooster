@@ -35,6 +35,7 @@ public class PortalManager implements DataManager {
 	 * Creates a PortalManager instance
 	 * 
 	 * @param plugin
+	 * @param settingsManager 
 	 */
 	public PortalManager(ElytraBooster plugin) {
 		super();

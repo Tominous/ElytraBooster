@@ -5,6 +5,7 @@ import org.bukkit.command.CommandSender;
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 import com.github.zamponimarco.elytrabooster.manager.PortalManager;
 import com.github.zamponimarco.elytrabooster.portals.AbstractPortal;
+import com.github.zamponimarco.elytrabooster.utils.MessagesUtil;
 
 public class ElytraBoosterDeleteCommand extends AbstractCommand {
 
@@ -17,21 +18,24 @@ public class ElytraBoosterDeleteCommand extends AbstractCommand {
 	protected void commandExecution() {
 		PortalManager portalManager = plugin.getPortalManager();
 		String id = arguments[0];
-		
+
 		AbstractPortal portal;
-		if (portalManager.getPortalsMap().containsKey(id))
+		if (portalManager.getPortalsMap().containsKey(id)) {
 			portal = portalManager.getPortal(id);
-		else
+		} else {
+			sender.sendMessage(MessagesUtil.color("&4Portal deletion failed"));
 			return;
+		}
 		portal.stopPortalTask();
 		portalManager.removePortal(id);
 		portalManager.getDataYaml().set(id, null);
 		portalManager.saveConfig();
+		sender.sendMessage(MessagesUtil.color("&aPortal deleted, &6ID: &a" + id));
 	}
 
 	@Override
 	protected boolean isOnlyPlayer() {
-		return true;
+		return false;
 	}
 
 }

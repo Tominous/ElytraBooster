@@ -11,6 +11,7 @@ import org.bukkit.Particle;
 
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 import com.github.zamponimarco.elytrabooster.events.PlayerBoostEvent;
+import com.github.zamponimarco.elytrabooster.settings.Settings;
 
 /**
  * Handles portal boost process
@@ -33,8 +34,12 @@ public abstract class AbstractPortal {
 	protected String outlineType;
 	protected List<UnionPortal> portalsUnion;
 
-	protected int taskNumber;
+	protected int outlineTaskNumber;
+	protected int checkTaskNumber;
 	protected List<Location> points;
+
+	private int outlineInterval;
+	private int checkInterval;
 
 	// ---
 
@@ -52,6 +57,9 @@ public abstract class AbstractPortal {
 		this.boostDuration = boostDuration;
 		this.outlineType = outlineType;
 		this.portalsUnion = portalsUnion;
+
+		this.outlineInterval = Integer.valueOf(plugin.getSettingsManager().getSetting(Settings.PORTAL_OUTLINE_INTERVAL));
+		this.checkInterval = Integer.valueOf(plugin.getSettingsManager().getSetting(Settings.PORTAL_CHECK_INTERVAL));
 	}
 
 	// Abstract methods area ---
@@ -82,10 +90,10 @@ public abstract class AbstractPortal {
 	 */
 	protected void runPortalTask() {
 		points = isUnion() ? getUnionPoints() : getPoints();
-		taskNumber = plugin.getServer().getScheduler().runTaskTimer(plugin, () -> {
-			checkPlayersPassing();
-			drawOutline();
-		}, 1, 1).getTaskId();
+		outlineTaskNumber = plugin.getServer().getScheduler()
+				.runTaskTimer(plugin, () -> drawOutline(), 1, outlineInterval).getTaskId();
+		checkTaskNumber = plugin.getServer().getScheduler()
+				.runTaskTimer(plugin, () -> checkPlayersPassing(), 1, checkInterval).getTaskId();
 	}
 
 	// Getters and setters area ---
@@ -97,7 +105,8 @@ public abstract class AbstractPortal {
 		if (isBlock) {
 			drawOutline("AIR");
 		}
-		plugin.getServer().getScheduler().cancelTask(taskNumber);
+		plugin.getServer().getScheduler().cancelTask(outlineTaskNumber);
+		plugin.getServer().getScheduler().cancelTask(checkTaskNumber);
 	}
 
 	/**
@@ -154,7 +163,7 @@ public abstract class AbstractPortal {
 		for (UnionPortal p : portalsUnion) {
 			if (p.isIntersecate()) {
 				test = test && p.isInPortalArea(location, epsilon);
-			} else{
+			} else {
 				test = test || p.isInPortalArea(location, epsilon);
 			}
 		}
@@ -167,10 +176,12 @@ public abstract class AbstractPortal {
 		unionPoints.addAll(getPoints());
 		for (UnionPortal portal : portalsUnion) {
 			unionPoints.addAll(portal.getPoints());
-			if(portal.isIntersecate()) {
-				unionPoints = unionPoints.stream().filter(point -> isInUnionPortalArea(point, -epsilon)).collect(Collectors.toList());
+			if (portal.isIntersecate()) {
+				unionPoints = unionPoints.stream().filter(point -> isInUnionPortalArea(point, -epsilon))
+						.collect(Collectors.toList());
 			} else {
-				unionPoints = unionPoints.stream().filter(point -> !isInUnionPortalArea(point, epsilon)).collect(Collectors.toList());
+				unionPoints = unionPoints.stream().filter(point -> !isInUnionPortalArea(point, epsilon))
+						.collect(Collectors.toList());
 			}
 		}
 		return unionPoints;

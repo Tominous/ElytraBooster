@@ -16,7 +16,7 @@ public class ElytraBoosterMoveCommand extends AbstractCommand {
 		super(plugin, sender, subCommand, arguments, isSenderPlayer);
 	}
 
-	// TODO this code sucks
+	// TODO move unionportals
 	@Override
 	protected void commandExecution() {
 
