@@ -6,6 +6,7 @@ import org.bukkit.Location;
 
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 import com.github.zamponimarco.elytrabooster.portals.utils.PortalUtils;
+import com.github.zamponimarco.elytrabooster.trails.BoostTrail;
 
 public class TrianglePortal extends AbstractPortal{
 
@@ -14,8 +15,8 @@ public class TrianglePortal extends AbstractPortal{
 	
 	public TrianglePortal(ElytraBooster plugin, String id, boolean isBlock, Location point1, char axis,
 			double initialVelocity, double finalVelocity, int boostDuration, String outlineType,
-			List<UnionPortal> portalsUnion, String measures) {
-		super(plugin, id, isBlock, point1, axis, initialVelocity, finalVelocity, boostDuration, outlineType, portalsUnion);
+			List<UnionPortal> portalsUnion, BoostTrail trail, String measures) {
+		super(plugin, id, isBlock, point1, axis, initialVelocity, finalVelocity, boostDuration, outlineType, portalsUnion, trail);
 		initMeasures(measures);
 		
 		super.runPortalTask();

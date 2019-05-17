@@ -7,7 +7,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.github.zamponimarco.elytrabooster.commands.builder.CommandBuilder;
+import com.github.zamponimarco.elytrabooster.commands.factory.CommandFactory;
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 
 public class ElytraBoosterCommandExecutor implements CommandExecutor{
@@ -27,7 +27,7 @@ public class ElytraBoosterCommandExecutor implements CommandExecutor{
 			String subCommand = args.length >= 1 ? args[0] : "";
 			String[] arguments = args.length >= 2 ? Arrays.copyOfRange(args, 1, args.length): null;
 			
-			CommandBuilder.buildCommand(plugin, sender, subCommand, arguments, isSenderPlayer).execute();
+			CommandFactory.buildCommand(plugin, sender, subCommand, arguments, isSenderPlayer).execute();
 		}
 		return false;
 	}

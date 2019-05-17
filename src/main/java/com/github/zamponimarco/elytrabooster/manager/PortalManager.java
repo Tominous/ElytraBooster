@@ -2,7 +2,6 @@ package com.github.zamponimarco.elytrabooster.manager;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -13,7 +12,7 @@ import org.bukkit.entity.Player;
 
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 import com.github.zamponimarco.elytrabooster.portals.AbstractPortal;
-import com.github.zamponimarco.elytrabooster.portals.builder.PortalBuilder;
+import com.github.zamponimarco.elytrabooster.portals.factory.PortalFactory;
 
 /**
  * Handles data of the portals
@@ -69,7 +68,7 @@ public class PortalManager implements DataManager {
 	public void loadData() {
 		portals = new HashMap<String, AbstractPortal>();
 		dataYaml.getKeys(false).forEach(
-				id -> portals.put(id, PortalBuilder.buildPortal(plugin, this, dataYaml.getConfigurationSection(id))));
+				id -> portals.put(id, PortalFactory.buildPortal(plugin, this, dataYaml.getConfigurationSection(id))));
 	}
 
 	/**
@@ -93,19 +92,18 @@ public class PortalManager implements DataManager {
 	 */
 	public ConfigurationSection createDefaultPortalConfiguration(Player creator, String id) {
 		ConfigurationSection newPortal = dataYaml.createSection(id);
-		newPortal.set("isBlockOutline", false);
 		newPortal.set("world", creator.getWorld().getName());
 		newPortal.set("x", creator.getLocation().getBlockX());
 		newPortal.set("y", creator.getLocation().getBlockY());
 		newPortal.set("z", creator.getLocation().getBlockZ());
 		newPortal.set("axis", 'x');
+		newPortal.set("shape", "circle");
+		newPortal.set("measures", 10);
+		newPortal.set("isBlockOutline", true);
+		newPortal.set("outlineType", "STONE");
 		newPortal.set("initialVelocity", 3.0);
 		newPortal.set("finalVelocity", 1.0);
 		newPortal.set("boostDuration", 30);
-		newPortal.set("outlineType", "FLAME");
-		newPortal.set("portalsUnion", new ArrayList<String>());
-		newPortal.set("shape", "circle");
-		newPortal.set("measures", 10);
 		saveConfig();
 		return newPortal;
 	}

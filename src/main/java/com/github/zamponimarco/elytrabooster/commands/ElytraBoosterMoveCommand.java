@@ -7,7 +7,7 @@ import org.bukkit.entity.Player;
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 import com.github.zamponimarco.elytrabooster.manager.PortalManager;
 import com.github.zamponimarco.elytrabooster.portals.AbstractPortal;
-import com.github.zamponimarco.elytrabooster.portals.builder.PortalBuilder;
+import com.github.zamponimarco.elytrabooster.portals.factory.PortalFactory;
 
 public class ElytraBoosterMoveCommand extends AbstractCommand {
 
@@ -39,7 +39,7 @@ public class ElytraBoosterMoveCommand extends AbstractCommand {
 
 		portalManager.saveConfig();
 		portalManager.setPortal(id,
-				PortalBuilder.buildPortal(plugin, portalManager, portalManager.getDataYaml().getConfigurationSection(id)));
+				PortalFactory.buildPortal(plugin, portalManager, portalManager.getDataYaml().getConfigurationSection(id)));
 
 	}
 

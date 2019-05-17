@@ -12,6 +12,7 @@ import org.bukkit.Particle;
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 import com.github.zamponimarco.elytrabooster.events.PlayerBoostEvent;
 import com.github.zamponimarco.elytrabooster.settings.Settings;
+import com.github.zamponimarco.elytrabooster.trails.BoostTrail;
 
 /**
  * Handles portal boost process
@@ -33,6 +34,7 @@ public abstract class AbstractPortal {
 	protected int boostDuration;
 	protected String outlineType;
 	protected List<UnionPortal> portalsUnion;
+	protected BoostTrail trail;
 
 	protected int outlineTaskNumber;
 	protected int checkTaskNumber;
@@ -45,7 +47,7 @@ public abstract class AbstractPortal {
 
 	public AbstractPortal(ElytraBooster plugin, String id, boolean isBlock, Location center, char axis,
 			double initialVelocity, double finalVelocity, int boostDuration, String outlineType,
-			List<UnionPortal> portalsUnion) {
+			List<UnionPortal> portalsUnion, BoostTrail trail) {
 		super();
 		this.plugin = plugin;
 		this.id = id;
@@ -57,6 +59,7 @@ public abstract class AbstractPortal {
 		this.boostDuration = boostDuration;
 		this.outlineType = outlineType;
 		this.portalsUnion = portalsUnion;
+		this.trail = trail;
 
 		this.outlineInterval = Integer.valueOf(plugin.getSettingsManager().getSetting(Settings.PORTAL_OUTLINE_INTERVAL));
 		this.checkInterval = Integer.valueOf(plugin.getSettingsManager().getSetting(Settings.PORTAL_CHECK_INTERVAL));
@@ -224,6 +227,10 @@ public abstract class AbstractPortal {
 	 */
 	public int getBoostDuration() {
 		return boostDuration;
+	}
+
+	public BoostTrail getTrail() {
+		return trail;
 	}
 
 	// ---

@@ -1,6 +1,5 @@
 package com.github.zamponimarco.elytrabooster.events;
 
-import org.bukkit.Particle;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
@@ -43,11 +42,11 @@ public class PlayerBoostEvent extends Event implements Cancellable {
 				}
 
 				sendProgressMessage(player, portal, counter);
+				portal.getTrail().spawnTrail(player);
 				player.setVelocity(player.getLocation().getDirection().normalize().multiply(tempVelocity));
-				player.getWorld().spawnParticle(Particle.FIREWORKS_SPARK, player.getLocation(), 1, 0, 0, 0, 0);
 
-				tempVelocity *= d;
 				counter++;
+				tempVelocity *= d;
 			}
 		};
 

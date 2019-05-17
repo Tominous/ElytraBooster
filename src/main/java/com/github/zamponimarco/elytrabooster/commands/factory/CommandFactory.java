@@ -1,4 +1,4 @@
-package com.github.zamponimarco.elytrabooster.commands.builder;
+package com.github.zamponimarco.elytrabooster.commands.factory;
 
 import org.bukkit.command.CommandSender;
 
@@ -13,7 +13,7 @@ import com.github.zamponimarco.elytrabooster.commands.ElytraBoosterReloadCommand
 import com.github.zamponimarco.elytrabooster.commands.ElytraBoosterSetCommand;
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 
-public class CommandBuilder {
+public class CommandFactory {
 
 	public static AbstractCommand buildCommand(ElytraBooster plugin, CommandSender sender, String subCommand, String[] arguments, boolean isSenderPlayer) {
 		switch(subCommand) {

@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 import com.github.zamponimarco.elytrabooster.manager.PortalManager;
-import com.github.zamponimarco.elytrabooster.portals.builder.PortalBuilder;
+import com.github.zamponimarco.elytrabooster.portals.factory.PortalFactory;
 import com.github.zamponimarco.elytrabooster.utils.MessagesUtil;
 
 public class ElytraBoosterCreateCommand extends AbstractCommand {
@@ -23,7 +23,7 @@ public class ElytraBoosterCreateCommand extends AbstractCommand {
 		String id = arguments[0];
 
 		if (!portalManager.getPortalsMap().containsKey(id)) {
-			portalManager.setPortal(id, PortalBuilder.buildPortal(plugin, portalManager,
+			portalManager.setPortal(id, PortalFactory.buildPortal(plugin, portalManager,
 					portalManager.createDefaultPortalConfiguration(player, id)));
 			player.sendMessage(MessagesUtil.color("&aPortal created, &6ID: &a" + id));
 		} else {

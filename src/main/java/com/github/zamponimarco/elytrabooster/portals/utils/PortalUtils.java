@@ -54,7 +54,7 @@ public class PortalUtils {
 	}
 
 	/**
-	 * AAlorithm to determine if a location is in the portal area
+	 * Algorithm to determine if a location is in the portal area
 	 * 
 	 * @param location
 	 * @param center

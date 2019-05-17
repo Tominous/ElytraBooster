@@ -8,7 +8,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 import com.github.zamponimarco.elytrabooster.manager.PortalManager;
 import com.github.zamponimarco.elytrabooster.portals.AbstractPortal;
-import com.github.zamponimarco.elytrabooster.portals.builder.PortalBuilder;
+import com.github.zamponimarco.elytrabooster.portals.factory.PortalFactory;
 import com.github.zamponimarco.elytrabooster.utils.MessagesUtil;
 
 public class ElytraBoosterSetCommand extends AbstractCommand {
@@ -37,7 +37,7 @@ public class ElytraBoosterSetCommand extends AbstractCommand {
 		portalManager.saveConfig();
 
 		portal.stopPortalTask();
-		portalManager.setPortal(id, PortalBuilder.buildPortal(plugin, portalManager,
+		portalManager.setPortal(id, PortalFactory.buildPortal(plugin, portalManager,
 				portalManager.getDataYaml().getConfigurationSection(id)));
 
 	}

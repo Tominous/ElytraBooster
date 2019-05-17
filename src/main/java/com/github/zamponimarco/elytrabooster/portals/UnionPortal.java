@@ -6,6 +6,7 @@ import org.bukkit.Location;
 
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 import com.github.zamponimarco.elytrabooster.portals.utils.PortalUtils;
+import com.github.zamponimarco.elytrabooster.trails.BoostTrail;
 
 public class UnionPortal extends AbstractPortal {
 
@@ -15,9 +16,9 @@ public class UnionPortal extends AbstractPortal {
 
 	public UnionPortal(ElytraBooster plugin, String id, boolean isBlock, Location center, char axis,
 			double initialVelocity, double finalVelocity, int boostDuration, String outlineType,
-			List<UnionPortal> portalsUnion, String shape, String measures, boolean intersecate) {
+			List<UnionPortal> portalsUnion, BoostTrail trail, String shape, String measures, boolean intersecate) {
 		super(plugin, id, isBlock, center, axis, initialVelocity, finalVelocity, boostDuration, outlineType,
-				portalsUnion);
+				portalsUnion, trail);
 		this.shape = shape;
 		this.measures = measures;
 		this.intersecate = intersecate;
