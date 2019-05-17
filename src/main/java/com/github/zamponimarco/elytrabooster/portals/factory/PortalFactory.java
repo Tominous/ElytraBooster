@@ -66,6 +66,8 @@ public class PortalFactory {
 
 		// Portal Outline type
 		String outlineType = portalConfiguration.getString("outlineType");
+		
+		String cooldownType = portalConfiguration.getString("cooldownType", outlineType);
 
 		// Portal shape
 		String shape = portalConfiguration.getString("shape");
@@ -80,7 +82,7 @@ public class PortalFactory {
 		BoostTrail trail = BoostTrailFactory.buildBoostTrail(trailString);
 		
 		// Portal Outline
-		PortalOutline outline = PortalOutlineFactory.buildPortalOutline(isBlock, outlineType);
+		PortalOutline outline = PortalOutlineFactory.buildPortalOutline(isBlock, outlineType, cooldownType);
 		
 		// cooldown
 		int cooldown = portalConfiguration.getInt("cooldown", 0); 

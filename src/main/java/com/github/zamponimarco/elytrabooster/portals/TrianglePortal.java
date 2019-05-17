@@ -50,5 +50,13 @@ public class TrianglePortal extends AbstractPortal{
 	protected boolean isInPortalArea(Location location, double epsilon) {
 		return PortalUtils.isInTrianglePortalArea(location, center, point2, point3, axis, epsilon);
 	}
+	
+	@Override
+	public Location getCenter() {
+		double centerX = (center.getX() + point2.getX() + point3.getX())/3.0;
+		double centerY = (center.getY() + point2.getX() + point3.getY())/3.0;
+		double centerZ = (center.getZ() + point2.getZ() + point3.getZ())/3.0;
+		return new Location(center.getWorld(), centerX, centerY, centerZ);
+	}
 
 }

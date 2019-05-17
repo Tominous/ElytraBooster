@@ -1,6 +1,8 @@
 package com.github.zamponimarco.elytrabooster.portals;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -98,6 +100,7 @@ public abstract class AbstractPortal {
 	 */
 	protected void runPortalTask() {
 		points = isUnion() ? getUnionPoints() : getPoints();
+		sortPoints();
 		outlineTaskNumber = plugin.getServer().getScheduler()
 				.runTaskTimer(plugin, () -> drawOutline(), 1, outlineInterval).getTaskId();
 		checkTaskNumber = plugin.getServer().getScheduler()
@@ -123,7 +126,11 @@ public abstract class AbstractPortal {
 	}
 
 	protected void drawOutline() {
-		outline.drawOutline(points);
+		if (!onCooldown()) {
+			outline.drawOutline(points);
+		} else {
+			outline.cooldownOutline(points, cooldown, currCooldown);
+		}
 	}
 
 	protected void cooldown() {
@@ -185,6 +192,20 @@ public abstract class AbstractPortal {
 	public String toString() {
 		return id + "\n";
 	}
+
+	public void sortPoints() {
+		Collections.sort(points, locationComparator);
+//		Collections.shuffle(points);
+	}
+
+	Comparator<Location> locationComparator = new Comparator<Location>() {
+		@Override
+		public int compare(Location p1, Location p2) {
+			double d1 = Math.abs(p1.clone().toVector().dot(getCenter().toVector()));
+			double d2 = Math.abs(p2.clone().toVector().dot(getCenter().toVector()));
+			return (int) (d1 - d2);
+		}
+	};
 
 	// Getters and setters area ---
 

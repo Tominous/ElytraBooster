@@ -152,14 +152,14 @@ public class PortalUtils {
 			break;
 		}
 
-		boolean d12 = sign(location, point1, point2, axis, epsilon);
-		boolean d23 = sign(location, point2, point3, axis, epsilon);
-		boolean d31 = sign(location, point3, point1, axis, epsilon);
+		boolean d12 = dotProduct(location, point1, point2, axis, epsilon);
+		boolean d23 = dotProduct(location, point2, point3, axis, epsilon);
+		boolean d31 = dotProduct(location, point3, point1, axis, epsilon);
 		boolean isInArea = (d12 && d23 && d31) || (!d12 && !d23 && !d31);
 		return isInArea && axisDistance <= 1;
 	}
 
-	private static boolean sign(Location p1, Location p2, Location p3, char axis, double epsilon) {
+	public static boolean dotProduct(Location p1, Location p2, Location p3, char axis, double epsilon) {
 		double x1 = axis == 'x' ? p1.getZ() : p1.getX();
 		double x2 = axis == 'x' ? p2.getZ() : p2.getX();
 		double x3 = axis == 'x' ? p3.getZ() : p3.getX();
@@ -201,18 +201,18 @@ public class PortalUtils {
 			point4 = center.clone().add(-halfLength, halfHeight, 0);
 			break;
 		}
-		linesSet.add(new Location[] { point1, point2 });
-		linesSet.add(new Location[] { point2, point3 });
-		linesSet.add(new Location[] { point3, point4 });
-		linesSet.add(new Location[] { point4, point1 });
+		linesSet.add(new Location[] { point4, point3 });
+		linesSet.add(new Location[] { point3, point2 });
+		linesSet.add(new Location[] { point2, point1 });
+		linesSet.add(new Location[] { point1, point4 });
 		return linesSet;
 	}
 
 	private static Set<Location[]> getTriangleLines(Location point1, Location point2, Location point3, char axis) {
 		Set<Location[]> linesSet = new HashSet<Location[]>();
-		linesSet.add(new Location[] { point1, point2 });
-		linesSet.add(new Location[] { point2, point3 });
-		linesSet.add(new Location[] { point3, point1 });
+		linesSet.add(new Location[] { point3, point2 });
+		linesSet.add(new Location[] { point2, point1 });
+		linesSet.add(new Location[] { point1, point3 });
 		return linesSet;
 
 	}

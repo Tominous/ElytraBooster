@@ -21,7 +21,7 @@ public class ElytraBoosterSetCommand extends AbstractCommand {
 	// TODO urgh
 	@Override
 	protected void commandExecution() {
-		
+
 		PortalManager portalManager = plugin.getPortalManager();
 		String id = arguments[0];
 		AbstractPortal portal = portalManager.getPortal(id);
@@ -58,11 +58,13 @@ public class ElytraBoosterSetCommand extends AbstractCommand {
 			portal.set(param, Double.valueOf(value));
 			break;
 		case "boostDuration":
+		case "cooldown":
 			portal.set(param, Integer.valueOf(value));
 			break;
 		case "world":
 		case "axis":
 		case "outlineType":
+		case "cooldownType":
 		case "shape":
 		case "measures":
 		case "trail":
@@ -74,12 +76,13 @@ public class ElytraBoosterSetCommand extends AbstractCommand {
 			Runnable cons = isBlock ? () -> setParam(id, "outlineType", "STONE")
 					: () -> setParam(id, "outlineType", "FLAME");
 			cons.run();
+			setParam(id, "cooldownType", null);
 			break;
 		default:
 			sender.sendMessage(MessagesUtil.color("&cUnknown parameter"));
 			return;
 		}
-		sender.sendMessage(MessagesUtil.color("&aPortal modified, &6ID: &a" + id));
+		sender.sendMessage(MessagesUtil.color("&aPortal modified, &6ID: &a" + id + ", &6" + param + ": &a" + value));
 	}
 
 }

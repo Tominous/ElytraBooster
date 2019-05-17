@@ -6,8 +6,8 @@ import com.github.zamponimarco.elytrabooster.outline.PortalOutline;
 
 public class PortalOutlineFactory {
 
-	public static PortalOutline buildPortalOutline(boolean isBlock, String outlineType) {
-		return isBlock ? new BlockPortalOutline(outlineType) : new ParticlePortalOutline(outlineType);
+	public static PortalOutline buildPortalOutline(boolean isBlock, String outlineType, String cooldownType) {
+		return isBlock ? new BlockPortalOutline(outlineType, cooldownType) : new ParticlePortalOutline(outlineType, cooldownType);
 	}
 
 }
