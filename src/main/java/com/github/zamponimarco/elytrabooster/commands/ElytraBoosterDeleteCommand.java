@@ -3,7 +3,7 @@ package com.github.zamponimarco.elytrabooster.commands;
 import org.bukkit.command.CommandSender;
 
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
-import com.github.zamponimarco.elytrabooster.manager.PortalManager;
+import com.github.zamponimarco.elytrabooster.managers.PortalManager;
 import com.github.zamponimarco.elytrabooster.portals.AbstractPortal;
 import com.github.zamponimarco.elytrabooster.utils.MessagesUtil;
 
@@ -15,7 +15,7 @@ public class ElytraBoosterDeleteCommand extends AbstractCommand {
 	}
 
 	@Override
-	protected void commandExecution() {
+	protected void execute() {
 		PortalManager portalManager = plugin.getPortalManager();
 		String id = arguments[0];
 

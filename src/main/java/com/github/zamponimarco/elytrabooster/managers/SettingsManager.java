@@ -1,6 +1,7 @@
-package com.github.zamponimarco.elytrabooster.manager;
+package com.github.zamponimarco.elytrabooster.managers;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.EnumMap;
 import java.util.Map;
 
@@ -9,7 +10,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 import com.github.zamponimarco.elytrabooster.settings.Settings;
 
-public class SettingManager implements DataManager {
+public class SettingsManager implements DataManager {
 
 	private final static String FILENAME = "config.yml";
 
@@ -19,7 +20,7 @@ public class SettingManager implements DataManager {
 	private FileConfiguration dataYaml;
 	private Map<Settings, String> settings = new EnumMap<Settings, String>(Settings.class);
 
-	public SettingManager(ElytraBooster plugin) {
+	public SettingsManager(ElytraBooster plugin) {
 		this.plugin = plugin;
 		
 		loadDataFile();
@@ -44,6 +45,14 @@ public class SettingManager implements DataManager {
 	public void loadData() {
 		settings.put(Settings.PORTAL_OUTLINE_INTERVAL, dataYaml.getString("portalOutlineInterval"));
 		settings.put(Settings.PORTAL_CHECK_INTERVAL, dataYaml.getString("portalCheckInterval"));
+	}
+	
+	public void saveConfig() {
+		try {
+			dataYaml.save(dataFile);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public File getDataFile() {

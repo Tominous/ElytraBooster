@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
-import com.github.zamponimarco.elytrabooster.manager.PortalManager;
+import com.github.zamponimarco.elytrabooster.managers.PortalManager;
 import com.github.zamponimarco.elytrabooster.portals.AbstractPortal;
 import com.github.zamponimarco.elytrabooster.portals.factory.PortalFactory;
 import com.github.zamponimarco.elytrabooster.utils.MessagesUtil;
@@ -20,7 +20,7 @@ public class ElytraBoosterSetCommand extends AbstractCommand {
 
 	// TODO urgh
 	@Override
-	protected void commandExecution() {
+	protected void execute() {
 
 		PortalManager portalManager = plugin.getPortalManager();
 		String id = arguments[0];

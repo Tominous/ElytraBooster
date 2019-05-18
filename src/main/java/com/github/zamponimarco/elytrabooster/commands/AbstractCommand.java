@@ -29,19 +29,18 @@ public abstract class AbstractCommand {
 		 return sender.hasPermission("eb.admin." + subCommand.toLowerCase());
 	}
 
-	// TODO better messages
-	public void execute() {
+	public void checkExecution() {
 		String errorMessage = "";
 		errorMessage = !hasPermission()?"You don't have the permission":errorMessage;
 		errorMessage = !canSenderTypeExecute()?"This command can be used only by a player":errorMessage;
 		if (canSenderTypeExecute() && hasPermission()) {
-			commandExecution();
+			execute();
 		} else {
 			sender.sendMessage(errorMessage);
 		}
 	}
 
-	protected abstract void commandExecution();
+	protected abstract void execute();
 
 	protected abstract boolean isOnlyPlayer();
 

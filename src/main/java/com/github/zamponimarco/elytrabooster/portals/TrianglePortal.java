@@ -5,7 +5,7 @@ import java.util.List;
 import org.bukkit.Location;
 
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
-import com.github.zamponimarco.elytrabooster.outline.PortalOutline;
+import com.github.zamponimarco.elytrabooster.outlines.PortalOutline;
 import com.github.zamponimarco.elytrabooster.portals.utils.PortalUtils;
 import com.github.zamponimarco.elytrabooster.trails.BoostTrail;
 
@@ -23,7 +23,8 @@ public class TrianglePortal extends AbstractPortal{
 		super.runPortalTask();
 	}
 
-	private void initMeasures(String measures) {
+	@Override
+	protected void initMeasures(String measures) {
 		String[] measuresArray = measures.split(";");
 		switch(axis) {
 		case 'x':

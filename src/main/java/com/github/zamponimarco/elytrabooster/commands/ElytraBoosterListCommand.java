@@ -13,7 +13,7 @@ public class ElytraBoosterListCommand extends AbstractCommand {
 
 	// TODO everything
 	@Override
-	protected void commandExecution() {
+	protected void execute() {
 		
 		plugin.getPortalManager().getPortalsMap().forEach((id, portal) -> sender.sendMessage(portal.toString()));
 

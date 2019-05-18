@@ -8,13 +8,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.github.zamponimarco.elytrabooster.commands.executor.ElytraBoosterCommandExecutor;
 import com.github.zamponimarco.elytrabooster.listeners.PlayerGlideListener;
-import com.github.zamponimarco.elytrabooster.manager.PortalManager;
-import com.github.zamponimarco.elytrabooster.manager.SettingManager;
+import com.github.zamponimarco.elytrabooster.managers.PortalManager;
+import com.github.zamponimarco.elytrabooster.managers.SettingsManager;
 
 public class ElytraBooster extends JavaPlugin {
 
 	private Map<Player, Boolean> statusMap;
-	private SettingManager settingsManager;
+	private SettingsManager settingsManager;
 	private PortalManager portalManager;
 	
 	public void onEnable() {
@@ -35,7 +35,7 @@ public class ElytraBooster extends JavaPlugin {
 	private void startupTasks() {
 		new Metrics(this);
 		statusMap = new HashMap<Player, Boolean>();
-		settingsManager = new SettingManager(this);
+		settingsManager = new SettingsManager(this);
 		portalManager = new PortalManager(this);
 		getCommand("eb").setExecutor(new ElytraBoosterCommandExecutor(this));
 		getServer().getPluginManager().registerEvents(new PlayerGlideListener(this), this);
@@ -55,11 +55,11 @@ public class ElytraBooster extends JavaPlugin {
 		return statusMap;
 	}
 
-	public SettingManager getSettingsManager() {
+	public SettingsManager getSettingsManager() {
 		return settingsManager;
 	}
 
-	public void setSettingsManager(SettingManager settingsManager) {
+	public void setSettingsManager(SettingsManager settingsManager) {
 		this.settingsManager = settingsManager;
 	}
 	

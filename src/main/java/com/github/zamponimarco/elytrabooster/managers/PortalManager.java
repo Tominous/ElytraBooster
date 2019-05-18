@@ -1,4 +1,4 @@
-package com.github.zamponimarco.elytrabooster.manager;
+package com.github.zamponimarco.elytrabooster.managers;
 
 import java.io.File;
 import java.io.IOException;
@@ -80,7 +80,6 @@ public class PortalManager implements DataManager {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		;
 	}
 
 	/**
@@ -101,9 +100,6 @@ public class PortalManager implements DataManager {
 		newPortal.set("measures", 10);
 		newPortal.set("isBlockOutline", true);
 		newPortal.set("outlineType", "STONE");
-		newPortal.set("initialVelocity", 3.0);
-		newPortal.set("finalVelocity", 1.0);
-		newPortal.set("boostDuration", 30);
 		saveConfig();
 		return newPortal;
 	}

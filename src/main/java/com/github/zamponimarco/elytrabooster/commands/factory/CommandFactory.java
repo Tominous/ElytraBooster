@@ -11,6 +11,7 @@ import com.github.zamponimarco.elytrabooster.commands.ElytraBoosterMoveCommand;
 import com.github.zamponimarco.elytrabooster.commands.ElytraBoosterNearCommand;
 import com.github.zamponimarco.elytrabooster.commands.ElytraBoosterReloadCommand;
 import com.github.zamponimarco.elytrabooster.commands.ElytraBoosterSetCommand;
+import com.github.zamponimarco.elytrabooster.commands.ElytraBoosterTestCommand;
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 
 public class CommandFactory {
@@ -33,6 +34,8 @@ public class CommandFactory {
 			return new ElytraBoosterMoveCommand(plugin, sender, subCommand, arguments, isSenderPlayer);
 		case "near":
 			return new ElytraBoosterNearCommand(plugin, sender, subCommand, arguments, isSenderPlayer);
+		case "test":
+			return new ElytraBoosterTestCommand(plugin, sender, subCommand, arguments, isSenderPlayer);
 		default:
 			return new ElytraBoosterHelpCommand(plugin, sender, subCommand, arguments, isSenderPlayer);
 		}

@@ -31,9 +31,13 @@ permissions:
   eb.admin.set:
     description: Set portal parameters
     default: op
+  eb.portals.boost:
+    default: true
   eb.portals.*:
     description: Wildcard portal usage permission
     default: true
+    children:
+      eb.portals.boost
   eb.admin.*:
     description: Wildcard portal editing permission
     default: op

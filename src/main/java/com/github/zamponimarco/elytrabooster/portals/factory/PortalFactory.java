@@ -8,9 +8,9 @@ import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
-import com.github.zamponimarco.elytrabooster.manager.PortalManager;
-import com.github.zamponimarco.elytrabooster.outline.PortalOutline;
-import com.github.zamponimarco.elytrabooster.outline.factory.PortalOutlineFactory;
+import com.github.zamponimarco.elytrabooster.managers.PortalManager;
+import com.github.zamponimarco.elytrabooster.outlines.PortalOutline;
+import com.github.zamponimarco.elytrabooster.outlines.factory.PortalOutlineFactory;
 import com.github.zamponimarco.elytrabooster.portals.AbstractPortal;
 import com.github.zamponimarco.elytrabooster.portals.CirclePortal;
 import com.github.zamponimarco.elytrabooster.portals.RectanglePortal;
@@ -43,7 +43,7 @@ public class PortalFactory {
 		String id = portalConfiguration.getName();
 
 		// IsBlockOutline
-		boolean isBlock = portalConfiguration.getBoolean("isBlockOutline");
+		boolean isBlock = portalConfiguration.getBoolean("isBlockOutline", true);
 
 		// Portal center location
 		World world = plugin.getServer().getWorld(portalConfiguration.getString("world"));
@@ -53,24 +53,24 @@ public class PortalFactory {
 		Location center = new Location(world, x, y, z);
 
 		// Portal axis
-		char axis = portalConfiguration.getString("axis").charAt(0);
+		char axis = portalConfiguration.getString("axis", "x").charAt(0);
 
 		// Portal initial velocity
-		double initialVelocity = portalConfiguration.getDouble("initialVelocity");
+		double initialVelocity = portalConfiguration.getDouble("initialVelocity", 3.0);
 
 		// Portal final velocity
-		double finalVelocity = portalConfiguration.getDouble("finalVelocity");
+		double finalVelocity = portalConfiguration.getDouble("finalVelocity", 1.0);
 
 		// Portal boost duration
-		int boostDuration = portalConfiguration.getInt("boostDuration");
+		int boostDuration = portalConfiguration.getInt("boostDuration", 30);
 
 		// Portal Outline type
-		String outlineType = portalConfiguration.getString("outlineType");
+		String outlineType = portalConfiguration.getString("outlineType", "STONE");
 		
 		String cooldownType = portalConfiguration.getString("cooldownType", outlineType);
 
 		// Portal shape
-		String shape = portalConfiguration.getString("shape");
+		String shape = portalConfiguration.getString("shape", "circle");
 
 		// Portal outline measures
 		String measures = portalConfiguration.getString("measures");
@@ -78,7 +78,7 @@ public class PortalFactory {
 		// Other fields
 
 		// BoostTrail
-		String trailString = portalConfiguration.getString("trail");
+		String trailString = portalConfiguration.getString("trail", "firework");
 		BoostTrail trail = BoostTrailFactory.buildBoostTrail(trailString);
 		
 		// Portal Outline
@@ -122,7 +122,7 @@ public class PortalFactory {
 		switch (shape) {
 		case "circle":
 			return new CirclePortal(plugin, id, center, axis, initialVelocity, finalVelocity, boostDuration,
-					outline, portalsUnion, trail, cooldown, Double.valueOf(measures));
+					outline, portalsUnion, trail, cooldown, measures);
 		case "square":
 			return new RectanglePortal(plugin, id, center, axis, initialVelocity, finalVelocity, boostDuration,
 					outline, portalsUnion, trail, cooldown, measures + ";" + measures);

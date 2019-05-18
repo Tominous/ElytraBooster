@@ -18,9 +18,13 @@ public class PlayerBoostEvent extends Event implements Cancellable {
 
 	private static final HandlerList HANDLERS_LIST = new HandlerList();
 	private boolean cancelled;
+	private Player player;
+	private AbstractPortal portal;
 
-	// TODO my eyes are bleeding
 	public PlayerBoostEvent(ElytraBooster plugin, Player player, AbstractPortal portal) {
+		
+		this.player = player;
+		this.portal = portal;
 
 		BukkitRunnable boostProcess = new BukkitRunnable() {
 
@@ -99,6 +103,22 @@ public class PlayerBoostEvent extends Event implements Cancellable {
 	@Override
 	public void setCancelled(boolean isCancelled) {
 		cancelled = isCancelled;
+	}
+
+	public Player getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
+
+	public AbstractPortal getPortal() {
+		return portal;
+	}
+
+	public void setPortal(AbstractPortal portal) {
+		this.portal = portal;
 	}
 
 }

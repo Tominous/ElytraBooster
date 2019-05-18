@@ -6,8 +6,8 @@ import java.util.List;
 import org.bukkit.Location;
 
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
-import com.github.zamponimarco.elytrabooster.outline.BlockPortalOutline;
-import com.github.zamponimarco.elytrabooster.outline.PortalOutline;
+import com.github.zamponimarco.elytrabooster.outlines.BlockPortalOutline;
+import com.github.zamponimarco.elytrabooster.outlines.PortalOutline;
 import com.github.zamponimarco.elytrabooster.portals.utils.PortalUtils;
 import com.github.zamponimarco.elytrabooster.trails.BoostTrail;
 
@@ -23,12 +23,17 @@ public class CirclePortal extends AbstractPortal {
 
 	public CirclePortal(ElytraBooster plugin, String id, Location center, char axis,
 			double initialVelocity, double finalVelocity, int boostDuration, PortalOutline outline,
-			List<UnionPortal> portalsUnion, BoostTrail trail, int cooldown, double radius) {
+			List<UnionPortal> portalsUnion, BoostTrail trail, int cooldown, String measures) {
 		super(plugin, id, center, axis, initialVelocity, finalVelocity, boostDuration, outline,
 				portalsUnion, trail, cooldown);
-		this.radius = radius;
+		initMeasures(measures);
 
 		super.runPortalTask();
+	}
+
+	@Override
+	protected void initMeasures(String measures) {
+		radius = Double.valueOf(measures);
 	}
 
 	@Override

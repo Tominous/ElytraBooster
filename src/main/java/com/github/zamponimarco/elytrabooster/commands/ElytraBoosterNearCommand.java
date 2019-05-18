@@ -13,7 +13,7 @@ public class ElytraBoosterNearCommand extends AbstractCommand {
 	}
 
 	@Override
-	protected void commandExecution() {
+	protected void execute() {
 		Player player = (Player) sender;
 
 		if (arguments.length <= 1) {

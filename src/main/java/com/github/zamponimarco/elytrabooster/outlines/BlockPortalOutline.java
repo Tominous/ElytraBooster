@@ -1,4 +1,4 @@
-package com.github.zamponimarco.elytrabooster.outline;
+package com.github.zamponimarco.elytrabooster.outlines;
 
 import java.util.List;
 import java.util.stream.IntStream;

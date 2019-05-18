@@ -27,7 +27,7 @@ public class ElytraBoosterCommandExecutor implements CommandExecutor{
 			String subCommand = args.length >= 1 ? args[0] : "";
 			String[] arguments = args.length >= 2 ? Arrays.copyOfRange(args, 1, args.length): null;
 			
-			CommandFactory.buildCommand(plugin, sender, subCommand, arguments, isSenderPlayer).execute();
+			CommandFactory.buildCommand(plugin, sender, subCommand, arguments, isSenderPlayer).checkExecution();
 		}
 		return false;
 	}

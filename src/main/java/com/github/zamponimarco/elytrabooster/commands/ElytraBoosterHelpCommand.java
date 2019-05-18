@@ -13,7 +13,7 @@ public class ElytraBoosterHelpCommand extends AbstractCommand {
 
 	// TODO literally everything
 	@Override
-	protected void commandExecution() {
+	protected void execute() {
 
 		sender.sendMessage("help");
 

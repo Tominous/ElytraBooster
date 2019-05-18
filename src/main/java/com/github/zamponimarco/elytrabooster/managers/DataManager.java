@@ -1,4 +1,4 @@
-package com.github.zamponimarco.elytrabooster.manager;
+package com.github.zamponimarco.elytrabooster.managers;
 
 /**
  * Handles plugin data
