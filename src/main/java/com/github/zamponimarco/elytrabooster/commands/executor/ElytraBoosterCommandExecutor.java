@@ -10,23 +10,22 @@ import org.bukkit.entity.Player;
 import com.github.zamponimarco.elytrabooster.commands.factory.CommandFactory;
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 
-public class ElytraBoosterCommandExecutor implements CommandExecutor{
-	
+public class ElytraBoosterCommandExecutor implements CommandExecutor {
+
 	private ElytraBooster plugin;
-	
+
 	public ElytraBoosterCommandExecutor(ElytraBooster plugin) {
 		this.plugin = plugin;
 	}
 
-	// TODO improve code and readability
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if (cmd.getName().equalsIgnoreCase("eb")) {
-			
+
 			boolean isSenderPlayer = sender instanceof Player;
 			String subCommand = args.length >= 1 ? args[0] : "";
-			String[] arguments = args.length >= 2 ? Arrays.copyOfRange(args, 1, args.length): null;
-			
+			String[] arguments = args.length >= 2 ? Arrays.copyOfRange(args, 1, args.length) : new String[0];
+
 			CommandFactory.buildCommand(plugin, sender, subCommand, arguments, isSenderPlayer).checkExecution();
 		}
 		return false;

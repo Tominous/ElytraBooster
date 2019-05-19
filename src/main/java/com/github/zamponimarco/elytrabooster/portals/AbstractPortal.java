@@ -1,8 +1,6 @@
 package com.github.zamponimarco.elytrabooster.portals;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,8 +13,12 @@ import com.github.zamponimarco.elytrabooster.events.FinishedCooldownEvent;
 import com.github.zamponimarco.elytrabooster.events.PlayerBoostEvent;
 import com.github.zamponimarco.elytrabooster.outlines.BlockPortalOutline;
 import com.github.zamponimarco.elytrabooster.outlines.PortalOutline;
+import com.github.zamponimarco.elytrabooster.outlines.pointsorters.PointSorter;
 import com.github.zamponimarco.elytrabooster.settings.Settings;
 import com.github.zamponimarco.elytrabooster.trails.BoostTrail;
+import com.github.zamponimarco.elytrabooster.utils.MessagesUtil;
+
+import net.md_5.bungee.api.ChatColor;
 
 /**
  * Handles portal boost process
@@ -40,6 +42,7 @@ public abstract class AbstractPortal {
 	protected List<UnionPortal> portalsUnion;
 	protected BoostTrail trail;
 	protected int cooldown;
+	protected PointSorter sorter;
 
 	protected int outlineTaskNumber;
 	protected int checkTaskNumber;
@@ -68,13 +71,13 @@ public abstract class AbstractPortal {
 	 */
 	public AbstractPortal(ElytraBooster plugin, String id, Location center, char axis, double initialVelocity,
 			double finalVelocity, int boostDuration, PortalOutline outline, List<UnionPortal> portalsUnion,
-			BoostTrail trail, int cooldown) {
+			BoostTrail trail, int cooldown, PointSorter sorter, String measures) {
 		super();
 		this.plugin = plugin;
 		this.portal = this;
 		this.id = id;
 		this.center = center;
-		this.axis = axis;
+		this.axis = axis >= 120 && axis <= 122 ? axis : 'x';
 		this.initialVelocity = initialVelocity;
 		this.finalVelocity = finalVelocity;
 		this.boostDuration = boostDuration;
@@ -82,6 +85,7 @@ public abstract class AbstractPortal {
 		this.portalsUnion = portalsUnion;
 		this.trail = trail;
 		this.cooldown = cooldown;
+		this.sorter = sorter;
 
 		currCooldown = 0;
 
@@ -92,6 +96,8 @@ public abstract class AbstractPortal {
 
 	/**
 	 * Initialize measures
+	 * 
+	 * @throws Exception
 	 */
 	protected abstract void initMeasures(String measures);
 
@@ -113,14 +119,11 @@ public abstract class AbstractPortal {
 	 */
 	protected abstract boolean isInPortalArea(Location location, double epsilon);
 
-
 	/**
 	 * Runs the timer task that checks for users inside the portal and draws the
 	 * outline
 	 */
 	protected void runPortalTask() {
-		points = isUnion() ? getUnionPoints() : getPoints();
-		sortPoints();
 		outlineTaskNumber = plugin.getServer().getScheduler()
 				.runTaskTimer(plugin, () -> drawOutline(), 1, outlineInterval).getTaskId();
 		checkTaskNumber = plugin.getServer().getScheduler()
@@ -131,9 +134,11 @@ public abstract class AbstractPortal {
 	 * Stops the portal task
 	 */
 	public void stopPortalTask() {
-		outline.eraseOutline(points);
-		plugin.getServer().getScheduler().cancelTask(outlineTaskNumber);
-		plugin.getServer().getScheduler().cancelTask(checkTaskNumber);
+		if (isActive()) {
+			outline.eraseOutline(points);
+			plugin.getServer().getScheduler().cancelTask(outlineTaskNumber);
+			plugin.getServer().getScheduler().cancelTask(checkTaskNumber);
+		}
 	}
 
 	/**
@@ -187,6 +192,10 @@ public abstract class AbstractPortal {
 		return currCooldown > 0;
 	}
 
+	protected boolean isActive() {
+		return checkTaskNumber != 0 && outlineTaskNumber != 0;
+	}
+
 	/**
 	 * 
 	 * @return true if the portal is a union of portal
@@ -230,6 +239,7 @@ public abstract class AbstractPortal {
 						.collect(Collectors.toList());
 			}
 		}
+		sorter.sort(unionPoints);
 		return unionPoints;
 	}
 
@@ -238,61 +248,77 @@ public abstract class AbstractPortal {
 	 */
 	@Override
 	public String toString() {
-		return id + "\n";
+		return MessagesUtil.color(String.format("&6Id: &a%s\n&6x/y/z: &a%.2f&6/&a%.2f&6/&a%.2f\n", id, center.getX(),
+				center.getY(), center.getZ()));
 	}
 
-	/**
-	 * Sorts the points
-	 */
-	private void sortPoints() {
-		Collections.sort(points, locationComparator);
-//		Collections.shuffle(points);
+	public String warnMessage() {
+		return ChatColor.RED + "Error with the creation of the portal " + ChatColor.GOLD + id + ChatColor.RED
+				+ ". Check portals configuration.";
 	}
 
-	private Comparator<Location> locationComparator = new Comparator<Location>() {
-		@Override
-		public int compare(Location p1, Location p2) {
-			double d1 = Math.abs(p1.clone().toVector().dot(getCenter().toVector()));
-			double d2 = Math.abs(p2.clone().toVector().dot(getCenter().toVector()));
-			return (int) (d1 - d2);
-		}
-	};
+	public ElytraBooster getPlugin() {
+		return plugin;
+	}
 
-	// Getters and setters area ---
+	public AbstractPortal getPortal() {
+		return portal;
+	}
 
-	/**
-	 * 
-	 * @return the center of the portal
-	 */
+	public String getId() {
+		return id;
+	}
+
 	public Location getCenter() {
 		return center;
 	}
 
-	/**
-	 * @return the initialVelocity
-	 */
+	public char getAxis() {
+		return axis;
+	}
+
 	public double getInitialVelocity() {
 		return initialVelocity;
 	}
 
-	/**
-	 * @return the finalVelocity
-	 */
 	public double getFinalVelocity() {
 		return finalVelocity;
 	}
 
-	/**
-	 * @return the boostDuration
-	 */
 	public int getBoostDuration() {
 		return boostDuration;
+	}
+
+	public PortalOutline getOutline() {
+		return outline;
+	}
+
+	public List<UnionPortal> getPortalsUnion() {
+		return portalsUnion;
 	}
 
 	public BoostTrail getTrail() {
 		return trail;
 	}
 
-	// ---
+	public int getCooldown() {
+		return cooldown;
+	}
+
+	public int getOutlineTaskNumber() {
+		return outlineTaskNumber;
+	}
+
+	public int getCheckTaskNumber() {
+		return checkTaskNumber;
+	}
+
+	public int getCurrCooldown() {
+		return currCooldown;
+	}
+
+	public void setCenter(Location center) {
+		this.center = center;
+	}
 
 }

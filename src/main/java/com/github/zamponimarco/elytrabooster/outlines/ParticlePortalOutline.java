@@ -3,6 +3,8 @@ package com.github.zamponimarco.elytrabooster.outlines;
 import java.util.List;
 import java.util.stream.IntStream;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 
@@ -12,8 +14,14 @@ public class ParticlePortalOutline implements PortalOutline {
 	private Particle cooldownType;
 	
 	public ParticlePortalOutline(String outlineType, String cooldownType) {
-		this.outlineType = Particle.valueOf(outlineType);
-		this.cooldownType = Particle.valueOf(cooldownType);
+		try {
+			this.outlineType = Particle.valueOf(outlineType.toUpperCase());
+			this.cooldownType = Particle.valueOf(cooldownType.toUpperCase());
+		} catch (IllegalArgumentException e) {
+			this.outlineType = Particle.FLAME;
+			this.cooldownType = Particle.FLAME;
+			Bukkit.getLogger().warning(ChatColor.RED + outlineType + " or " + cooldownType + " is not a block, check portals.yml");
+		}
 	}
 	
 	@Override

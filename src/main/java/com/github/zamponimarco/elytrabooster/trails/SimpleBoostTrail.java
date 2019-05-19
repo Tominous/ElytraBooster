@@ -9,7 +9,7 @@ public class SimpleBoostTrail implements BoostTrail {
 	
 	public SimpleBoostTrail(String particle) {
 		try {
-			this.particle = Particle.valueOf(particle);
+			this.particle = Particle.valueOf(particle.toUpperCase());
 		} catch (IllegalArgumentException e) {
 			this.particle = Particle.FIREWORKS_SPARK;
 		}

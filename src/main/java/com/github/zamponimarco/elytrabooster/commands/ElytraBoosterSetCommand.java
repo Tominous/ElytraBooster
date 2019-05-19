@@ -18,7 +18,6 @@ public class ElytraBoosterSetCommand extends AbstractCommand {
 		super(plugin, sender, subCommand, arguments, isSenderPlayer);
 	}
 
-	// TODO urgh
 	@Override
 	protected void execute() {
 
@@ -50,9 +49,6 @@ public class ElytraBoosterSetCommand extends AbstractCommand {
 	private void setParam(String id, String param, String value) {
 		ConfigurationSection portal = plugin.getPortalManager().getDataYaml().getConfigurationSection(id);
 		switch (param) {
-		case "x":
-		case "y":
-		case "z":
 		case "initialVelocity":
 		case "finalVelocity":
 			portal.set(param, Double.valueOf(value));
@@ -71,12 +67,7 @@ public class ElytraBoosterSetCommand extends AbstractCommand {
 			portal.set(param, value);
 			break;
 		case "isBlockOutline":
-			boolean isBlock = Boolean.valueOf(value);
-			portal.set(param, isBlock);
-			Runnable cons = isBlock ? () -> setParam(id, "outlineType", "STONE")
-					: () -> setParam(id, "outlineType", "FLAME");
-			cons.run();
-			setParam(id, "cooldownType", null);
+			portal.set(param, Boolean.valueOf(value));
 			break;
 		default:
 			sender.sendMessage(MessagesUtil.color("&cUnknown parameter"));

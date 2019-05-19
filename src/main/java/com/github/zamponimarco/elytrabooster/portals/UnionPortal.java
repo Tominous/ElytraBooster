@@ -1,35 +1,44 @@
 package com.github.zamponimarco.elytrabooster.portals;
 
 import java.util.List;
+import java.util.Locale;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 import com.github.zamponimarco.elytrabooster.outlines.BlockPortalOutline;
 import com.github.zamponimarco.elytrabooster.outlines.PortalOutline;
+import com.github.zamponimarco.elytrabooster.outlines.pointsorters.PointSorter;
 import com.github.zamponimarco.elytrabooster.portals.utils.PortalUtils;
 import com.github.zamponimarco.elytrabooster.trails.BoostTrail;
 
 public class UnionPortal extends AbstractPortal {
 
 	private String shape;
+	private String measures;
 	private Object measures1;
 	private Object measures2;
 	private boolean intersecate;
 
 	public UnionPortal(ElytraBooster plugin, String id, Location center, char axis, double initialVelocity,
 			double finalVelocity, int boostDuration, PortalOutline outline, List<UnionPortal> portalsUnion,
-			BoostTrail trail, String shape, int cooldown, String measures, boolean intersecate) {
+			BoostTrail trail, String shape, int cooldown, String measures, PointSorter sorter, boolean intersecate) {
 		super(plugin, id, center, axis, initialVelocity, finalVelocity, boostDuration, outline, portalsUnion, trail,
-				cooldown);
+				cooldown, sorter, measures);
 		this.shape = shape;
+		this.measures = measures;
 		this.intersecate = intersecate;
-		initMeasures(measures);
-		points = getPoints();
+		try {
+			initMeasures(measures);
+			points = getPoints();
+		} catch (Exception e) {
+			Bukkit.getLogger().warning(warnMessage());
+		}
 	}
 
 	@Override
-	protected void initMeasures(String measures) {
+	protected void initMeasures(String measures) throws IllegalArgumentException {
 		switch (shape) {
 		case "circle":
 			this.measures1 = Double.valueOf(measures);
@@ -109,5 +118,11 @@ public class UnionPortal extends AbstractPortal {
 
 	public boolean isIntersecate() {
 		return intersecate;
+	}
+
+	@Override
+	public String toString() {
+		return String.format(Locale.US, "%s:%.1f:%.1f:%.1f:%s:%b", shape, center.getX(), center.getY(), center.getZ(),
+				measures, intersecate);
 	}
 }

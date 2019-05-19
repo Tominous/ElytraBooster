@@ -3,6 +3,8 @@ package com.github.zamponimarco.elytrabooster.outlines;
 import java.util.List;
 import java.util.stream.IntStream;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 
@@ -12,8 +14,14 @@ public class BlockPortalOutline implements PortalOutline {
 	private Material cooldownType;
 
 	public BlockPortalOutline(String outlineType, String cooldownType) {
-		this.outlineType = Material.valueOf(outlineType);
-		this.cooldownType = Material.valueOf(cooldownType);
+		try {
+			this.outlineType = Material.valueOf(outlineType.toUpperCase());
+			this.cooldownType = Material.valueOf(cooldownType.toUpperCase());
+		} catch (IllegalArgumentException e) {
+			this.outlineType = Material.STONE;
+			this.cooldownType = Material.STONE;
+			Bukkit.getLogger().warning(ChatColor.RED + outlineType + " or " + cooldownType + " is not a block, check portals.yml");
+		}
 	}
 
 	@Override

@@ -20,6 +20,7 @@ public class ElytraBooster extends JavaPlugin {
 	public void onEnable() {
 		setUpFolder();
 		startupTasks();
+		getLogger().info("Enabled ElytraBooster v" + getDescription().getVersion());
 	}
 
 	public void onDisable() {
