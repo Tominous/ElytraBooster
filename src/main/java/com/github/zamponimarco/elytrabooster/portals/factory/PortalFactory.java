@@ -77,7 +77,7 @@ public class PortalFactory {
 		String shape = portalConfiguration.getString("shape", "circle");
 
 		// Portal outline measures
-		String measures = portalConfiguration.getString("measures");
+		String measures = portalConfiguration.getString("measures", "10");
 
 		// BoostTrail
 		String trailString = portalConfiguration.getString("trail", "firework");
@@ -102,10 +102,21 @@ public class PortalFactory {
 				for (int i = 0; i < portalsUnionStringList.size(); i++) {
 					String portalString = portalsUnionStringList.get(i);
 					String[] portalArray = portalString.split(":");
-					String subPortalId = id + "_" + i;
+					String subPortalId = id + "$" + i;
 					double unionX = Double.valueOf(portalArray[1]);
 					double unionY = Double.valueOf(portalArray[2]);
 					double unionZ = Double.valueOf(portalArray[3]);
+					switch(axis) {
+					case 'x':
+						if(unionX != x) throw new IllegalArgumentException("Union portals and main portal axis coord values must be the same");
+						break;
+					case 'y':
+						if(unionY != y) throw new IllegalArgumentException("Union portals and main portal axis coord values must be the same");
+						break;
+					case 'z':
+						if(unionZ != z) throw new IllegalArgumentException("Union portals and main portal axis coord values must be the same");
+						break;
+					}
 					String unionShape = portalArray[0];
 					String unionMeasures = portalArray[4];
 					boolean intersecate = Boolean.valueOf(portalArray[5]);

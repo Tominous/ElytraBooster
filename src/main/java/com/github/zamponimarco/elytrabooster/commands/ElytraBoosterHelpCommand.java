@@ -46,8 +46,8 @@ public class ElytraBoosterHelpCommand extends AbstractCommand {
 		page.append(MessagesUtil.color(String.format("&2/eb help &c[page] &7Print the help message.\n"
 				+ "&2/eb list &c[page] &7List portals, use argument [page] to print other pages.\n"
 				+ "&2/eb create &c[id] &7Create a new portal.\n" + "&2/eb delete &c[id] &7Deletes the given portal.\n"
-				+ "&2/eb move &c[id] <x> <y> <z> &7Move the portal to your location or to the given coords.\n"
-				+ "&2/eb set &c[param:value,...] &7Sets the params to the values given in input.\n"
+				+ "&2/eb move &c[id] <x> <y> <z> &7Move the portal to your location or to the given coords, if present.\n"
+				+ "&2/eb set &c[id] [param:value,...] &7Sets the params to the values given in input.\n"
 				+ "&2/eb near &c[radius] &7List all the portals within [radius] blocks.\n"
 				+ "&2/eb reload &7Reloads ElytraBooster configs.\n")));
 		page.append(MessagesUtil.footer(1, 1));

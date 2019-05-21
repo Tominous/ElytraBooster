@@ -43,8 +43,9 @@ public class SettingsManager implements DataManager {
 
 	@Override
 	public void loadData() {
-		settings.put(Settings.PORTAL_OUTLINE_INTERVAL, dataYaml.getString("portalOutlineInterval"));
-		settings.put(Settings.PORTAL_CHECK_INTERVAL, dataYaml.getString("portalCheckInterval"));
+		settings.put(Settings.METRICS, dataYaml.getString("metrics", "true"));
+		settings.put(Settings.PORTAL_OUTLINE_INTERVAL, dataYaml.getString("portalOutlineInterval", "4"));
+		settings.put(Settings.PORTAL_CHECK_INTERVAL, dataYaml.getString("portalCheckInterval", "1"));
 	}
 	
 	public void saveConfig() {

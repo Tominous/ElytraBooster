@@ -10,13 +10,14 @@ import com.github.zamponimarco.elytrabooster.commands.executor.ElytraBoosterComm
 import com.github.zamponimarco.elytrabooster.listeners.PlayerGlideListener;
 import com.github.zamponimarco.elytrabooster.managers.PortalManager;
 import com.github.zamponimarco.elytrabooster.managers.SettingsManager;
+import com.github.zamponimarco.elytrabooster.settings.Settings;
 
 public class ElytraBooster extends JavaPlugin {
 
 	private Map<Player, Boolean> statusMap;
 	private SettingsManager settingsManager;
 	private PortalManager portalManager;
-	
+
 	public void onEnable() {
 		setUpFolder();
 		startupTasks();
@@ -26,7 +27,7 @@ public class ElytraBooster extends JavaPlugin {
 	public void onDisable() {
 		portalManager.getPortalsMap().forEach((id, portal) -> portal.stopPortalTask());
 	}
-	
+
 	private void setUpFolder() {
 		if (!getDataFolder().exists()) {
 			getDataFolder().mkdir();
@@ -34,10 +35,12 @@ public class ElytraBooster extends JavaPlugin {
 	}
 
 	private void startupTasks() {
-		new Metrics(this);
-		statusMap = new HashMap<Player, Boolean>();
 		settingsManager = new SettingsManager(this);
+		if (Boolean.valueOf(settingsManager.getSetting(Settings.METRICS))) {
+			new Metrics(this);
+		}
 		portalManager = new PortalManager(this);
+		statusMap = new HashMap<Player, Boolean>();
 		getCommand("eb").setExecutor(new ElytraBoosterCommandExecutor(this));
 		getServer().getPluginManager().registerEvents(new PlayerGlideListener(this), this);
 	}
@@ -63,5 +66,5 @@ public class ElytraBooster extends JavaPlugin {
 	public void setSettingsManager(SettingsManager settingsManager) {
 		this.settingsManager = settingsManager;
 	}
-	
+
 }

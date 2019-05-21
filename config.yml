@@ -1,2 +1,8 @@
+#If it is true, the plugin will send data to bstats, for statistical purposes
+metrics: true
+
+#The interval between the drawing of two outlines
 portalOutlineInterval: 4
+
+#The interval between two searches by the portal for players passing inside
 portalCheckInterval: 1

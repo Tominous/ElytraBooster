@@ -57,13 +57,13 @@ public class ElytraBoosterSetCommand extends AbstractCommand {
 		case "cooldown":
 			portal.set(param, Integer.valueOf(value));
 			break;
-		case "world":
 		case "axis":
 		case "outlineType":
 		case "cooldownType":
 		case "shape":
 		case "measures":
 		case "trail":
+		case "sorter":
 			portal.set(param, value);
 			break;
 		case "isBlockOutline":

@@ -3,6 +3,7 @@ package com.github.zamponimarco.elytrabooster.outlines.pointsorters.factory;
 import org.bukkit.Location;
 
 import com.github.zamponimarco.elytrabooster.outlines.pointsorters.ClosingPointSorter;
+import com.github.zamponimarco.elytrabooster.outlines.pointsorters.NoPointSorter;
 import com.github.zamponimarco.elytrabooster.outlines.pointsorters.PointSorter;
 import com.github.zamponimarco.elytrabooster.outlines.pointsorters.RandomPointSorter;
 
@@ -12,6 +13,8 @@ public class PointSorterFactory {
 		switch(sorter) {
 		case "random":
 			return new RandomPointSorter();
+		case "none":
+			return new NoPointSorter();
 		case "closing":
 		default:
 			return new ClosingPointSorter(center);
