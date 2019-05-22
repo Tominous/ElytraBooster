@@ -3,6 +3,7 @@ package com.github.zamponimarco.elytrabooster.commands;
 import org.bukkit.command.CommandSender;
 
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
+import com.github.zamponimarco.elytrabooster.utils.MessagesUtil;
 
 public abstract class AbstractCommand {
 
@@ -43,5 +44,13 @@ public abstract class AbstractCommand {
 	protected abstract void execute();
 
 	protected abstract boolean isOnlyPlayer();
+	
+	protected void incorrectUsage() {
+		sender.sendMessage(MessagesUtil.color("&cIncorrect command syntax, type /eb help"));
+	}
+	
+	protected void invalidPortal() {
+		sender.sendMessage((MessagesUtil.color("&cPortal passed in input is invalid")));
+	}
 
 }

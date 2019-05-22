@@ -96,10 +96,10 @@ public class PortalManager implements DataManager {
 		newPortal.set("y", creator.getLocation().getBlockY());
 		newPortal.set("z", creator.getLocation().getBlockZ());
 		newPortal.set("axis", 'x');
-		newPortal.set("shape", "circle");
-		newPortal.set("measures", 10);
 		newPortal.set("isBlockOutline", true);
 		newPortal.set("outlineType", "STONE");
+		newPortal.set("shape", "circle");
+		newPortal.set("measures", 10);
 		saveConfig();
 		return newPortal;
 	}

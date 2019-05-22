@@ -19,6 +19,10 @@ public class ElytraBoosterCreateCommand extends AbstractCommand {
 	protected void execute() {
 		Player player = (Player) sender;
 		PortalManager portalManager = plugin.getPortalManager();
+		if(arguments.length < 1) {
+			incorrectUsage();
+			return;
+		}
 		String newPortalId = arguments[0];
 
 		if (!portalManager.getPortalsMap().containsKey(newPortalId)) {
@@ -26,7 +30,7 @@ public class ElytraBoosterCreateCommand extends AbstractCommand {
 					portalManager.createDefaultPortalConfiguration(player, newPortalId)));
 			player.sendMessage(MessagesUtil.color("&aPortal created, &6ID: &a" + newPortalId));
 		} else {
-			player.sendMessage(MessagesUtil.color("&4Portal creation failed"));
+			invalidPortal();
 		}
 	}
 

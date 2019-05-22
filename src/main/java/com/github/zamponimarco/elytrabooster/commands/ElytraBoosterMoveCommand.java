@@ -28,10 +28,17 @@ public class ElytraBoosterMoveCommand extends AbstractCommand {
 		Player player = (Player) sender;
 
 		PortalManager portalManager = plugin.getPortalManager();
+		if (arguments.length < 1) {
+			incorrectUsage();
+			return;
+		}
 		String id = arguments[0];
 		AbstractPortal portal = portalManager.getPortal(id);
-		portal.stopPortalTask();
-		
+		if (portal == null) {
+			invalidPortal();
+			return;
+		}
+
 		ConfigurationSection section = (ConfigurationSection) portalManager.getDataYaml().get(id);
 		World world = player.getLocation().getWorld();
 		Double x = arguments.length == 4 ? Double.valueOf(arguments[1]) : player.getLocation().getBlockX();
@@ -41,23 +48,26 @@ public class ElytraBoosterMoveCommand extends AbstractCommand {
 		section.set("x", x);
 		section.set("y", y);
 		section.set("z", z);
-		
+
 		Location oldLocation = portal.getCenter();
 		Location newLocation = new Location(world, x, y, z);
 		Vector movement = newLocation.clone().subtract(oldLocation.clone()).toVector();
-		
+
 		List<String> portalsUnion = new ArrayList<String>();
-		
+
 		portal.getPortalsUnion().forEach(unionPortal -> {
 			unionPortal.setCenter(unionPortal.getCenter().clone().add(movement));
 			portalsUnion.add(unionPortal.toString());
 		});
-		
-		section.set("portalsUnion", portalsUnion);
 
+		if (!portalsUnion.isEmpty()) {
+			section.set("portalsUnion", portalsUnion);
+		}
+
+		portal.stopPortalTask();
 		portalManager.saveConfig();
-		portalManager.setPortal(id,
-				PortalFactory.buildPortal(plugin, portalManager, portalManager.getDataYaml().getConfigurationSection(id)));
+		portalManager.setPortal(id, PortalFactory.buildPortal(plugin, portalManager,
+				portalManager.getDataYaml().getConfigurationSection(id)));
 	}
 
 	@Override

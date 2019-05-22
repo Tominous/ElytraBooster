@@ -17,13 +17,17 @@ public class ElytraBoosterDeleteCommand extends AbstractCommand {
 	@Override
 	protected void execute() {
 		PortalManager portalManager = plugin.getPortalManager();
+		if (arguments.length < 1) {
+			incorrectUsage();
+			return;
+		}
 		String id = arguments[0];
 
 		AbstractPortal portal;
 		if (portalManager.getPortalsMap().containsKey(id)) {
 			portal = portalManager.getPortal(id);
 		} else {
-			sender.sendMessage(MessagesUtil.color("&4Portal deletion failed"));
+			invalidPortal();
 			return;
 		}
 		portal.stopPortalTask();

@@ -22,18 +22,28 @@ public class ElytraBoosterSetCommand extends AbstractCommand {
 	protected void execute() {
 
 		PortalManager portalManager = plugin.getPortalManager();
+		if (arguments.length < 2) {
+			incorrectUsage();
+			return;
+		}
 		String id = arguments[0];
 		AbstractPortal portal = portalManager.getPortal(id);
 
 		if (portal == null) {
-			throw new IllegalArgumentException("Portal passed in input is invalid");
+			invalidPortal();
+			return;
 		}
 
-		Arrays.asList(arguments[1].split(",")).forEach(string -> {
-			String[] argument = string.split(":");
-			setParam(id, argument[0], argument[1]);
-		});
-		portalManager.saveConfig();
+		try {
+			Arrays.asList(arguments[1].split(",")).forEach(string -> {
+				String[] argument = string.split(":");
+				setParam(id, argument[0], argument[1]);
+			});
+			portalManager.saveConfig();
+		} catch (Exception e) {
+			incorrectUsage();
+			return;
+		}
 
 		portal.stopPortalTask();
 		portalManager.setPortal(id, PortalFactory.buildPortal(plugin, portalManager,

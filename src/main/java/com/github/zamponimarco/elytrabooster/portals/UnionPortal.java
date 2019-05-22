@@ -104,10 +104,10 @@ public class UnionPortal extends AbstractPortal {
 		case "circle":
 			return PortalUtils.isInCirclePortalArea(location, center, (double) measures1, axis, epsilon);
 		case "square":
-			return PortalUtils.isInRectanglePortalArea(location, (double) measures1, (double) measures1, axis, location,
+			return PortalUtils.isInRectanglePortalArea(center, (double) measures1, (double) measures1, axis, location,
 					epsilon);
 		case "rectangle":
-			return PortalUtils.isInRectanglePortalArea(location, (double) measures1, (double) measures2, axis, location,
+			return PortalUtils.isInRectanglePortalArea(center, (double) measures1, (double) measures2, axis, location,
 					epsilon);
 		case "triangle":
 			return PortalUtils.isInTrianglePortalArea(location, center, (Location) measures1, (Location) measures2,

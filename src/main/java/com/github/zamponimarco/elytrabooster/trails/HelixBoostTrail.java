@@ -1,9 +1,12 @@
 package com.github.zamponimarco.elytrabooster.trails;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
+
+import net.md_5.bungee.api.ChatColor;
 
 public class HelixBoostTrail implements BoostTrail {
 
@@ -12,8 +15,12 @@ public class HelixBoostTrail implements BoostTrail {
 
 	public HelixBoostTrail(String particle) {
 		try {
-			this.particle = Particle.valueOf(particle);
+			if (particle == null) {
+				particle = "FLAME";
+			}
+			this.particle = Particle.valueOf(particle.toUpperCase());
 		} catch (IllegalArgumentException e) {
+			Bukkit.getLogger().warning(ChatColor.RED + particle + " is not a particle, check portals.yml");
 			this.particle = Particle.FLAME;
 		}
 	}

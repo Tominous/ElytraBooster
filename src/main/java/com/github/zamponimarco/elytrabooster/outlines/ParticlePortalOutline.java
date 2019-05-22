@@ -20,7 +20,7 @@ public class ParticlePortalOutline implements PortalOutline {
 		} catch (IllegalArgumentException e) {
 			this.outlineType = Particle.FLAME;
 			this.cooldownType = Particle.FLAME;
-			Bukkit.getLogger().warning(ChatColor.RED + outlineType + " or " + cooldownType + " is not a block, check portals.yml");
+			Bukkit.getLogger().warning(ChatColor.RED + outlineType + " or " + cooldownType + " is not a particle, check portals.yml");
 		}
 	}
 	

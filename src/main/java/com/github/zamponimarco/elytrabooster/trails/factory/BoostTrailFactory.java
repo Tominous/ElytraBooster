@@ -14,9 +14,9 @@ public class BoostTrailFactory {
 			trailString = "";
 		}
 		
-		String[] trailArray = trailString.split(":");
+		String[] trailArray = trailString.split(";");
 		String trailType = trailArray[0];
-		String trailParticle = trailArray.length >= 2? trailArray[1]:"";
+		String trailParticle = trailArray.length >= 2? trailArray[1]:null;
 		
 		switch(trailType) {
 		case "none":

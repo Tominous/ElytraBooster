@@ -28,9 +28,9 @@ public class PortalUtils {
 	public static List<Location> getCircle(Location center, boolean isBlock, double radius, char axis) {
 		World world = center.getWorld();
 		int amount = isBlock ? 50 * (int) radius : (int) Math.floor(2 * Math.PI * radius);
-		List<Location> locations = new ArrayList<Location>();
 		double increment = (2 * Math.PI) / amount;
 
+		List<Location> locations = new ArrayList<Location>();
 		for (int i = 0; i < amount; i++) {
 			double angle = i * increment;
 
