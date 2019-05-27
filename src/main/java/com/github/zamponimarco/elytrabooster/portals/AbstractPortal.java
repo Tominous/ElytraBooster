@@ -123,11 +123,13 @@ public abstract class AbstractPortal {
 	 * Runs the timer task that checks for users inside the portal and draws the
 	 * outline
 	 */
-	protected void runPortalTask() {
-		outlineTaskNumber = plugin.getServer().getScheduler()
-				.runTaskTimer(plugin, () -> drawOutline(), 1, outlineInterval).getTaskId();
-		checkTaskNumber = plugin.getServer().getScheduler()
-				.runTaskTimer(plugin, () -> checkPlayersPassing(), 1, checkInterval).getTaskId();
+	public void runPortalTask() {
+		if (!isActive()) {
+			outlineTaskNumber = plugin.getServer().getScheduler()
+					.runTaskTimer(plugin, () -> drawOutline(), 1, outlineInterval).getTaskId();
+			checkTaskNumber = plugin.getServer().getScheduler()
+					.runTaskTimer(plugin, () -> checkPlayersPassing(), 1, checkInterval).getTaskId();
+		}
 	}
 
 	/**
@@ -138,6 +140,8 @@ public abstract class AbstractPortal {
 			outline.eraseOutline(points);
 			plugin.getServer().getScheduler().cancelTask(outlineTaskNumber);
 			plugin.getServer().getScheduler().cancelTask(checkTaskNumber);
+			outlineTaskNumber = 0;
+			checkTaskNumber = 0;
 		}
 	}
 
@@ -248,8 +252,8 @@ public abstract class AbstractPortal {
 	 */
 	@Override
 	public String toString() {
-		return MessagesUtil.color(String.format("&6Id: &a%s\n&6x/y/z: &a%.2f&6/&a%.2f&6/&a%.2f\n", id, center.getX(),
-				center.getY(), center.getZ()));
+		return MessagesUtil.color(String.format("&6Id: &a%s &6enabled: &a%b\n&6x/y/z: &a%.2f&6/&a%.2f&6/&a%.2f\n", id,
+				isActive(), center.getX(), center.getY(), center.getZ()));
 	}
 
 	public String warnMessage() {
@@ -311,10 +315,6 @@ public abstract class AbstractPortal {
 
 	public int getCheckTaskNumber() {
 		return checkTaskNumber;
-	}
-
-	public int getCurrCooldown() {
-		return currCooldown;
 	}
 
 	public void setCenter(Location center) {
