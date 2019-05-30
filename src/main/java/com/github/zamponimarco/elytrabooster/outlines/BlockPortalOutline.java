@@ -20,7 +20,8 @@ public class BlockPortalOutline implements PortalOutline {
 		} catch (IllegalArgumentException e) {
 			this.outlineType = Material.STONE;
 			this.cooldownType = Material.STONE;
-			Bukkit.getLogger().warning(ChatColor.RED + outlineType + " or " + cooldownType + " is not a block, check portals.yml");
+			Bukkit.getLogger().warning(
+					ChatColor.RED + outlineType + " or " + cooldownType + " is not a block, check portals.yml");
 		}
 	}
 
@@ -30,7 +31,8 @@ public class BlockPortalOutline implements PortalOutline {
 	}
 
 	private void drawOutline(List<Location> points, Material m) {
-		points.forEach(point -> point.getBlock().setType(m));
+		points.stream().filter(point -> !point.getBlock().getType().equals(m))
+				.forEach(point -> point.getBlock().setType(m));
 	}
 
 	@Override
@@ -42,10 +44,14 @@ public class BlockPortalOutline implements PortalOutline {
 	public void cooldownOutline(List<Location> points, int cooldown, int progress) {
 		int cooldownBlocks = (int) ((progress / (double) cooldown) * points.size());
 		IntStream.range(0, cooldownBlocks).forEach(i -> {
-			points.get(i).getBlock().setType(cooldownType);
+			if (!points.get(i).getBlock().getType().equals(cooldownType)) {
+				points.get(i).getBlock().setType(cooldownType);
+			}
 		});
 		IntStream.range(cooldownBlocks, points.size()).forEach(i -> {
-			points.get(i).getBlock().setType(outlineType);
+			if (!points.get(i).getBlock().getType().equals(outlineType)) {
+				points.get(i).getBlock().setType(outlineType);
+			}
 		});
 	}
 

@@ -196,6 +196,11 @@ public abstract class AbstractPortal {
 		return currCooldown > 0;
 	}
 
+	/**
+	 * Returns true if the portal is active
+	 * 
+	 * @return true if the portal is active
+	 */
 	protected boolean isActive() {
 		return checkTaskNumber != 0 && outlineTaskNumber != 0;
 	}
