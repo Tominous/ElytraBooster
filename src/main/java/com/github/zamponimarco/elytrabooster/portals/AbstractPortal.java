@@ -150,8 +150,8 @@ public abstract class AbstractPortal {
 	 */
 	protected void checkPlayersPassing() {
 		plugin.getStatusMap().keySet().forEach(player -> {
-			if (isInUnionPortalArea(player.getLocation(), 0) && !plugin.getStatusMap().get(player) && !onCooldown()
-					&& player.hasPermission("")) {
+			if (!onCooldown() && !plugin.getStatusMap().get(player) && player.hasPermission("eb.portals.boost")
+					&& isInUnionPortalArea(player.getLocation(), 0)) {
 				Bukkit.getPluginManager().callEvent(new PlayerBoostEvent(plugin, player, this));
 				cooldown();
 			}
@@ -185,7 +185,8 @@ public abstract class AbstractPortal {
 				}
 			}
 		};
-		cooldownProcess.runTaskTimer(plugin, 0, 1);
+		if (cooldown > 0)
+			cooldownProcess.runTaskTimer(plugin, 0, 1);
 	}
 
 	/**

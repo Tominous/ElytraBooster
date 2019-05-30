@@ -51,7 +51,7 @@ public class ElytraBoosterHelpCommand extends AbstractCommand {
 				+ "&2/eb near &c[radius] &7List all the portals within [radius] blocks.\n"
 				+ "&2/eb reload &7Reloads ElytraBooster configs.\n"
 				+ "&2/eb disable &c[id] &7Disable the portal named [id]\n"
-				+ "&2/eb enable &c[id] &Enable the portal named [id]\n")));
+				+ "&2/eb enable &c[id] &7Enable the portal named [id]\n")));
 		page.append(MessagesUtil.footer(1, 1));
 		pages.add(page.toString());
 	}

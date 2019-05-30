@@ -32,8 +32,8 @@ public abstract class AbstractCommand {
 
 	public void checkExecution() {
 		String errorMessage = "";
-		errorMessage = !hasPermission()?"You don't have the permission":errorMessage;
-		errorMessage = !canSenderTypeExecute()?"This command can be used only by a player":errorMessage;
+		errorMessage = !hasPermission()?MessagesUtil.color("&cYou don't have the permission"):errorMessage;
+		errorMessage = !canSenderTypeExecute()?MessagesUtil.color("&cThis command can be used only by a player"):errorMessage;
 		if (canSenderTypeExecute() && hasPermission()) {
 			execute();
 		} else {
