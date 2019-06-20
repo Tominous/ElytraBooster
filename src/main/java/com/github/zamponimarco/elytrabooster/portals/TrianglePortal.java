@@ -22,7 +22,7 @@ public class TrianglePortal extends AbstractPortal {
 		super(plugin, id, point1, axis, initialVelocity, finalVelocity, boostDuration, outline, portalsUnion, trail,
 				cooldown, sorter, measures);
 		try {
-			initMeasures(measures);
+			initMeasures();
 			points = getUnionPoints();
 			super.runPortalTask();
 		} catch (Exception e) {
@@ -31,7 +31,7 @@ public class TrianglePortal extends AbstractPortal {
 	}
 
 	@Override
-	protected void initMeasures(String measures) {
+	protected void initMeasures() {
 		String[] measuresArray = measures.split(";");
 		switch (axis) {
 		case 'x':
@@ -71,6 +71,11 @@ public class TrianglePortal extends AbstractPortal {
 		double centerY = (center.getY() + point2.getX() + point3.getY()) / 3.0;
 		double centerZ = (center.getZ() + point2.getZ() + point3.getZ()) / 3.0;
 		return new Location(center.getWorld(), centerX, centerY, centerZ);
+	}
+
+	@Override
+	public String getShape() {
+		return "triangle";
 	}
 
 }

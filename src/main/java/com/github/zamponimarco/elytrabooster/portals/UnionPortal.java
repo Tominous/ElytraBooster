@@ -30,7 +30,7 @@ public class UnionPortal extends AbstractPortal {
 		this.measures = measures;
 		this.intersecate = intersecate;
 		try {
-			initMeasures(measures);
+			initMeasures();
 			points = getPoints();
 		} catch (Exception e) {
 			Bukkit.getLogger().warning(warnMessage());
@@ -38,7 +38,7 @@ public class UnionPortal extends AbstractPortal {
 	}
 
 	@Override
-	protected void initMeasures(String measures) throws IllegalArgumentException {
+	protected void initMeasures() throws IllegalArgumentException {
 		switch (shape) {
 		case "circle":
 			this.measures1 = Double.valueOf(measures);
@@ -124,5 +124,10 @@ public class UnionPortal extends AbstractPortal {
 	public String toString() {
 		return String.format(Locale.US, "%s:%.1f:%.1f:%.1f:%s:%b", shape, center.getX(), center.getY(), center.getZ(),
 				measures, intersecate);
+	}
+
+	@Override
+	public String getShape() {
+		return null;
 	}
 }

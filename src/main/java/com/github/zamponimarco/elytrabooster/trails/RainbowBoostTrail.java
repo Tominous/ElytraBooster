@@ -37,4 +37,9 @@ public class RainbowBoostTrail implements BoostTrail {
 				new Particle.DustOptions(RainbowColor.values()[currentColor].getColor(), 3));
 	}
 
+	@Override
+	public String getName() {
+		return "rainbow";
+	}
+
 }

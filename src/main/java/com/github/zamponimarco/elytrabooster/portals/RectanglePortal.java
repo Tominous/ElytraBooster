@@ -28,7 +28,7 @@ public class RectanglePortal extends AbstractPortal {
 		super(plugin, id, center, axis, initialVelocity, finalVelocity, boostDuration, outline, portalsUnion, trail,
 				cooldown, sorter, measures);
 		try {
-			initMeasures(measures);
+			initMeasures();
 			points = getUnionPoints();
 			super.runPortalTask();
 		} catch (Exception e) {
@@ -37,7 +37,7 @@ public class RectanglePortal extends AbstractPortal {
 	}
 
 	@Override
-	protected void initMeasures(String measures) {
+	protected void initMeasures() {
 			String[] measuresArray = measures.split(";");
 			this.halfLength = Double.valueOf(measuresArray[0]);
 			this.halfHeight = Double.valueOf(measuresArray[1]);
@@ -55,6 +55,11 @@ public class RectanglePortal extends AbstractPortal {
 
 	private List<Location> getRectangle() {
 		return PortalUtils.getRectangle(center, axis, halfLength, halfHeight);
+	}
+
+	@Override
+	public String getShape() {
+		return halfHeight == halfHeight? "square" : "rectangle";
 	}
 
 }

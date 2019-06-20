@@ -13,7 +13,7 @@ import org.bukkit.Location;
 public interface PortalOutline {
 
 	/**
-	 * Draws the outline 
+	 * Draws the outline
 	 * 
 	 * @param points
 	 */
@@ -25,12 +25,16 @@ public interface PortalOutline {
 	 * @param points
 	 */
 	public void eraseOutline(List<Location> points);
-	
+
 	/**
 	 * Handle the outline of portals in cooldown
 	 * 
 	 * @param points
 	 */
 	public void cooldownOutline(List<Location> points, int cooldown, int progress);
+
+	public Object getOutlineType();
+
+	public Object getCooldownType();
 
 }

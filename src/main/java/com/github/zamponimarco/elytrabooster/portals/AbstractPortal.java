@@ -43,6 +43,7 @@ public abstract class AbstractPortal {
 	protected BoostTrail trail;
 	protected int cooldown;
 	protected PointSorter sorter;
+	protected String measures;
 
 	protected int outlineTaskNumber;
 	protected int checkTaskNumber;
@@ -86,6 +87,7 @@ public abstract class AbstractPortal {
 		this.trail = trail;
 		this.cooldown = cooldown;
 		this.sorter = sorter;
+		this.measures = measures;
 
 		currCooldown = 0;
 
@@ -99,7 +101,7 @@ public abstract class AbstractPortal {
 	 * 
 	 * @throws Exception
 	 */
-	protected abstract void initMeasures(String measures);
+	protected abstract void initMeasures();
 
 	/**
 	 * Generates the list of points that represent the outline of a portal
@@ -202,7 +204,7 @@ public abstract class AbstractPortal {
 	 * 
 	 * @return true if the portal is active
 	 */
-	protected boolean isActive() {
+	public boolean isActive() {
 		return checkTaskNumber != 0 && outlineTaskNumber != 0;
 	}
 
@@ -326,5 +328,16 @@ public abstract class AbstractPortal {
 	public void setCenter(Location center) {
 		this.center = center;
 	}
+	
+	public String getMeasures() {
+		return measures;
+	}
+	
+	public PointSorter getSorter() {
+		return sorter;
+	}
+	
+	public abstract String getShape();
+
 
 }

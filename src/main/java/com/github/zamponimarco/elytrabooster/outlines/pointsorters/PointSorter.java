@@ -8,4 +8,6 @@ public interface PointSorter {
 
 	public void sort(List<Location> points); 
 	
+	public String getName();
+	
 }

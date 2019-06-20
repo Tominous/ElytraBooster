@@ -10,4 +10,9 @@ public class NoPointSorter implements PointSorter {
 	public void sort(List<Location> points) {
 	}
 
+	@Override
+	public String getName() {
+		return "none";
+	}
+
 }

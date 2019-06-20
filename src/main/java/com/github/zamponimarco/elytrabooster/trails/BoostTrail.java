@@ -17,4 +17,6 @@ public interface BoostTrail {
 	 */
 	public void spawnTrail(Player player);
 	
+	public String getName();
+	
 }

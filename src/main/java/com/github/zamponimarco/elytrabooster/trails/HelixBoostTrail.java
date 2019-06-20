@@ -37,4 +37,9 @@ public class HelixBoostTrail implements BoostTrail {
 
 	}
 
+	@Override
+	public String getName() {
+		return "helix";
+	}
+
 }

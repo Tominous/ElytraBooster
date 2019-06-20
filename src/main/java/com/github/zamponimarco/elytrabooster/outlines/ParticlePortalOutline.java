@@ -48,4 +48,14 @@ public class ParticlePortalOutline implements PortalOutline {
 		});
 	}
 
+	@Override
+	public Object getOutlineType() {
+		return outlineType;
+	}
+
+	@Override
+	public Object getCooldownType() {
+		return cooldownType;
+	}
+
 }

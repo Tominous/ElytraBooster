@@ -55,4 +55,14 @@ public class BlockPortalOutline implements PortalOutline {
 		});
 	}
 
+	@Override
+	public Object getOutlineType() {
+		return outlineType;
+	}
+
+	@Override
+	public Object getCooldownType() {
+		return cooldownType;
+	}
+
 }

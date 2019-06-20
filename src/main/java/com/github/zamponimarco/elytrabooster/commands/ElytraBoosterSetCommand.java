@@ -3,12 +3,10 @@ package com.github.zamponimarco.elytrabooster.commands;
 import java.util.Arrays;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.ConfigurationSection;
 
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 import com.github.zamponimarco.elytrabooster.managers.PortalManager;
 import com.github.zamponimarco.elytrabooster.portals.AbstractPortal;
-import com.github.zamponimarco.elytrabooster.portals.factory.PortalFactory;
 import com.github.zamponimarco.elytrabooster.utils.MessagesUtil;
 
 public class ElytraBoosterSetCommand extends AbstractCommand {
@@ -37,53 +35,22 @@ public class ElytraBoosterSetCommand extends AbstractCommand {
 		try {
 			Arrays.asList(arguments[1].split(",")).forEach(string -> {
 				String[] argument = string.split(":");
-				setParam(id, argument[0], argument[1]);
+				portalManager.setParam(id, argument[0], argument[1]);
+				sender.sendMessage(MessagesUtil
+						.color("&aPortal modified, &6ID: &a" + id + ", &6" + argument[0] + ": &a" + argument[1]));
 			});
-			portalManager.saveConfig();
 		} catch (Exception e) {
 			incorrectUsage();
 			return;
 		}
-
-		portal.stopPortalTask();
-		portalManager.setPortal(id, PortalFactory.buildPortal(plugin, portalManager,
-				portalManager.getDataYaml().getConfigurationSection(id)));
+		
+		portalManager.reloadPortal(portal);
 
 	}
 
 	@Override
 	protected boolean isOnlyPlayer() {
 		return false;
-	}
-
-	private void setParam(String id, String param, String value) {
-		ConfigurationSection portal = plugin.getPortalManager().getDataYaml().getConfigurationSection(id);
-		switch (param) {
-		case "initialVelocity":
-		case "finalVelocity":
-			portal.set(param, Double.valueOf(value));
-			break;
-		case "boostDuration":
-		case "cooldown":
-			portal.set(param, Integer.valueOf(value));
-			break;
-		case "axis":
-		case "outlineType":
-		case "cooldownType":
-		case "shape":
-		case "measures":
-		case "trail":
-		case "sorter":
-			portal.set(param, value);
-			break;
-		case "isBlockOutline":
-			portal.set(param, Boolean.valueOf(value));
-			break;
-		default:
-			sender.sendMessage(MessagesUtil.color("&cUnknown parameter"));
-			return;
-		}
-		sender.sendMessage(MessagesUtil.color("&aPortal modified, &6ID: &a" + id + ", &6" + param + ": &a" + value));
 	}
 
 }

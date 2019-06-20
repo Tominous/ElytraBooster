@@ -29,7 +29,7 @@ public class CirclePortal extends AbstractPortal {
 		super(plugin, id, center, axis, initialVelocity, finalVelocity, boostDuration, outline, portalsUnion, trail,
 				cooldown, sorter, measures);
 		try {
-			initMeasures(measures);
+			initMeasures();
 			points = getUnionPoints();
 			super.runPortalTask();
 		} catch (Exception e) {
@@ -38,8 +38,8 @@ public class CirclePortal extends AbstractPortal {
 	}
 
 	@Override
-	protected void initMeasures(String measures) {
-			radius = Double.valueOf(measures);
+	protected void initMeasures() {
+		radius = Double.valueOf(measures);
 	}
 
 	@Override
@@ -50,6 +50,11 @@ public class CirclePortal extends AbstractPortal {
 	@Override
 	protected boolean isInPortalArea(Location location, double epsilon) {
 		return PortalUtils.isInCirclePortalArea(location, center, radius, axis, epsilon);
+	}
+
+	@Override
+	public String getShape() {
+		return "circle";
 	}
 
 }

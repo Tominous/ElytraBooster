@@ -28,4 +28,9 @@ public class ClosingPointSorter implements PointSorter {
 		Collections.sort(points, locationComparator);
 	}
 
+	@Override
+	public String getName() {
+		return "closing";
+	}
+
 }

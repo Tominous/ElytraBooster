@@ -34,7 +34,7 @@ public class PortalManager implements DataManager {
 	 * Creates a PortalManager instance
 	 * 
 	 * @param plugin
-	 * @param settingsManager 
+	 * @param settingsManager
 	 */
 	public PortalManager(ElytraBooster plugin) {
 		super();
@@ -105,6 +105,42 @@ public class PortalManager implements DataManager {
 	}
 
 	/**
+	 * Sets the value in the yaml config of a certain portal with a certain value
+	 * 
+	 * @param id
+	 * @param param
+	 * @param value
+	 */
+	public void setParam(String id, String param, String value) {
+		ConfigurationSection portal = plugin.getPortalManager().getDataYaml().getConfigurationSection(id);
+		switch (param) {
+		case "initialVelocity":
+		case "finalVelocity":
+			portal.set(param, Double.valueOf(value));
+			break;
+		case "boostDuration":
+		case "cooldown":
+			portal.set(param, Integer.valueOf(value));
+			break;
+		case "axis":
+		case "outlineType":
+		case "cooldownType":
+		case "shape":
+		case "measures":
+		case "trail":
+		case "sorter":
+			portal.set(param, value);
+			break;
+		case "isBlockOutline":
+			portal.set(param, Boolean.valueOf(value));
+			break;
+		default:
+			throw new IllegalArgumentException();
+		}
+
+	}
+
+	/**
 	 * Returns the portal that has the given id
 	 * 
 	 * @param id
@@ -135,6 +171,15 @@ public class PortalManager implements DataManager {
 	 */
 	public void removePortal(String id) {
 		portals.remove(id);
+	}
+
+	public AbstractPortal reloadPortal(AbstractPortal portal) {
+		saveConfig();
+		portal.stopPortalTask();
+		AbstractPortal newPortal = PortalFactory.buildPortal(plugin, this,
+				getDataYaml().getConfigurationSection(portal.getId()));
+		setPortal(portal.getId(), newPortal);
+		return newPortal;
 	}
 
 	/**

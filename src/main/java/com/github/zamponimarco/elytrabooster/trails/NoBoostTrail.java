@@ -8,4 +8,9 @@ public class NoBoostTrail implements BoostTrail {
 	public void spawnTrail(Player player) {
 	}
 
+	@Override
+	public String getName() {
+		return "none";
+	}
+
 }

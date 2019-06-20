@@ -80,7 +80,7 @@ public class PortalFactory {
 		String measures = portalConfiguration.getString("measures", "10");
 
 		// BoostTrail
-		String trailString = portalConfiguration.getString("trail", "firework");
+		String trailString = portalConfiguration.getString("trail", "simple");
 		BoostTrail trail = BoostTrailFactory.buildBoostTrail(trailString);
 
 		// Portal Outline

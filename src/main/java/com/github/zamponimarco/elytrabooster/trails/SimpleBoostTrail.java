@@ -27,4 +27,9 @@ public class SimpleBoostTrail implements BoostTrail {
 		player.getWorld().spawnParticle(particle, player.getLocation(), 3, 0.1, 0.1, 0.1, 0.1);
 	}
 
+	@Override
+	public String getName() {
+		return "simple";
+	}
+
 }

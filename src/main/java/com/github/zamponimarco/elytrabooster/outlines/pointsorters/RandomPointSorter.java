@@ -12,4 +12,9 @@ public class RandomPointSorter implements PointSorter {
 		Collections.shuffle(points);
 	}
 
+	@Override
+	public String getName() {
+		return "random";
+	}
+
 }
