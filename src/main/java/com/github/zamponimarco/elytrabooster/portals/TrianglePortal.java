@@ -5,22 +5,20 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
+import com.github.zamponimarco.elytrabooster.boosts.Boost;
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 import com.github.zamponimarco.elytrabooster.outlines.PortalOutline;
 import com.github.zamponimarco.elytrabooster.outlines.pointsorters.PointSorter;
 import com.github.zamponimarco.elytrabooster.portals.utils.PortalUtils;
-import com.github.zamponimarco.elytrabooster.trails.BoostTrail;
 
 public class TrianglePortal extends AbstractPortal {
 
 	private Location point2;
 	private Location point3;
 
-	public TrianglePortal(ElytraBooster plugin, String id, Location point1, char axis, double initialVelocity,
-			double finalVelocity, int boostDuration, PortalOutline outline, List<UnionPortal> portalsUnion,
-			BoostTrail trail, int cooldown, PointSorter sorter, String measures) {
-		super(plugin, id, point1, axis, initialVelocity, finalVelocity, boostDuration, outline, portalsUnion, trail,
-				cooldown, sorter, measures);
+	public TrianglePortal(ElytraBooster plugin, String id, Location center, char axis, Boost boost, PortalOutline outline,
+			List<UnionPortal> portalsUnion, int cooldown, PointSorter sorter, String measures) {
+		super(plugin, id, center, axis, boost, outline, portalsUnion, cooldown, sorter, measures);
 		try {
 			initMeasures();
 			points = getUnionPoints();

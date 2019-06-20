@@ -8,6 +8,8 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 
+import com.github.zamponimarco.elytrabooster.boosts.Boost;
+import com.github.zamponimarco.elytrabooster.boosts.SimpleBoost;
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 import com.github.zamponimarco.elytrabooster.managers.PortalManager;
 import com.github.zamponimarco.elytrabooster.outlines.PortalOutline;
@@ -68,6 +70,13 @@ public class PortalFactory {
 		// Portal boost duration
 		int boostDuration = portalConfiguration.getInt("boostDuration", 30);
 
+		// BoostTrail
+		String trailString = portalConfiguration.getString("trail", "simple");
+		BoostTrail trail = BoostTrailFactory.buildBoostTrail(trailString);
+
+		// Boost
+		Boost boost = new SimpleBoost(boostDuration, initialVelocity, finalVelocity, trail);
+
 		// Portal Outline type
 		String outlineType = portalConfiguration.getString("outlineType", "STONE");
 
@@ -78,10 +87,6 @@ public class PortalFactory {
 
 		// Portal outline measures
 		String measures = portalConfiguration.getString("measures", "10");
-
-		// BoostTrail
-		String trailString = portalConfiguration.getString("trail", "simple");
-		BoostTrail trail = BoostTrailFactory.buildBoostTrail(trailString);
 
 		// Portal Outline
 		PortalOutline outline = PortalOutlineFactory.buildPortalOutline(isBlock, outlineType, cooldownType);
@@ -106,15 +111,21 @@ public class PortalFactory {
 					double unionX = Double.valueOf(portalArray[1]);
 					double unionY = Double.valueOf(portalArray[2]);
 					double unionZ = Double.valueOf(portalArray[3]);
-					switch(axis) {
+					switch (axis) {
 					case 'x':
-						if(unionX != x) throw new IllegalArgumentException("Union portals and main portal axis coord values must be the same");
+						if (unionX != x)
+							throw new IllegalArgumentException(
+									"Union portals and main portal axis coord values must be the same");
 						break;
 					case 'y':
-						if(unionY != y) throw new IllegalArgumentException("Union portals and main portal axis coord values must be the same");
+						if (unionY != y)
+							throw new IllegalArgumentException(
+									"Union portals and main portal axis coord values must be the same");
 						break;
 					case 'z':
-						if(unionZ != z) throw new IllegalArgumentException("Union portals and main portal axis coord values must be the same");
+						if (unionZ != z)
+							throw new IllegalArgumentException(
+									"Union portals and main portal axis coord values must be the same");
 						break;
 					}
 					String unionShape = portalArray[0];
@@ -122,9 +133,8 @@ public class PortalFactory {
 					boolean intersecate = Boolean.valueOf(portalArray[5]);
 
 					UnionPortal portal = buildUnionPortal(plugin, subPortalId,
-							new Location(world, unionX, unionY, unionZ), axis, initialVelocity, finalVelocity,
-							boostDuration, outline, new ArrayList<UnionPortal>(), trail, unionShape, cooldown, sorter,
-							unionMeasures, intersecate);
+							new Location(world, unionX, unionY, unionZ), axis, boost, outline,
+							new ArrayList<UnionPortal>(), unionShape, cooldown, sorter, unionMeasures, intersecate);
 					portalsUnion.add(portal);
 				}
 			} catch (Exception e) {
@@ -135,36 +145,32 @@ public class PortalFactory {
 		}
 
 		// Build portal
-		return buildPortal(plugin, id, center, axis, initialVelocity, finalVelocity, boostDuration, outline,
-				portalsUnion, trail, shape, cooldown, sorter, measures);
+		return buildPortal(plugin, id, center, axis, boost, outline, portalsUnion, shape, cooldown, sorter, measures);
 	}
 
-	private static AbstractPortal buildPortal(ElytraBooster plugin, String id, Location center, char axis,
-			double initialVelocity, double finalVelocity, int boostDuration, PortalOutline outline,
-			List<UnionPortal> portalsUnion, BoostTrail trail, String shape, int cooldown, PointSorter sorter,
+	private static AbstractPortal buildPortal(ElytraBooster plugin, String id, Location center, char axis, Boost boost,
+			PortalOutline outline, List<UnionPortal> portalsUnion, String shape, int cooldown, PointSorter sorter,
 			String measures) {
 		switch (shape) {
 		case "square":
-			return new RectanglePortal(plugin, id, center, axis, initialVelocity, finalVelocity, boostDuration, outline,
-					portalsUnion, trail, cooldown, sorter, measures + ";" + measures);
+			return new RectanglePortal(plugin, id, center, axis, boost, outline, portalsUnion, cooldown, sorter,
+					measures + ";" + measures);
 		case "rectangle":
-			return new RectanglePortal(plugin, id, center, axis, initialVelocity, finalVelocity, boostDuration, outline,
-					portalsUnion, trail, cooldown, sorter, measures);
+			return new RectanglePortal(plugin, id, center, axis, boost, outline, portalsUnion, cooldown, sorter,
+					measures);
 		case "triangle":
-			return new TrianglePortal(plugin, id, center, axis, initialVelocity, finalVelocity, boostDuration, outline,
-					portalsUnion, trail, cooldown, sorter, measures);
+			return new TrianglePortal(plugin, id, center, axis, boost, outline, portalsUnion, cooldown, sorter,
+					measures);
 		case "circle":
 		default:
-			return new CirclePortal(plugin, id, center, axis, initialVelocity, finalVelocity, boostDuration, outline,
-					portalsUnion, trail, cooldown, sorter, measures);
+			return new CirclePortal(plugin, id, center, axis, boost, outline, portalsUnion, cooldown, sorter, measures);
 		}
 	}
 
 	private static UnionPortal buildUnionPortal(ElytraBooster plugin, String id, Location center, char axis,
-			double initialVelocity, double finalVelocity, int boostDuration, PortalOutline outline,
-			List<UnionPortal> portalsUnion, BoostTrail trail, String shape, int cooldown, PointSorter sorter,
-			String measures, boolean intersecate) {
-		return new UnionPortal(plugin, id, center, axis, initialVelocity, finalVelocity, boostDuration, outline,
-				portalsUnion, trail, shape, cooldown, measures, sorter, intersecate);
+			Boost boost, PortalOutline outline, List<UnionPortal> portalsUnion, String shape, int cooldown,
+			PointSorter sorter, String measures, boolean intersecate) {
+		return new UnionPortal(plugin, id, center, axis, boost, outline, portalsUnion, shape, cooldown, measures,
+				sorter, intersecate);
 	}
 }

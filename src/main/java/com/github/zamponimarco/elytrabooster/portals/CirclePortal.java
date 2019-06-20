@@ -6,12 +6,12 @@ import java.util.List;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
+import com.github.zamponimarco.elytrabooster.boosts.Boost;
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 import com.github.zamponimarco.elytrabooster.outlines.BlockPortalOutline;
 import com.github.zamponimarco.elytrabooster.outlines.PortalOutline;
 import com.github.zamponimarco.elytrabooster.outlines.pointsorters.PointSorter;
 import com.github.zamponimarco.elytrabooster.portals.utils.PortalUtils;
-import com.github.zamponimarco.elytrabooster.trails.BoostTrail;
 
 /**
  * Circle shaped portal class
@@ -23,11 +23,9 @@ public class CirclePortal extends AbstractPortal {
 
 	double radius;
 
-	public CirclePortal(ElytraBooster plugin, String id, Location center, char axis, double initialVelocity,
-			double finalVelocity, int boostDuration, PortalOutline outline, List<UnionPortal> portalsUnion,
-			BoostTrail trail, int cooldown, PointSorter sorter, String measures) {
-		super(plugin, id, center, axis, initialVelocity, finalVelocity, boostDuration, outline, portalsUnion, trail,
-				cooldown, sorter, measures);
+	public CirclePortal(ElytraBooster plugin, String id, Location center, char axis, Boost boost, PortalOutline outline,
+			List<UnionPortal> portalsUnion, int cooldown, PointSorter sorter, String measures) {
+		super(plugin, id, center, axis, boost, outline, portalsUnion, cooldown, sorter, measures);
 		try {
 			initMeasures();
 			points = getUnionPoints();

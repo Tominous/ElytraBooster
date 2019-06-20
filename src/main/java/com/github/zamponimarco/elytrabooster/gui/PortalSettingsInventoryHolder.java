@@ -70,16 +70,19 @@ public class PortalSettingsInventoryHolder extends ElytraBoosterInventoryHolder 
 				getSettingConsumer("cooldown", portal.getCooldown(), IntegerSettingInventoryHolder.class));
 		registerClickConsumer(12,
 				getPortalSetting(HeadsUtil.skullFromValue(INITIAL_VELOCITY_HEAD), "initialVelocity",
-						portal.getInitialVelocity()),
-				getSettingConsumer("initialVelocity", portal.getInitialVelocity(), DoubleSettingInventoryHolder.class));
+						portal.getBoost().getInitialVelocity()),
+				getSettingConsumer("initialVelocity", portal.getBoost().getInitialVelocity(),
+						DoubleSettingInventoryHolder.class));
 		registerClickConsumer(13,
 				getPortalSetting(HeadsUtil.skullFromValue(FINAL_VELOCITY_HEAD), "finalVelocity",
-						portal.getFinalVelocity()),
-				getSettingConsumer("initialVelocity", portal.getInitialVelocity(), DoubleSettingInventoryHolder.class));
+						portal.getBoost().getFinalVelocity()),
+				getSettingConsumer("finalVelocity", portal.getBoost().getFinalVelocity(),
+						DoubleSettingInventoryHolder.class));
 		registerClickConsumer(14,
 				getPortalSetting(HeadsUtil.skullFromValue(BOOST_DURATION_HEAD), "boostDuration",
-						portal.getBoostDuration()),
-				getSettingConsumer("boostDuration", portal.getBoostDuration(), IntegerSettingInventoryHolder.class));
+						portal.getBoost().getBoostDuration()),
+				getSettingConsumer("boostDuration", portal.getBoost().getBoostDuration(),
+						IntegerSettingInventoryHolder.class));
 		registerClickConsumer(21, getPortalSetting(HeadsUtil.skullFromValue(AXIS_HEAD), "axis", portal.getAxis()),
 				getSettingConsumer("axis", portal.getAxis(), StringSettingInventoryHolder.class));
 		registerClickConsumer(22, getPortalSetting(HeadsUtil.skullFromValue(SHAPE_HEAD), "shape", portal.getShape()),
@@ -88,8 +91,9 @@ public class PortalSettingsInventoryHolder extends ElytraBoosterInventoryHolder 
 				getPortalSetting(HeadsUtil.skullFromValue(MEASURES_HEAD), "measures", portal.getMeasures()),
 				getSettingConsumer("measures", portal.getMeasures(), StringSettingInventoryHolder.class));
 		registerClickConsumer(17,
-				getPortalSetting(HeadsUtil.skullFromValue(TRAIL_HEAD), "trail", portal.getTrail().getName()),
-				getSettingConsumer("trail", portal.getTrail().getName(), StringSettingInventoryHolder.class));
+				getPortalSetting(HeadsUtil.skullFromValue(TRAIL_HEAD), "trail", portal.getBoost().getTrail().getName()),
+				getSettingConsumer("trail", portal.getBoost().getTrail().getName(),
+						StringSettingInventoryHolder.class));
 		registerClickConsumer(26,
 				getPortalSetting(HeadsUtil.skullFromValue(SORTER_HEAD), "sorter", portal.getSorter().getName()),
 				getSettingConsumer("sorter", portal.getSorter().getName(), StringSettingInventoryHolder.class));

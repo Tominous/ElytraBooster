@@ -7,8 +7,8 @@ import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import com.github.zamponimarco.elytrabooster.boosts.Boost;
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
-import com.github.zamponimarco.elytrabooster.portals.AbstractPortal;
 import com.github.zamponimarco.elytrabooster.utils.MessagesUtil;
 
 import net.md_5.bungee.api.ChatMessageType;
@@ -19,25 +19,23 @@ public class PlayerBoostEvent extends Event implements Cancellable {
 	private static final HandlerList HANDLERS_LIST = new HandlerList();
 	private boolean cancelled;
 	private Player player;
-	private AbstractPortal portal;
 
-	public PlayerBoostEvent(ElytraBooster plugin, Player player, AbstractPortal portal) {
+	public PlayerBoostEvent(ElytraBooster plugin, Player player, Boost boost) {
 		
 		this.player = player;
-		this.portal = portal;
 
 		BukkitRunnable boostProcess = new BukkitRunnable() {
 
-			double tempVelocity = portal.getInitialVelocity();
-			double d = Math.pow((portal.getFinalVelocity() / portal.getInitialVelocity()),
-					(1.0 / portal.getBoostDuration()));
+			double tempVelocity = boost.getInitialVelocity();
+			double d = Math.pow((boost.getFinalVelocity() / boost.getInitialVelocity()),
+					(1.0 / boost.getBoostDuration()));
 
 			int counter = 0;
 
 			@Override
 			public void run() {
 
-				if (counter == portal.getBoostDuration()) {
+				if (counter == boost.getBoostDuration()) {
 					plugin.getStatusMap().replace(player, false);
 					this.cancel();
 				} else if (!player.isGliding()) {
@@ -45,8 +43,8 @@ public class PlayerBoostEvent extends Event implements Cancellable {
 					this.cancel();
 				}
 
-				sendProgressMessage(player, portal, counter);
-				portal.getTrail().spawnTrail(player);
+				sendProgressMessage(player, boost, counter);
+				boost.getTrail().spawnTrail(player);
 				player.setVelocity(player.getLocation().getDirection().normalize().multiply(tempVelocity));
 
 				counter++;
@@ -66,8 +64,8 @@ public class PlayerBoostEvent extends Event implements Cancellable {
 	 * @param portal
 	 * @param counter
 	 */
-	private void sendProgressMessage(Player player, AbstractPortal portal, int counter) {
-		int progress = (int) Math.floor((counter / (double) portal.getBoostDuration()) * 30);
+	private void sendProgressMessage(Player player, Boost boost, int counter) {
+		int progress = (int) Math.floor((counter / (double) boost.getBoostDuration()) * 30);
 
 		StringBuilder sb = new StringBuilder("");
 		sb.append("&a");
@@ -111,14 +109,6 @@ public class PlayerBoostEvent extends Event implements Cancellable {
 
 	public void setPlayer(Player player) {
 		this.player = player;
-	}
-
-	public AbstractPortal getPortal() {
-		return portal;
-	}
-
-	public void setPortal(AbstractPortal portal) {
-		this.portal = portal;
 	}
 
 }

@@ -8,6 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import com.github.zamponimarco.elytrabooster.boosts.Boost;
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 import com.github.zamponimarco.elytrabooster.events.FinishedCooldownEvent;
 import com.github.zamponimarco.elytrabooster.events.PlayerBoostEvent;
@@ -15,7 +16,6 @@ import com.github.zamponimarco.elytrabooster.outlines.BlockPortalOutline;
 import com.github.zamponimarco.elytrabooster.outlines.PortalOutline;
 import com.github.zamponimarco.elytrabooster.outlines.pointsorters.PointSorter;
 import com.github.zamponimarco.elytrabooster.settings.Settings;
-import com.github.zamponimarco.elytrabooster.trails.BoostTrail;
 import com.github.zamponimarco.elytrabooster.utils.MessagesUtil;
 
 import net.md_5.bungee.api.ChatColor;
@@ -35,12 +35,9 @@ public abstract class AbstractPortal {
 	protected String id;
 	protected Location center;
 	protected char axis;
-	protected double initialVelocity;
-	protected double finalVelocity;
-	protected int boostDuration;
+	protected Boost boost;
 	protected PortalOutline outline;
 	protected List<UnionPortal> portalsUnion;
-	protected BoostTrail trail;
 	protected int cooldown;
 	protected PointSorter sorter;
 	protected String measures;
@@ -70,21 +67,17 @@ public abstract class AbstractPortal {
 	 * @param trail
 	 * @param cooldown
 	 */
-	public AbstractPortal(ElytraBooster plugin, String id, Location center, char axis, double initialVelocity,
-			double finalVelocity, int boostDuration, PortalOutline outline, List<UnionPortal> portalsUnion,
-			BoostTrail trail, int cooldown, PointSorter sorter, String measures) {
+	public AbstractPortal(ElytraBooster plugin, String id, Location center, char axis, Boost boost, PortalOutline outline,
+			List<UnionPortal> portalsUnion, int cooldown, PointSorter sorter, String measures) {
 		super();
 		this.plugin = plugin;
 		this.portal = this;
 		this.id = id;
 		this.center = center;
 		this.axis = axis >= 120 && axis <= 122 ? axis : 'x';
-		this.initialVelocity = initialVelocity;
-		this.finalVelocity = finalVelocity;
-		this.boostDuration = boostDuration;
+		this.boost = boost;
 		this.outline = outline;
 		this.portalsUnion = portalsUnion;
-		this.trail = trail;
 		this.cooldown = cooldown;
 		this.sorter = sorter;
 		this.measures = measures;
@@ -154,7 +147,7 @@ public abstract class AbstractPortal {
 		plugin.getStatusMap().keySet().forEach(player -> {
 			if (!onCooldown() && !plugin.getStatusMap().get(player) && player.hasPermission("eb.portals.boost")
 					&& isInUnionPortalArea(player.getLocation(), 0)) {
-				Bukkit.getPluginManager().callEvent(new PlayerBoostEvent(plugin, player, this));
+				Bukkit.getPluginManager().callEvent(new PlayerBoostEvent(plugin, player, boost));
 				cooldown();
 			}
 		});
@@ -289,28 +282,12 @@ public abstract class AbstractPortal {
 		return axis;
 	}
 
-	public double getInitialVelocity() {
-		return initialVelocity;
-	}
-
-	public double getFinalVelocity() {
-		return finalVelocity;
-	}
-
-	public int getBoostDuration() {
-		return boostDuration;
-	}
-
 	public PortalOutline getOutline() {
 		return outline;
 	}
 
 	public List<UnionPortal> getPortalsUnion() {
 		return portalsUnion;
-	}
-
-	public BoostTrail getTrail() {
-		return trail;
 	}
 
 	public int getCooldown() {
@@ -328,16 +305,19 @@ public abstract class AbstractPortal {
 	public void setCenter(Location center) {
 		this.center = center;
 	}
-	
+
 	public String getMeasures() {
 		return measures;
 	}
-	
+
 	public PointSorter getSorter() {
 		return sorter;
 	}
 	
-	public abstract String getShape();
+	public Boost getBoost() {
+		return boost;
+	}
 
+	public abstract String getShape();
 
 }
