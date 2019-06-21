@@ -112,7 +112,7 @@ public class PortalManager implements DataManager {
 	 * @param value
 	 */
 	public void setParam(String id, String param, String value) {
-		ConfigurationSection portal = plugin.getPortalManager().getDataYaml().getConfigurationSection(id);
+		ConfigurationSection portal = getDataYaml().getConfigurationSection(id);
 		switch (param) {
 		case "initialVelocity":
 		case "finalVelocity":

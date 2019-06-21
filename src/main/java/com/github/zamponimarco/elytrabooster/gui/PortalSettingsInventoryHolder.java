@@ -12,11 +12,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
-import com.github.zamponimarco.elytrabooster.gui.settings.BooleanSettingInventoryHolder;
-import com.github.zamponimarco.elytrabooster.gui.settings.DoubleSettingInventoryHolder;
-import com.github.zamponimarco.elytrabooster.gui.settings.IntegerSettingInventoryHolder;
-import com.github.zamponimarco.elytrabooster.gui.settings.SettingInventoryHolder;
-import com.github.zamponimarco.elytrabooster.gui.settings.StringSettingInventoryHolder;
+import com.github.zamponimarco.elytrabooster.gui.settings.PortalBooleanSettingInventoryHolder;
+import com.github.zamponimarco.elytrabooster.gui.settings.PortalDoubleSettingInventoryHolder;
+import com.github.zamponimarco.elytrabooster.gui.settings.PortalIntegerSettingInventoryHolder;
+import com.github.zamponimarco.elytrabooster.gui.settings.PortalSettingInventoryHolder;
+import com.github.zamponimarco.elytrabooster.gui.settings.PortalStringSettingInventoryHolder;
 import com.github.zamponimarco.elytrabooster.outlines.ParticlePortalOutline;
 import com.github.zamponimarco.elytrabooster.portals.AbstractPortal;
 import com.github.zamponimarco.elytrabooster.utils.HeadsUtil;
@@ -54,49 +54,49 @@ public class PortalSettingsInventoryHolder extends ElytraBoosterInventoryHolder 
 				getPortalSetting(HeadsUtil.skullFromValue(IS_BLOCK_OUTLINE_HEAD), "isBlockOutline",
 						!(portal.getOutline() instanceof ParticlePortalOutline)),
 				getSettingConsumer("isBlockOutline", !(portal.getOutline() instanceof ParticlePortalOutline),
-						BooleanSettingInventoryHolder.class));
+						PortalBooleanSettingInventoryHolder.class));
 		registerClickConsumer(3,
 				getPortalSetting(HeadsUtil.skullFromValue(OUTLINE_TYPE_HEAD), "outlineType",
 						portal.getOutline().getOutlineType()),
 				getSettingConsumer("outlineType", portal.getOutline().getOutlineType(),
-						StringSettingInventoryHolder.class));
+						PortalStringSettingInventoryHolder.class));
 		registerClickConsumer(5,
 				getPortalSetting(HeadsUtil.skullFromValue(COOLDOWN_TYPE_HEAD), "cooldownType",
 						portal.getOutline().getCooldownType()),
 				getSettingConsumer("outlineType", portal.getOutline().getCooldownType(),
-						StringSettingInventoryHolder.class));
+						PortalStringSettingInventoryHolder.class));
 		registerClickConsumer(6,
 				getPortalSetting(HeadsUtil.skullFromValue(COOLDOWN_HEAD), "cooldown", portal.getCooldown()),
-				getSettingConsumer("cooldown", portal.getCooldown(), IntegerSettingInventoryHolder.class));
+				getSettingConsumer("cooldown", portal.getCooldown(), PortalIntegerSettingInventoryHolder.class));
 		registerClickConsumer(12,
 				getPortalSetting(HeadsUtil.skullFromValue(INITIAL_VELOCITY_HEAD), "initialVelocity",
 						portal.getBoost().getInitialVelocity()),
 				getSettingConsumer("initialVelocity", portal.getBoost().getInitialVelocity(),
-						DoubleSettingInventoryHolder.class));
+						PortalDoubleSettingInventoryHolder.class));
 		registerClickConsumer(13,
 				getPortalSetting(HeadsUtil.skullFromValue(FINAL_VELOCITY_HEAD), "finalVelocity",
 						portal.getBoost().getFinalVelocity()),
 				getSettingConsumer("finalVelocity", portal.getBoost().getFinalVelocity(),
-						DoubleSettingInventoryHolder.class));
+						PortalDoubleSettingInventoryHolder.class));
 		registerClickConsumer(14,
 				getPortalSetting(HeadsUtil.skullFromValue(BOOST_DURATION_HEAD), "boostDuration",
 						portal.getBoost().getBoostDuration()),
 				getSettingConsumer("boostDuration", portal.getBoost().getBoostDuration(),
-						IntegerSettingInventoryHolder.class));
+						PortalIntegerSettingInventoryHolder.class));
 		registerClickConsumer(21, getPortalSetting(HeadsUtil.skullFromValue(AXIS_HEAD), "axis", portal.getAxis()),
-				getSettingConsumer("axis", portal.getAxis(), StringSettingInventoryHolder.class));
+				getSettingConsumer("axis", portal.getAxis(), PortalStringSettingInventoryHolder.class));
 		registerClickConsumer(22, getPortalSetting(HeadsUtil.skullFromValue(SHAPE_HEAD), "shape", portal.getShape()),
-				getSettingConsumer("shape", portal.getShape(), StringSettingInventoryHolder.class));
+				getSettingConsumer("shape", portal.getShape(), PortalStringSettingInventoryHolder.class));
 		registerClickConsumer(23,
 				getPortalSetting(HeadsUtil.skullFromValue(MEASURES_HEAD), "measures", portal.getMeasures()),
-				getSettingConsumer("measures", portal.getMeasures(), StringSettingInventoryHolder.class));
+				getSettingConsumer("measures", portal.getMeasures(), PortalStringSettingInventoryHolder.class));
 		registerClickConsumer(17,
 				getPortalSetting(HeadsUtil.skullFromValue(TRAIL_HEAD), "trail", portal.getBoost().getTrail().getName()),
 				getSettingConsumer("trail", portal.getBoost().getTrail().getName(),
-						StringSettingInventoryHolder.class));
+						PortalStringSettingInventoryHolder.class));
 		registerClickConsumer(26,
 				getPortalSetting(HeadsUtil.skullFromValue(SORTER_HEAD), "sorter", portal.getSorter().getName()),
-				getSettingConsumer("sorter", portal.getSorter().getName(), StringSettingInventoryHolder.class));
+				getSettingConsumer("sorter", portal.getSorter().getName(), PortalStringSettingInventoryHolder.class));
 		fillInventoryWith(Material.GRAY_STAINED_GLASS_PANE);
 	}
 
@@ -113,7 +113,7 @@ public class PortalSettingsInventoryHolder extends ElytraBoosterInventoryHolder 
 	}
 
 	private Consumer<InventoryClickEvent> getSettingConsumer(String key, Object value,
-			Class<? extends SettingInventoryHolder> clazz) {
+			Class<? extends PortalSettingInventoryHolder> clazz) {
 		return e -> {
 			if (e.getClick().equals(ClickType.LEFT)) {
 				HumanEntity p = e.getWhoClicked();

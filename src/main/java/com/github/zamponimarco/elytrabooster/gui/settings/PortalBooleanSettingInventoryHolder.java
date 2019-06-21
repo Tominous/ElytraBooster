@@ -16,12 +16,12 @@ import com.github.zamponimarco.elytrabooster.portals.AbstractPortal;
 import com.github.zamponimarco.elytrabooster.utils.HeadsUtil;
 import com.github.zamponimarco.elytrabooster.utils.MessagesUtil;
 
-public class BooleanSettingInventoryHolder extends SettingInventoryHolder {
+public class PortalBooleanSettingInventoryHolder extends PortalSettingInventoryHolder {
 
 	private static final String TRUE_HEAD = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWE3NWM4ZTUxYzNkMTA1YmFiNGM3ZGUzM2E3NzA5MzczNjRiNWEwMWMxNWI3ZGI4MmNjM2UxZmU2ZWI5MzM5NiJ9fX0==";
 	private static final String FALSE_HEAD = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWY3NGQ0ZGI0Y2MzYmU0MWEzNzNkOWVmOWNhYzI3ZTYzNThjNTNmNjQxMTVkMTUwMjQzZjI1YWNmNjRmMmY1MCJ9fX0====";
 
-	public BooleanSettingInventoryHolder(ElytraBooster plugin, String key, AbstractPortal portal, HumanEntity player,
+	public PortalBooleanSettingInventoryHolder(ElytraBooster plugin, String key, AbstractPortal portal, HumanEntity player,
 			Object value) {
 		super(plugin, key, portal, player, value);
 		initializeInventory();

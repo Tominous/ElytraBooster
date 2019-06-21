@@ -47,10 +47,10 @@ public class SpawnerManager implements DataManager {
 	@Override
 	public void loadData() {
 		spawners = new HashMap<String, AbstractSpawner>();
-		dataYaml.getKeys(false).forEach(
-				id -> spawners.put(id, SpawnerFactory.buildSpawner(plugin, this, dataYaml.getConfigurationSection(id))));
+		dataYaml.getKeys(false).forEach(id -> spawners.put(id,
+				SpawnerFactory.buildSpawner(plugin, this, dataYaml.getConfigurationSection(id))));
 	}
-	
+
 	public void saveConfig() {
 		try {
 			dataYaml.save(dataFile);
@@ -58,7 +58,7 @@ public class SpawnerManager implements DataManager {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public ConfigurationSection createDefaultSpawnerConfiguration(Player creator, String id) {
 		ConfigurationSection newSpawner = dataYaml.createSection(id);
 		newSpawner.set("world", creator.getWorld().getName());
@@ -68,42 +68,63 @@ public class SpawnerManager implements DataManager {
 		saveConfig();
 		return newSpawner;
 	}
-	
+
 	public AbstractSpawner getSpawner(String id) {
 		Objects.requireNonNull(id);
 		return spawners.get(id);
 	}
-	
+
 	public void setSpawner(String id, AbstractSpawner spawner) {
 		Objects.requireNonNull(id);
 		Objects.requireNonNull(spawner);
 		spawners.put(id, spawner);
 	}
-	
-	public void removespawner(String id) {
+
+	public void removeSpawner(String id) {
 		spawners.remove(id);
 	}
 
-	public AbstractSpawner reloadPortal(AbstractSpawner spawner) {
+	public AbstractSpawner reloadSpawner(AbstractSpawner spawner) {
 		saveConfig();
-//		spawner.stopPortalTask();
-//		AbstractSpawner newSpawner = SpawnerFactory.buildSpawner(plugin, this,
-//				getDataYaml().getConfigurationSection(spawner.getId()));
-//		setPortal(spawner.getId(), newSpawner);
-//		return newSpawner;
-		return null;
+		spawner.stopSpawnerTask();
+		AbstractSpawner newSpawner = SpawnerFactory.buildSpawner(plugin, this,
+				getDataYaml().getConfigurationSection(spawner.getId()));
+		setSpawner(spawner.getId(), newSpawner);
+		return newSpawner;
 	}
-	
+
 	public Map<String, AbstractSpawner> getSpawnersMap() {
 		return spawners;
 	}
-	
+
 	public File getDataFile() {
 		return dataFile;
 	}
-	
+
 	public YamlConfiguration getDataYaml() {
 		return dataYaml;
+	}
+
+	public void setParam(String id, String param, String value) {
+		ConfigurationSection spawner = getDataYaml().getConfigurationSection(id);
+		switch (param) {
+		case "initialVelocity":
+		case "finalVelocity":
+		case "minRadius":
+		case "maxRadius":
+			spawner.set(param, Double.valueOf(value));
+			break;
+		case "boostDuration":
+		case "cooldown":
+		case "maxEntities":
+			spawner.set(param, Integer.valueOf(value));
+			break;
+		case "trail":
+			spawner.set(param, value);
+			break;
+		default:
+			throw new IllegalArgumentException();
+		}
 	}
 
 }

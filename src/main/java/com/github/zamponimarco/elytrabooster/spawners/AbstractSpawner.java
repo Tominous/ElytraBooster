@@ -21,7 +21,6 @@ public abstract class AbstractSpawner {
 	protected int spawnTaskNumber;
 
 	protected List<Location> entities;
-	protected int checkInterval;
 
 	public AbstractSpawner(ElytraBooster plugin, String id, Location center, double minRadius, double maxRadius,
 			int cooldown, EntityHolder holder) {
@@ -47,6 +46,35 @@ public abstract class AbstractSpawner {
 	
 	public EntityHolder getHolder() {
 		return holder;
+	}
+
+	public void stopSpawnerTask() {
+		plugin.getServer().getScheduler().cancelTask(spawnTaskNumber);
+		holder.despawnAll();
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public Location getCenter() {
+		return center;
+	}
+
+	public double getMinRadius() {
+		return minRadius;
+	}
+
+	public double getMaxRadius() {
+		return maxRadius;
+	}
+
+	public void setCenter(Location center) {
+		this.center = center;
+	}
+
+	public int getCooldown() {
+		return cooldown;
 	}
 
 }

@@ -32,7 +32,7 @@ public class ElytraBooster extends JavaPlugin {
 
 	public void onDisable() {
 		getServer().getScheduler().cancelTasks(this);
-		spawnerManager.getSpawnersMap().values().forEach(spawner -> spawner.getHolder().despawnAll());
+		spawnerManager.getSpawnersMap().values().forEach(spawner -> spawner.stopSpawnerTask());
 	}
 
 	private void setUpFolder() {

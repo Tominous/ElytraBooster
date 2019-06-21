@@ -16,13 +16,13 @@ import com.github.zamponimarco.elytrabooster.portals.AbstractPortal;
 import com.github.zamponimarco.elytrabooster.utils.HeadsUtil;
 import com.github.zamponimarco.elytrabooster.utils.MessagesUtil;
 
-public class StringSettingInventoryHolder extends SettingInventoryHolder implements Listener {
+public class PortalStringSettingInventoryHolder extends PortalSettingInventoryHolder implements Listener {
 
 	private static final String MODIFY_HEAD = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWE3NWM4ZTUxYzNkMTA1YmFiNGM3ZGUzM2E3NzA5MzczNjRiNWEwMWMxNWI3ZGI4MmNjM2UxZmU2ZWI5MzM5NiJ9fX0==";
 	
 	private static Map<HumanEntity, Map<AbstractPortal, String>> settingsMap;
 
-	public StringSettingInventoryHolder(ElytraBooster plugin, String key, AbstractPortal portal, HumanEntity player,
+	public PortalStringSettingInventoryHolder(ElytraBooster plugin, String key, AbstractPortal portal, HumanEntity player,
 			Object value) {
 		super(plugin, key, portal, player, value);
 		settingsMap = new HashMap<>();

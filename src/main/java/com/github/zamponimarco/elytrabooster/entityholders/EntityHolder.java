@@ -12,13 +12,13 @@ import com.github.zamponimarco.elytrabooster.entities.Entity;
 import com.github.zamponimarco.elytrabooster.entities.FireworkEntity;
 
 public class EntityHolder {
-	
+
 	private ElytraBooster plugin;
 //	private Class<? extends Entity> entityClass;
 	private List<Entity> entities;
 	private int maxEntities;
 	private Boost boost;
-	
+
 	public EntityHolder(ElytraBooster plugin, Class<? extends Entity> entityClass, int maxEntities, Boost boost) {
 		this.plugin = plugin;
 //		this.entityClass = entityClass;
@@ -26,7 +26,7 @@ public class EntityHolder {
 		this.boost = boost;
 		this.entities = new ArrayList<Entity>();
 	}
-	
+
 	public void spawnEntity(Location center, double minRadius, double maxRadius) {
 		if (entities.size() < maxEntities) {
 			Random r = new Random();
@@ -40,7 +40,7 @@ public class EntityHolder {
 			entities.add(new FireworkEntity(plugin, this, new Location(center.getWorld(), x, y, z), boost));
 		}
 	}
-	
+
 	public void despawnAll() {
 		entities.forEach(entity -> entity.entityDespawn());
 		entities.clear();
@@ -55,7 +55,11 @@ public class EntityHolder {
 	}
 
 	public void despawn(Entity entity) {
-		entities.remove(entity);	
+		entities.remove(entity);
+	}
+
+	public Boost getBoost() {
+		return boost;
 	}
 
 }
