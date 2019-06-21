@@ -26,8 +26,8 @@ public class SpawnerCreateCommand extends SpawnerCommand {
 		String newSpawnerId = arguments[0];
 
 		if (!spawnerManager.getSpawnersMap().containsKey(newSpawnerId)) {
-			spawnerManager.setSpawner(newSpawnerId, SpawnerFactory.buildSpawner(plugin, spawnerManager,
-					spawnerManager.createDefaultSpawnerConfiguration(player, newSpawnerId)));
+			spawnerManager.setBooster(newSpawnerId, SpawnerFactory.buildSpawner(plugin, spawnerManager,
+					spawnerManager.createDefaultBoosterConfiguration(player, newSpawnerId)));
 			player.sendMessage(MessagesUtil.color("&aPortal created, &6ID: &a" + newSpawnerId));
 		} else {
 			invalidSpawner();

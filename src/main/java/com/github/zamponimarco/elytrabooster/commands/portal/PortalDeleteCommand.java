@@ -25,13 +25,13 @@ public class PortalDeleteCommand extends PortalCommand {
 
 		AbstractPortal portal;
 		if (portalManager.getPortalsMap().containsKey(id)) {
-			portal = portalManager.getPortal(id);
+			portal = portalManager.getBooster(id);
 		} else {
 			invalidPortal();
 			return;
 		}
-		portal.stopPortalTask();
-		portalManager.removePortal(id);
+		portal.stopBoosterTask();
+		portalManager.removeBooster(id);
 		portalManager.getDataYaml().set(id, null);
 		portalManager.saveConfig();
 		sender.sendMessage(MessagesUtil.color("&aPortal deleted, &6ID: &a" + id));

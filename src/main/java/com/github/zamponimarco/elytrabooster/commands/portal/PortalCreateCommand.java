@@ -26,8 +26,8 @@ public class PortalCreateCommand extends PortalCommand {
 		String newPortalId = arguments[0];
 
 		if (!portalManager.getPortalsMap().containsKey(newPortalId)) {
-			portalManager.setPortal(newPortalId, PortalFactory.buildPortal(plugin, portalManager,
-					portalManager.createDefaultPortalConfiguration(player, newPortalId)));
+			portalManager.setBooster(newPortalId, PortalFactory.buildPortal(plugin, portalManager,
+					portalManager.createDefaultBoosterConfiguration(player, newPortalId)));
 			player.sendMessage(MessagesUtil.color("&aPortal created, &6ID: &a" + newPortalId));
 		} else {
 			invalidPortal();

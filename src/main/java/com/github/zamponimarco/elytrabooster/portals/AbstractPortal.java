@@ -9,9 +9,11 @@ import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.github.zamponimarco.elytrabooster.boosts.Boost;
+import com.github.zamponimarco.elytrabooster.core.Booster;
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 import com.github.zamponimarco.elytrabooster.events.FinishedCooldownEvent;
 import com.github.zamponimarco.elytrabooster.events.PlayerBoostEvent;
+import com.github.zamponimarco.elytrabooster.managers.BoosterManager;
 import com.github.zamponimarco.elytrabooster.outlines.BlockPortalOutline;
 import com.github.zamponimarco.elytrabooster.outlines.PortalOutline;
 import com.github.zamponimarco.elytrabooster.outlines.pointsorters.PointSorter;
@@ -26,7 +28,7 @@ import net.md_5.bungee.api.ChatColor;
  * @author Marco
  *
  */
-public abstract class AbstractPortal {
+public abstract class AbstractPortal implements Booster{
 
 	// Instance variables area ---
 
@@ -102,6 +104,10 @@ public abstract class AbstractPortal {
 	 */
 	protected abstract List<Location> getPoints();
 
+	public BoosterManager<?> getDataManager() {
+		return plugin.getPortalManager();
+	}
+	
 	// ---
 
 	/**
@@ -129,7 +135,7 @@ public abstract class AbstractPortal {
 	/**
 	 * Stops the portal task
 	 */
-	public void stopPortalTask() {
+	public void stopBoosterTask() {
 		if (isActive()) {
 			outline.eraseOutline(points);
 			plugin.getServer().getScheduler().cancelTask(outlineTaskNumber);

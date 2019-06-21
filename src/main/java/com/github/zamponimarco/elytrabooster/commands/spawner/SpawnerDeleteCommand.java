@@ -25,13 +25,13 @@ public class SpawnerDeleteCommand extends SpawnerCommand {
 
 		AbstractSpawner spawner;
 		if (spawnerManager.getSpawnersMap().containsKey(id)) {
-			spawner = spawnerManager.getSpawner(id);
+			spawner = spawnerManager.getBooster(id);
 		} else {
 			invalidSpawner();
 			return;
 		}
-		spawner.stopSpawnerTask();
-		spawnerManager.removeSpawner(id);
+		spawner.stopBoosterTask();
+		spawnerManager.removeBooster(id);
 		spawnerManager.getDataYaml().set(id, null);
 		spawnerManager.saveConfig();
 		sender.sendMessage(MessagesUtil.color("&aSpawner deleted, &6ID: &a" + id));

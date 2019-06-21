@@ -28,7 +28,7 @@ public class SpawnerMoveCommand extends SpawnerCommand {
 			return;
 		}
 		String id = arguments[0];
-		AbstractSpawner spawner = spawnerManager.getSpawner(id);
+		AbstractSpawner spawner = spawnerManager.getBooster(id);
 		if (spawner == null) {
 			invalidSpawner();
 			return;
@@ -44,9 +44,9 @@ public class SpawnerMoveCommand extends SpawnerCommand {
 		section.set("y", y);
 		section.set("z", z);
 		
-		spawner.stopSpawnerTask();
+		spawner.stopBoosterTask();
 		spawnerManager.saveConfig();
-		spawnerManager.setSpawner(id, SpawnerFactory.buildSpawner(plugin, spawnerManager,
+		spawnerManager.setBooster(id, SpawnerFactory.buildSpawner(plugin, spawnerManager,
 				spawnerManager.getDataYaml().getConfigurationSection(id)));
 
 	}

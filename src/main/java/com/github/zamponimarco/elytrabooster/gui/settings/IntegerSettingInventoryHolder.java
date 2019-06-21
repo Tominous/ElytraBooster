@@ -6,14 +6,16 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.github.zamponimarco.elytrabooster.core.Booster;
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
-import com.github.zamponimarco.elytrabooster.gui.SpawnerSettingsInventoryHolder;
-import com.github.zamponimarco.elytrabooster.managers.SpawnerManager;
-import com.github.zamponimarco.elytrabooster.spawners.AbstractSpawner;
+import com.github.zamponimarco.elytrabooster.gui.factory.SettingsInventoryHolderFactory;
+import com.github.zamponimarco.elytrabooster.managers.BoosterManager;
 import com.github.zamponimarco.elytrabooster.utils.HeadsUtil;
 import com.github.zamponimarco.elytrabooster.utils.MessagesUtil;
 
-public class SpawnerIntegerSettingInventoryHolder extends SpawnerSettingInventoryHolder {
+public class IntegerSettingInventoryHolder extends SettingInventoryHolder {
+
+	private int result;
 
 	private static final String ARROW_LEFT_HEAD = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjk5ZjA0OTI4OGFjNTExZjZlN2VjNWM5MjM4Zjc2NTI3YzJmYmNhZDI4NTc0MzZhYzM4MTU5NmNjMDJlNCJ9fX0==";
 	private static final String ARROW2_LEFT_HEAD = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODZlMTQ1ZTcxMjk1YmNjMDQ4OGU5YmI3ZTZkNjg5NWI3Zjk2OWEzYjViYjdlYjM0YTUyZTkzMmJjODRkZjViIn19fQ===";
@@ -23,18 +25,16 @@ public class SpawnerIntegerSettingInventoryHolder extends SpawnerSettingInventor
 	private static final String ARROW3_RIGHT_HEAD = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNGY0NDg2ODYzZjMwZTM4NDMyZGJkMjJlNTQxMjk2NDY0NGVjMjVlYTRmOTkxYTM4YzczNzM3NmU5NjA2NDc5In19fQ=====";
 	private static final String SUBMIT = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOWE3NWM4ZTUxYzNkMTA1YmFiNGM3ZGUzM2E3NzA5MzczNjRiNWEwMWMxNWI3ZGI4MmNjM2UxZmU2ZWI5MzM5NiJ9fX0======";
 
-	private int result;
-
-	public SpawnerIntegerSettingInventoryHolder(ElytraBooster plugin, String key, AbstractSpawner spawner,
-			HumanEntity player, Object value) {
-		super(plugin, key, spawner, player, value);
+	public IntegerSettingInventoryHolder(ElytraBooster plugin, String key, Booster booster, HumanEntity player,
+			Object value) {
+		super(plugin, key, booster, player, value);
 		this.result = (int) value;
 		initializeInventory();
 	}
 
 	@Override
 	protected void initializeInventory() {
-		SpawnerManager spawnerManager = plugin.getSpawnerManager();
+		BoosterManager<?> boosterManager = booster.getDataManager();
 		this.inventory = Bukkit.createInventory(this, 27, MessagesUtil.color("&6&lModify &e&l" + key));
 		registerClickConsumer(11, getModifyItem(-1, HeadsUtil.skullFromValue(ARROW_LEFT_HEAD)),
 				e -> modifyAndReload(-1));
@@ -49,14 +49,15 @@ public class SpawnerIntegerSettingInventoryHolder extends SpawnerSettingInventor
 		registerClickConsumer(17, getModifyItem(+100, HeadsUtil.skullFromValue(ARROW3_RIGHT_HEAD)),
 				e -> modifyAndReload(+100));
 		registerClickConsumer(13, getConfirmItem(), e -> {
-			spawnerManager.setParam(spawner.getId(), key, String.valueOf(result));
-			spawner = spawnerManager.reloadSpawner(spawner);
-			player.openInventory(new SpawnerSettingsInventoryHolder(plugin, spawner).getInventory());
+			boosterManager.setParam(booster.getId(), key, String.valueOf(result));
+			booster = boosterManager.reloadBooster(booster);
+			player.openInventory(
+					SettingsInventoryHolderFactory.buildSettingsInventoryHolder(plugin, booster).getInventory());
 			player.sendMessage(MessagesUtil.color(
-					"&aSpawner modified, &6ID: &a" + spawner.getId() + ", &6" + key + ": &a" + String.valueOf(result)));
+					"&aPortal modified, &6ID: &a" + booster.getId() + ", &6" + key + ": &a" + String.valueOf(result)));
 		});
-		registerClickConsumer(26, getBackItem(),
-				e -> player.openInventory(new SpawnerSettingsInventoryHolder(plugin, spawner).getInventory()));
+		registerClickConsumer(26, getBackItem(), e -> player.openInventory(
+				SettingsInventoryHolderFactory.buildSettingsInventoryHolder(plugin, booster).getInventory()));
 		fillInventoryWith(Material.GRAY_STAINED_GLASS_PANE);
 	}
 
@@ -79,5 +80,4 @@ public class SpawnerIntegerSettingInventoryHolder extends SpawnerSettingInventor
 		item.setItemMeta(meta);
 		return item;
 	}
-
 }

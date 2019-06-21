@@ -5,10 +5,12 @@ import java.util.List;
 
 import org.bukkit.Location;
 
+import com.github.zamponimarco.elytrabooster.core.Booster;
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 import com.github.zamponimarco.elytrabooster.entityholders.EntityHolder;
+import com.github.zamponimarco.elytrabooster.managers.BoosterManager;
 
-public abstract class AbstractSpawner {
+public abstract class AbstractSpawner implements Booster{
 
 	protected ElytraBooster plugin;
 	protected String id;
@@ -34,6 +36,10 @@ public abstract class AbstractSpawner {
 
 		this.entities = new ArrayList<Location>();
 	}
+	
+	public BoosterManager<?> getDataManager() {
+		return plugin.getSpawnerManager();
+	}
 
 	public void runSpawnerTask() {
 		this.spawnTaskNumber = plugin.getServer().getScheduler().runTaskTimer(plugin, () -> spawnEntity(), 0, cooldown)
@@ -48,7 +54,7 @@ public abstract class AbstractSpawner {
 		return holder;
 	}
 
-	public void stopSpawnerTask() {
+	public void stopBoosterTask() {
 		plugin.getServer().getScheduler().cancelTask(spawnTaskNumber);
 		holder.despawnAll();
 	}

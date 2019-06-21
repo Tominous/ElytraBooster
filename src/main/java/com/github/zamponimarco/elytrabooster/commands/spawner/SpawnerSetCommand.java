@@ -25,7 +25,7 @@ public class SpawnerSetCommand extends SpawnerCommand {
 			return;
 		}
 		String id = arguments[0];
-		AbstractSpawner spawner = spawnerManager.getSpawner(id);
+		AbstractSpawner spawner = spawnerManager.getBooster(id);
 
 		if (spawner == null) {
 			invalidSpawner();
@@ -44,7 +44,7 @@ public class SpawnerSetCommand extends SpawnerCommand {
 			return;
 		}
 
-		spawnerManager.reloadSpawner(spawner);
+		spawnerManager.reloadBooster(spawner);
 
 	}
 

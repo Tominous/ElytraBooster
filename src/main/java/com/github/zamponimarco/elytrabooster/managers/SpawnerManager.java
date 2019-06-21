@@ -10,11 +10,12 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
+import com.github.zamponimarco.elytrabooster.core.Booster;
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 import com.github.zamponimarco.elytrabooster.spawners.AbstractSpawner;
 import com.github.zamponimarco.elytrabooster.spawners.factory.SpawnerFactory;
 
-public class SpawnerManager implements DataManager {
+public class SpawnerManager implements BoosterManager<AbstractSpawner> {
 
 	private final static String FILENAME = "spawners.yml";
 
@@ -59,7 +60,7 @@ public class SpawnerManager implements DataManager {
 		}
 	}
 
-	public ConfigurationSection createDefaultSpawnerConfiguration(Player creator, String id) {
+	public ConfigurationSection createDefaultBoosterConfiguration(Player creator, String id) {
 		ConfigurationSection newSpawner = dataYaml.createSection(id);
 		newSpawner.set("world", creator.getWorld().getName());
 		newSpawner.set("x", creator.getLocation().getBlockX());
@@ -69,27 +70,27 @@ public class SpawnerManager implements DataManager {
 		return newSpawner;
 	}
 
-	public AbstractSpawner getSpawner(String id) {
+	public AbstractSpawner getBooster(String id) {
 		Objects.requireNonNull(id);
 		return spawners.get(id);
 	}
 
-	public void setSpawner(String id, AbstractSpawner spawner) {
+	public void setBooster(String id, AbstractSpawner spawner) {
 		Objects.requireNonNull(id);
 		Objects.requireNonNull(spawner);
 		spawners.put(id, spawner);
 	}
 
-	public void removeSpawner(String id) {
+	public void removeBooster(String id) {
 		spawners.remove(id);
 	}
 
-	public AbstractSpawner reloadSpawner(AbstractSpawner spawner) {
+	public AbstractSpawner reloadBooster(Booster booster) {
 		saveConfig();
-		spawner.stopSpawnerTask();
+		booster.stopBoosterTask();
 		AbstractSpawner newSpawner = SpawnerFactory.buildSpawner(plugin, this,
-				getDataYaml().getConfigurationSection(spawner.getId()));
-		setSpawner(spawner.getId(), newSpawner);
+				getDataYaml().getConfigurationSection(booster.getId()));
+		setBooster(booster.getId(), newSpawner);
 		return newSpawner;
 	}
 

@@ -23,6 +23,8 @@ public class PortalsListInventoryHolder extends ElytraBoosterInventoryHolder {
 	private static final int PORTALS_NUMBER = 50;
 	private static final String ARROW_LEFT_HEAD = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNzY5N2MyNDg5MmNmYzAzYzcyOGZmYWVhYmYzNGJkZmI5MmQ0NTExNDdiMjZkMjAzZGNhZmE5M2U0MWZmOSJ9fX0=";
 	private static final String ARROW_RIGHT_HEAD = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODZlMTQ1ZTcxMjk1YmNjMDQ4OGU5YmI3ZTZkNjg5NWI3Zjk2OWEzYjViYjdlYjM0YTUyZTkzMmJjODRkZjViIn19fQ===";
+	private static final String ACTIVE_HEAD = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvOTIxOTI4ZWE2N2QzYThiOTdkMjEyNzU4ZjE1Y2NjYWMxMDI0Mjk1YjE4NWIzMTkyNjQ4NDRmNGM1ZTFlNjFlIn19fQ=====";
+	private static final String NOT_ACTIVE_HEAD = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMjVlZjY4ZGNiZDU4MjM0YmE3YWVlMmFkOTFjYTZmYTdjZTIzZjlhMzIzNDViNDhkNmU1ZjViODZhNjhiNWIifX19===";
 
 	private String title;
 	private List<AbstractPortal> portals;
@@ -58,8 +60,8 @@ public class PortalsListInventoryHolder extends ElytraBoosterInventoryHolder {
 	}
 
 	private ItemStack getPortalItem(AbstractPortal portal) {
-		ItemStack portalItem = portal.isActive() ? new ItemStack(Material.GREEN_CONCRETE)
-				: new ItemStack(Material.RED_CONCRETE);
+		ItemStack portalItem = portal.isActive() ? HeadsUtil.skullFromValue(ACTIVE_HEAD)
+				: HeadsUtil.skullFromValue(NOT_ACTIVE_HEAD);
 		ItemMeta meta = portalItem.getItemMeta();
 		meta.setDisplayName(MessagesUtil.color("&a&l" + portal.getId()));
 		meta.setLore(getPortalItemLore(portal));

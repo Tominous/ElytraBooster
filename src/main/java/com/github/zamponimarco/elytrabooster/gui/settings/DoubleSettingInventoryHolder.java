@@ -6,14 +6,14 @@ import org.bukkit.entity.HumanEntity;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.github.zamponimarco.elytrabooster.core.Booster;
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
-import com.github.zamponimarco.elytrabooster.gui.SpawnerSettingsInventoryHolder;
-import com.github.zamponimarco.elytrabooster.managers.SpawnerManager;
-import com.github.zamponimarco.elytrabooster.spawners.AbstractSpawner;
+import com.github.zamponimarco.elytrabooster.gui.factory.SettingsInventoryHolderFactory;
+import com.github.zamponimarco.elytrabooster.managers.BoosterManager;
 import com.github.zamponimarco.elytrabooster.utils.HeadsUtil;
 import com.github.zamponimarco.elytrabooster.utils.MessagesUtil;
 
-public class SpawnerDoubleSettingInventoryHolder extends SpawnerSettingInventoryHolder{
+public class DoubleSettingInventoryHolder extends SettingInventoryHolder {
 
 	private static final String ARROW_LEFT_HEAD = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjk5ZjA0OTI4OGFjNTExZjZlN2VjNWM5MjM4Zjc2NTI3YzJmYmNhZDI4NTc0MzZhYzM4MTU5NmNjMDJlNCJ9fX0==";
 	private static final String ARROW2_LEFT_HEAD = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvODZlMTQ1ZTcxMjk1YmNjMDQ4OGU5YmI3ZTZkNjg5NWI3Zjk2OWEzYjViYjdlYjM0YTUyZTkzMmJjODRkZjViIn19fQ===";
@@ -25,16 +25,16 @@ public class SpawnerDoubleSettingInventoryHolder extends SpawnerSettingInventory
 
 	private double result;
 
-	public SpawnerDoubleSettingInventoryHolder(ElytraBooster plugin, String key, AbstractSpawner spawner, HumanEntity player,
+	public DoubleSettingInventoryHolder(ElytraBooster plugin, String key, Booster booster, HumanEntity player,
 			Object value) {
-		super(plugin, key, spawner, player, value);
+		super(plugin, key, booster, player, value);
 		this.result = (double) value;
 		initializeInventory();
 	}
 
 	@Override
 	protected void initializeInventory() {
-		SpawnerManager spawnerManager = plugin.getSpawnerManager();
+		BoosterManager<?> boosterManager = booster.getDataManager();
 		this.inventory = Bukkit.createInventory(this, 27, MessagesUtil.color("&6&lModify &e&l" + key));
 		registerClickConsumer(11, getModifyItem(-0.01, HeadsUtil.skullFromValue(ARROW_LEFT_HEAD)),
 				e -> modifyAndReload(-0.01));
@@ -49,20 +49,21 @@ public class SpawnerDoubleSettingInventoryHolder extends SpawnerSettingInventory
 		registerClickConsumer(17, getModifyItem(+1.0, HeadsUtil.skullFromValue(ARROW3_RIGHT_HEAD)),
 				e -> modifyAndReload(+1));
 		registerClickConsumer(13, getConfirmItem(), e -> {
-			spawnerManager.setParam(spawner.getId(), key, String.valueOf(result));
-			spawner = spawnerManager.reloadSpawner(spawner);
-			player.openInventory(new SpawnerSettingsInventoryHolder(plugin, spawner).getInventory());
+			boosterManager.setParam(booster.getId(), key, String.valueOf(result));
+			booster = boosterManager.reloadBooster(booster);
+			player.openInventory(
+					SettingsInventoryHolderFactory.buildSettingsInventoryHolder(plugin, booster).getInventory());
 			player.sendMessage(MessagesUtil.color(
-					"&aSpawner modified, &6ID: &a" + spawner.getId() + ", &6" + key + ": &a" + String.valueOf(result)));
+					"&aPortal modified, &6ID: &a" + booster.getId() + ", &6" + key + ": &a" + String.valueOf(result)));
 		});
-		registerClickConsumer(26, getBackItem(),
-				e -> player.openInventory(new SpawnerSettingsInventoryHolder(plugin, spawner).getInventory()));
+		registerClickConsumer(26, getBackItem(), e -> player.openInventory(
+				SettingsInventoryHolderFactory.buildSettingsInventoryHolder(plugin, booster).getInventory()));
 		fillInventoryWith(Material.GRAY_STAINED_GLASS_PANE);
 	}
 
 	private void modifyAndReload(double addition) {
 		result += addition;
-		result = (double)Math.round(result * 100d) / 100d;
+		result = (double) Math.round(result * 100d) / 100d;
 		inventory.setItem(13, getConfirmItem());
 	}
 
@@ -80,5 +81,5 @@ public class SpawnerDoubleSettingInventoryHolder extends SpawnerSettingInventory
 		item.setItemMeta(meta);
 		return item;
 	}
-	
+
 }

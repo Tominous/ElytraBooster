@@ -25,7 +25,7 @@ public class PortalSetCommand extends PortalCommand {
 			return;
 		}
 		String id = arguments[0];
-		AbstractPortal portal = portalManager.getPortal(id);
+		AbstractPortal portal = portalManager.getBooster(id);
 
 		if (portal == null) {
 			invalidPortal();
@@ -44,7 +44,7 @@ public class PortalSetCommand extends PortalCommand {
 			return;
 		}
 		
-		portalManager.reloadPortal(portal);
+		portalManager.reloadBooster(portal);
 
 	}
 

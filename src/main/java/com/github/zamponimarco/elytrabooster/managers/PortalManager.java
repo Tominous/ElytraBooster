@@ -10,6 +10,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
+import com.github.zamponimarco.elytrabooster.core.Booster;
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 import com.github.zamponimarco.elytrabooster.portals.AbstractPortal;
 import com.github.zamponimarco.elytrabooster.portals.factory.PortalFactory;
@@ -20,7 +21,7 @@ import com.github.zamponimarco.elytrabooster.portals.factory.PortalFactory;
  * @author Marco
  *
  */
-public class PortalManager implements DataManager {
+public class PortalManager implements BoosterManager<AbstractPortal> {
 
 	private final static String FILENAME = "portals.yml";
 
@@ -89,7 +90,7 @@ public class PortalManager implements DataManager {
 	 * @param id
 	 * @return configuration for a default portal
 	 */
-	public ConfigurationSection createDefaultPortalConfiguration(Player creator, String id) {
+	public ConfigurationSection createDefaultBoosterConfiguration(Player creator, String id) {
 		ConfigurationSection newPortal = dataYaml.createSection(id);
 		newPortal.set("world", creator.getWorld().getName());
 		newPortal.set("x", creator.getLocation().getBlockX());
@@ -146,7 +147,7 @@ public class PortalManager implements DataManager {
 	 * @param id
 	 * @return portal named id
 	 */
-	public AbstractPortal getPortal(String id) {
+	public AbstractPortal getBooster(String id) {
 		Objects.requireNonNull(id);
 		return portals.get(id);
 	}
@@ -158,7 +159,7 @@ public class PortalManager implements DataManager {
 	 * @param id
 	 * @param portal
 	 */
-	public void setPortal(String id, AbstractPortal portal) {
+	public void setBooster(String id, AbstractPortal portal) {
 		Objects.requireNonNull(id);
 		Objects.requireNonNull(portal);
 		portals.put(id, portal);
@@ -169,16 +170,16 @@ public class PortalManager implements DataManager {
 	 * 
 	 * @param id
 	 */
-	public void removePortal(String id) {
+	public void removeBooster(String id) {
 		portals.remove(id);
 	}
 
-	public AbstractPortal reloadPortal(AbstractPortal portal) {
+	public AbstractPortal reloadBooster(Booster booster) {
 		saveConfig();
-		portal.stopPortalTask();
+		booster.stopBoosterTask();
 		AbstractPortal newPortal = PortalFactory.buildPortal(plugin, this,
-				getDataYaml().getConfigurationSection(portal.getId()));
-		setPortal(portal.getId(), newPortal);
+				getDataYaml().getConfigurationSection(booster.getId()));
+		setBooster(booster.getId(), newPortal);
 		return newPortal;
 	}
 

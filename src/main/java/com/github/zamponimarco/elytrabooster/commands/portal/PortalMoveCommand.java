@@ -33,7 +33,7 @@ public class PortalMoveCommand extends PortalCommand {
 			return;
 		}
 		String id = arguments[0];
-		AbstractPortal portal = portalManager.getPortal(id);
+		AbstractPortal portal = portalManager.getBooster(id);
 		if (portal == null) {
 			invalidPortal();
 			return;
@@ -64,9 +64,9 @@ public class PortalMoveCommand extends PortalCommand {
 			section.set("portalsUnion", portalsUnion);
 		}
 
-		portal.stopPortalTask();
+		portal.stopBoosterTask();
 		portalManager.saveConfig();
-		portalManager.setPortal(id, PortalFactory.buildPortal(plugin, portalManager,
+		portalManager.setBooster(id, PortalFactory.buildPortal(plugin, portalManager,
 				portalManager.getDataYaml().getConfigurationSection(id)));
 	}
 

@@ -24,12 +24,12 @@ public class PortalDisableCommand extends PortalCommand {
 		String id = arguments[0];
 		AbstractPortal portal;
 		if (portalManager.getPortalsMap().containsKey(id)) {
-			portal = portalManager.getPortal(id);
+			portal = portalManager.getBooster(id);
 		} else {
 			invalidPortal();
 			return;
 		}
-		portal.stopPortalTask();
+		portal.stopBoosterTask();
 		sender.sendMessage(MessagesUtil.color("&aPortal disabled, &6ID: &a" + id));
 	}
 

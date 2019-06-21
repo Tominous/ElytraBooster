@@ -32,7 +32,7 @@ public class ElytraBooster extends JavaPlugin {
 
 	public void onDisable() {
 		getServer().getScheduler().cancelTasks(this);
-		spawnerManager.getSpawnersMap().values().forEach(spawner -> spawner.stopSpawnerTask());
+		spawnerManager.getSpawnersMap().values().forEach(spawner -> spawner.stopBoosterTask());
 	}
 
 	private void setUpFolder() {
@@ -57,24 +57,14 @@ public class ElytraBooster extends JavaPlugin {
 		getServer().getPluginManager().registerEvents(new PlayerChatListener(this), this);
 	}
 
-	/**
-	 * @return the portalManager of the plugin
-	 */
 	public PortalManager getPortalManager() {
 		return portalManager;
 	}
 
-	/**
-	 * @return the statusMap
-	 */
 	public Map<Player, Boolean> getStatusMap() {
 		return statusMap;
 	}
 
-	/**
-	 * 
-	 * @return the settingsManager
-	 */
 	public SettingsManager getSettingsManager() {
 		return settingsManager;
 	}
