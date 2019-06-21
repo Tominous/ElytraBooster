@@ -1,4 +1,4 @@
-package com.github.zamponimarco.elytrabooster.commands;
+package com.github.zamponimarco.elytrabooster.commands.portal;
 
 import java.util.Arrays;
 
@@ -9,9 +9,9 @@ import com.github.zamponimarco.elytrabooster.managers.PortalManager;
 import com.github.zamponimarco.elytrabooster.portals.AbstractPortal;
 import com.github.zamponimarco.elytrabooster.utils.MessagesUtil;
 
-public class ElytraBoosterSetCommand extends AbstractCommand {
+public class PortalSetCommand extends PortalCommand {
 
-	public ElytraBoosterSetCommand(ElytraBooster plugin, CommandSender sender, String subCommand, String[] arguments,
+	public PortalSetCommand(ElytraBooster plugin, CommandSender sender, String subCommand, String[] arguments,
 			boolean isSenderPlayer) {
 		super(plugin, sender, subCommand, arguments, isSenderPlayer);
 	}

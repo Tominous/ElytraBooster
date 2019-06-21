@@ -48,9 +48,5 @@ public abstract class AbstractCommand {
 	protected void incorrectUsage() {
 		sender.sendMessage(MessagesUtil.color("&cIncorrect command syntax, type /eb help"));
 	}
-	
-	protected void invalidPortal() {
-		sender.sendMessage((MessagesUtil.color("&cPortal passed in input is invalid")));
-	}
 
 }

@@ -1,4 +1,4 @@
-package com.github.zamponimarco.elytrabooster.commands;
+package com.github.zamponimarco.elytrabooster.commands.portal;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -8,9 +8,9 @@ import com.github.zamponimarco.elytrabooster.managers.PortalManager;
 import com.github.zamponimarco.elytrabooster.portals.factory.PortalFactory;
 import com.github.zamponimarco.elytrabooster.utils.MessagesUtil;
 
-public class ElytraBoosterCreateCommand extends AbstractCommand {
+public class PortalCreateCommand extends PortalCommand {
 
-	public ElytraBoosterCreateCommand(ElytraBooster plugin, CommandSender sender, String subCommand, String[] arguments,
+	public PortalCreateCommand(ElytraBooster plugin, CommandSender sender, String subCommand, String[] arguments,
 			boolean isSenderPlayer) {
 		super(plugin, sender, subCommand, arguments, isSenderPlayer);
 	}

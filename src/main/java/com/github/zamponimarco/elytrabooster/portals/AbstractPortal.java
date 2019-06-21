@@ -59,16 +59,15 @@ public abstract class AbstractPortal {
 	 * @param id
 	 * @param center
 	 * @param axis
-	 * @param initialVelocity
-	 * @param finalVelocity
-	 * @param boostDuration
+	 * @param boost
 	 * @param outline
 	 * @param portalsUnion
-	 * @param trail
 	 * @param cooldown
+	 * @param sorter
+	 * @param measures
 	 */
-	public AbstractPortal(ElytraBooster plugin, String id, Location center, char axis, Boost boost, PortalOutline outline,
-			List<UnionPortal> portalsUnion, int cooldown, PointSorter sorter, String measures) {
+	public AbstractPortal(ElytraBooster plugin, String id, Location center, char axis, Boost boost,
+			PortalOutline outline, List<UnionPortal> portalsUnion, int cooldown, PointSorter sorter, String measures) {
 		super();
 		this.plugin = plugin;
 		this.portal = this;
@@ -123,7 +122,7 @@ public abstract class AbstractPortal {
 			outlineTaskNumber = plugin.getServer().getScheduler()
 					.runTaskTimer(plugin, () -> drawOutline(), 1, outlineInterval).getTaskId();
 			checkTaskNumber = plugin.getServer().getScheduler()
-					.runTaskTimer(plugin, () -> checkPlayersPassing(), 1, checkInterval).getTaskId();
+					.runTaskTimer(plugin, () -> checkPlayersPassing(), 0, checkInterval).getTaskId();
 		}
 	}
 
@@ -313,7 +312,7 @@ public abstract class AbstractPortal {
 	public PointSorter getSorter() {
 		return sorter;
 	}
-	
+
 	public Boost getBoost() {
 		return boost;
 	}

@@ -1,4 +1,4 @@
-package com.github.zamponimarco.elytrabooster.commands;
+package com.github.zamponimarco.elytrabooster.commands.portal;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -12,9 +12,9 @@ import com.github.zamponimarco.elytrabooster.gui.PortalsListInventoryHolder;
 import com.github.zamponimarco.elytrabooster.portals.AbstractPortal;
 import com.github.zamponimarco.elytrabooster.utils.MessagesUtil;
 
-public class ElytraBoosterNearCommand extends AbstractCommand {
+public class PortalNearCommand extends PortalCommand {
 
-	public ElytraBoosterNearCommand(ElytraBooster plugin, CommandSender sender, String subCommand, String[] arguments,
+	public PortalNearCommand(ElytraBooster plugin, CommandSender sender, String subCommand, String[] arguments,
 			boolean isSenderPlayer) {
 		super(plugin, sender, subCommand, arguments, isSenderPlayer);
 	}
