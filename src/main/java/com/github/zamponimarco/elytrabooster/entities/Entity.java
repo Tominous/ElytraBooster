@@ -7,6 +7,7 @@ import com.github.zamponimarco.elytrabooster.boosts.Boost;
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 import com.github.zamponimarco.elytrabooster.entityholders.EntityHolder;
 import com.github.zamponimarco.elytrabooster.events.PlayerBoostEvent;
+import com.github.zamponimarco.elytrabooster.settings.Settings;
 
 public abstract class Entity {
 
@@ -26,7 +27,9 @@ public abstract class Entity {
 	}
 
 	public void runEntityTask() {
-		checkTasknumber = plugin.getServer().getScheduler().runTaskTimer(plugin, () -> checkPlayersPassing(), 0, 1)
+		checkTasknumber = plugin.getServer().getScheduler()
+				.runTaskTimer(plugin, () -> checkPlayersPassing(), 0,
+						Integer.valueOf(plugin.getSettingsManager().getSetting(Settings.SPAWNER_CHECK_INTERVAL)))
 				.getTaskId();
 	}
 

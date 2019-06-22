@@ -22,10 +22,12 @@ public class SettingsManager implements DataManager {
 
 	public SettingsManager(ElytraBooster plugin) {
 		this.plugin = plugin;
-		
+
 		loadDataFile();
 		loadDataYaml();
 		loadData();
+
+		updateConfig();
 	}
 
 	@Override
@@ -46,8 +48,17 @@ public class SettingsManager implements DataManager {
 		settings.put(Settings.METRICS, dataYaml.getString("metrics", "true"));
 		settings.put(Settings.PORTAL_OUTLINE_INTERVAL, dataYaml.getString("portalOutlineInterval", "4"));
 		settings.put(Settings.PORTAL_CHECK_INTERVAL, dataYaml.getString("portalCheckInterval", "1"));
+		settings.put(Settings.SPAWNER_CHECK_INTERVAL, dataYaml.getString("spawnerCheckInterval", "1"));
+		settings.put(Settings.VERSION, dataYaml.getString("version", ""));
 	}
-	
+
+	private void updateConfig() {
+		if (!settings.get(Settings.VERSION).equals(plugin.getDescription().getVersion())) {
+			dataFile.delete();
+			plugin.saveDefaultConfig();
+		}
+	}
+
 	public void saveConfig() {
 		try {
 			dataYaml.save(dataFile);
@@ -75,7 +86,7 @@ public class SettingsManager implements DataManager {
 	public Map<Settings, String> getSettings() {
 		return settings;
 	}
-	
+
 	public String getSetting(Settings setting) {
 		return settings.get(setting);
 	}

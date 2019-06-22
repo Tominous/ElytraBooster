@@ -66,7 +66,7 @@ public class IntegerSettingInventoryHolder extends SettingInventoryHolder {
 		inventory.setItem(13, getConfirmItem());
 	}
 
-	private ItemStack getModifyItem(double addition, ItemStack item) {
+	private ItemStack getModifyItem(int addition, ItemStack item) {
 		ItemMeta meta = item.getItemMeta();
 		meta.setDisplayName(MessagesUtil.color("&6&lModify -> &e&l" + String.valueOf(addition)));
 		item.setItemMeta(meta);

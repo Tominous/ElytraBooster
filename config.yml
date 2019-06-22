@@ -6,3 +6,10 @@ portalOutlineInterval: 4
 
 #The interval between two searches by the portal for players passing inside
 portalCheckInterval: 1
+
+#The interval between two searches by the spawner entities for players passing nearby
+spawnerCheckInterval: 1
+
+#config.yml file version
+# DO NOT MODIFY
+version: 1.2
