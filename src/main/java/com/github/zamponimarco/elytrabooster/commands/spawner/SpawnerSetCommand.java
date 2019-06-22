@@ -4,9 +4,9 @@ import java.util.Arrays;
 
 import org.bukkit.command.CommandSender;
 
+import com.github.zamponimarco.elytrabooster.boosters.spawners.AbstractSpawner;
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
-import com.github.zamponimarco.elytrabooster.managers.SpawnerManager;
-import com.github.zamponimarco.elytrabooster.spawners.AbstractSpawner;
+import com.github.zamponimarco.elytrabooster.managers.boosters.SpawnerManager;
 import com.github.zamponimarco.elytrabooster.utils.MessagesUtil;
 
 public class SpawnerSetCommand extends SpawnerCommand {

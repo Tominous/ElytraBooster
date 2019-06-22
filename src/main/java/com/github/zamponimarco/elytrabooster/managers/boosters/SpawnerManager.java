@@ -1,4 +1,4 @@
-package com.github.zamponimarco.elytrabooster.managers;
+package com.github.zamponimarco.elytrabooster.managers.boosters;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,10 +10,11 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
-import com.github.zamponimarco.elytrabooster.core.Booster;
+import com.github.zamponimarco.elytrabooster.boosters.Booster;
+import com.github.zamponimarco.elytrabooster.boosters.factory.BoosterFactory;
+import com.github.zamponimarco.elytrabooster.boosters.factory.SpawnerFactory;
+import com.github.zamponimarco.elytrabooster.boosters.spawners.AbstractSpawner;
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
-import com.github.zamponimarco.elytrabooster.spawners.AbstractSpawner;
-import com.github.zamponimarco.elytrabooster.spawners.factory.SpawnerFactory;
 
 public class SpawnerManager implements BoosterManager<AbstractSpawner> {
 
@@ -48,8 +49,7 @@ public class SpawnerManager implements BoosterManager<AbstractSpawner> {
 	@Override
 	public void loadData() {
 		spawners = new HashMap<String, AbstractSpawner>();
-		dataYaml.getKeys(false).forEach(id -> spawners.put(id,
-				SpawnerFactory.buildSpawner(plugin, this, dataYaml.getConfigurationSection(id))));
+		dataYaml.getKeys(false).forEach(id -> addBooster(id));
 	}
 
 	public void saveConfig() {
@@ -70,6 +70,11 @@ public class SpawnerManager implements BoosterManager<AbstractSpawner> {
 		return newSpawner;
 	}
 
+	@Override
+	public void addBooster(String id) {
+		spawners.put(id, SpawnerFactory.buildBooster(plugin, dataYaml.getConfigurationSection(id)));
+	}
+
 	public AbstractSpawner getBooster(String id) {
 		Objects.requireNonNull(id);
 		return spawners.get(id);
@@ -88,13 +93,13 @@ public class SpawnerManager implements BoosterManager<AbstractSpawner> {
 	public AbstractSpawner reloadBooster(Booster booster) {
 		saveConfig();
 		booster.stopBoosterTask();
-		AbstractSpawner newSpawner = SpawnerFactory.buildSpawner(plugin, this,
+		AbstractSpawner newSpawner = SpawnerFactory.buildBooster(plugin,
 				getDataYaml().getConfigurationSection(booster.getId()));
 		setBooster(booster.getId(), newSpawner);
 		return newSpawner;
 	}
 
-	public Map<String, AbstractSpawner> getSpawnersMap() {
+	public Map<String, AbstractSpawner> getBoostersMap() {
 		return spawners;
 	}
 
@@ -127,6 +132,11 @@ public class SpawnerManager implements BoosterManager<AbstractSpawner> {
 		default:
 			throw new IllegalArgumentException();
 		}
+	}
+
+	@Override
+	public Class<? extends BoosterFactory> getFactory() {
+		return SpawnerFactory.class;
 	}
 
 }

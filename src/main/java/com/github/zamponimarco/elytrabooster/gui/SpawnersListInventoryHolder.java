@@ -13,8 +13,8 @@ import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import com.github.zamponimarco.elytrabooster.boosters.spawners.AbstractSpawner;
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
-import com.github.zamponimarco.elytrabooster.spawners.AbstractSpawner;
 import com.github.zamponimarco.elytrabooster.utils.HeadsUtil;
 import com.github.zamponimarco.elytrabooster.utils.MessagesUtil;
 
@@ -48,6 +48,7 @@ public class SpawnersListInventoryHolder extends ElytraBoosterInventoryHolder {
 		this.inventory = Bukkit.createInventory(this, 54, title);
 		toList.forEach(spawner -> registerClickConsumer(toList.indexOf(spawner), getSpawnerItem(spawner),
 				getSpawnerConsumer(toList.indexOf(spawner))));
+		registerClickConsumer(51, getCreateItem(), getCreateConsumer("spawner"));
 		if (page != maxPage) {
 			registerClickConsumer(53, HeadsUtil.skullFromValue(ARROW_LEFT_HEAD), e -> e.getWhoClicked()
 					.openInventory(new SpawnersListInventoryHolder(plugin, title, spawners, page + 1).getInventory()));

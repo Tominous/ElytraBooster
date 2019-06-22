@@ -1,4 +1,4 @@
-package com.github.zamponimarco.elytrabooster.managers;
+package com.github.zamponimarco.elytrabooster.managers.boosters;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,10 +10,11 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 
-import com.github.zamponimarco.elytrabooster.core.Booster;
+import com.github.zamponimarco.elytrabooster.boosters.Booster;
+import com.github.zamponimarco.elytrabooster.boosters.factory.BoosterFactory;
+import com.github.zamponimarco.elytrabooster.boosters.factory.PortalFactory;
+import com.github.zamponimarco.elytrabooster.boosters.portals.AbstractPortal;
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
-import com.github.zamponimarco.elytrabooster.portals.AbstractPortal;
-import com.github.zamponimarco.elytrabooster.portals.factory.PortalFactory;
 
 /**
  * Handles data of the portals
@@ -31,12 +32,6 @@ public class PortalManager implements BoosterManager<AbstractPortal> {
 	private YamlConfiguration dataYaml;
 	private Map<String, AbstractPortal> portals;
 
-	/**
-	 * Creates a PortalManager instance
-	 * 
-	 * @param plugin
-	 * @param settingsManager
-	 */
 	public PortalManager(ElytraBooster plugin) {
 		super();
 		this.plugin = plugin;
@@ -46,9 +41,6 @@ public class PortalManager implements BoosterManager<AbstractPortal> {
 		loadData();
 	}
 
-	/**
-	 * Loads the data file
-	 */
 	public void loadDataFile() {
 		dataFile = new File(plugin.getDataFolder(), FILENAME);
 		if (!dataFile.exists()) {
@@ -56,25 +48,15 @@ public class PortalManager implements BoosterManager<AbstractPortal> {
 		}
 	}
 
-	/**
-	 * Loads the data yaml configuration
-	 */
 	public void loadDataYaml() {
 		dataYaml = YamlConfiguration.loadConfiguration(dataFile);
 	}
 
-	/**
-	 * Loads the portals in the map
-	 */
 	public void loadData() {
 		portals = new HashMap<String, AbstractPortal>();
-		dataYaml.getKeys(false).forEach(
-				id -> portals.put(id, PortalFactory.buildPortal(plugin, this, dataYaml.getConfigurationSection(id))));
+		dataYaml.getKeys(false).forEach(id -> addBooster(id));
 	}
 
-	/**
-	 * Saves the config
-	 */
 	public void saveConfig() {
 		try {
 			dataYaml.save(dataFile);
@@ -83,13 +65,7 @@ public class PortalManager implements BoosterManager<AbstractPortal> {
 		}
 	}
 
-	/**
-	 * Return the configuration for a default portal
-	 * 
-	 * @param creator
-	 * @param id
-	 * @return configuration for a default portal
-	 */
+	@Override
 	public ConfigurationSection createDefaultBoosterConfiguration(Player creator, String id) {
 		ConfigurationSection newPortal = dataYaml.createSection(id);
 		newPortal.set("world", creator.getWorld().getName());
@@ -105,13 +81,12 @@ public class PortalManager implements BoosterManager<AbstractPortal> {
 		return newPortal;
 	}
 
-	/**
-	 * Sets the value in the yaml config of a certain portal with a certain value
-	 * 
-	 * @param id
-	 * @param param
-	 * @param value
-	 */
+	@Override
+	public void addBooster(String id) {
+		portals.put(id, PortalFactory.buildBooster(plugin, dataYaml.getConfigurationSection(id)));
+	}
+
+	@Override
 	public void setParam(String id, String param, String value) {
 		ConfigurationSection portal = getDataYaml().getConfigurationSection(id);
 		switch (param) {
@@ -141,35 +116,18 @@ public class PortalManager implements BoosterManager<AbstractPortal> {
 
 	}
 
-	/**
-	 * Returns the portal that has the given id
-	 * 
-	 * @param id
-	 * @return portal named id
-	 */
+	@Override
 	public AbstractPortal getBooster(String id) {
 		Objects.requireNonNull(id);
 		return portals.get(id);
 	}
 
-	/**
-	 * Puts in the map the given portal with name id, replaces id named portals that
-	 * were in the map
-	 * 
-	 * @param id
-	 * @param portal
-	 */
 	public void setBooster(String id, AbstractPortal portal) {
 		Objects.requireNonNull(id);
 		Objects.requireNonNull(portal);
 		portals.put(id, portal);
 	}
 
-	/**
-	 * Remove portal from the portals map
-	 * 
-	 * @param id
-	 */
 	public void removeBooster(String id) {
 		portals.remove(id);
 	}
@@ -177,33 +135,27 @@ public class PortalManager implements BoosterManager<AbstractPortal> {
 	public AbstractPortal reloadBooster(Booster booster) {
 		saveConfig();
 		booster.stopBoosterTask();
-		AbstractPortal newPortal = PortalFactory.buildPortal(plugin, this,
+		AbstractPortal newPortal = PortalFactory.buildBooster(plugin,
 				getDataYaml().getConfigurationSection(booster.getId()));
 		setBooster(booster.getId(), newPortal);
 		return newPortal;
 	}
 
-	/**
-	 * Returns the map of portals
-	 * 
-	 * @return portalsMap
-	 */
-	public Map<String, AbstractPortal> getPortalsMap() {
+	public Map<String, AbstractPortal> getBoostersMap() {
 		return portals;
 	}
 
-	/**
-	 * @return the dataFile
-	 */
 	public File getDataFile() {
 		return dataFile;
 	}
 
-	/**
-	 * @return the dataYaml
-	 */
 	public YamlConfiguration getDataYaml() {
 		return dataYaml;
+	}
+
+	@Override
+	public Class<? extends BoosterFactory> getFactory() {
+		return PortalFactory.class;
 	}
 
 }

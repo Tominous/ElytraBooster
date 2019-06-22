@@ -1,4 +1,4 @@
-package com.github.zamponimarco.elytrabooster.portals;
+package com.github.zamponimarco.elytrabooster.boosters.portals;
 
 import java.util.List;
 import java.util.Locale;
@@ -6,12 +6,12 @@ import java.util.Locale;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
+import com.github.zamponimarco.elytrabooster.boosters.portals.utils.PortalUtils;
 import com.github.zamponimarco.elytrabooster.boosts.Boost;
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 import com.github.zamponimarco.elytrabooster.outlines.BlockPortalOutline;
 import com.github.zamponimarco.elytrabooster.outlines.PortalOutline;
 import com.github.zamponimarco.elytrabooster.outlines.pointsorters.PointSorter;
-import com.github.zamponimarco.elytrabooster.portals.utils.PortalUtils;
 
 public class UnionPortal extends AbstractPortal {
 

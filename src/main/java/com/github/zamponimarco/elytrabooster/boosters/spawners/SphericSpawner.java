@@ -1,4 +1,4 @@
-package com.github.zamponimarco.elytrabooster.spawners;
+package com.github.zamponimarco.elytrabooster.boosters.spawners;
 
 import org.bukkit.Location;
 

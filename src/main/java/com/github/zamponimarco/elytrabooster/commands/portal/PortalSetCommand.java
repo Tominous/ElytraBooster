@@ -4,9 +4,9 @@ import java.util.Arrays;
 
 import org.bukkit.command.CommandSender;
 
+import com.github.zamponimarco.elytrabooster.boosters.portals.AbstractPortal;
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
-import com.github.zamponimarco.elytrabooster.managers.PortalManager;
-import com.github.zamponimarco.elytrabooster.portals.AbstractPortal;
+import com.github.zamponimarco.elytrabooster.managers.boosters.PortalManager;
 import com.github.zamponimarco.elytrabooster.utils.MessagesUtil;
 
 public class PortalSetCommand extends PortalCommand {

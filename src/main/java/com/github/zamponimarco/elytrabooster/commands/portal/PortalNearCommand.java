@@ -7,9 +7,9 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.github.zamponimarco.elytrabooster.boosters.portals.AbstractPortal;
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 import com.github.zamponimarco.elytrabooster.gui.PortalsListInventoryHolder;
-import com.github.zamponimarco.elytrabooster.portals.AbstractPortal;
 import com.github.zamponimarco.elytrabooster.utils.MessagesUtil;
 
 public class PortalNearCommand extends PortalCommand {
@@ -29,7 +29,7 @@ public class PortalNearCommand extends PortalCommand {
 			return;
 		}
 
-		List<AbstractPortal> portals = plugin.getPortalManager().getPortalsMap().values().stream().filter(portal -> {
+		List<AbstractPortal> portals = plugin.getPortalManager().getBoostersMap().values().stream().filter(portal -> {
 			return portal.getCenter().distance(player.getLocation()) <= range;
 		}).collect(Collectors.toList());
 		portals.sort((p1, p2) -> (int) (p1.getCenter().distance(player.getLocation())

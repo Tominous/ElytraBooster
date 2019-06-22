@@ -11,13 +11,13 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.github.zamponimarco.elytrabooster.core.Booster;
+import com.github.zamponimarco.elytrabooster.boosters.Booster;
+import com.github.zamponimarco.elytrabooster.boosters.spawners.AbstractSpawner;
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 import com.github.zamponimarco.elytrabooster.gui.settings.DoubleSettingInventoryHolder;
 import com.github.zamponimarco.elytrabooster.gui.settings.IntegerSettingInventoryHolder;
 import com.github.zamponimarco.elytrabooster.gui.settings.SettingInventoryHolder;
 import com.github.zamponimarco.elytrabooster.gui.settings.StringSettingInventoryHolder;
-import com.github.zamponimarco.elytrabooster.spawners.AbstractSpawner;
 import com.github.zamponimarco.elytrabooster.utils.HeadsUtil;
 import com.github.zamponimarco.elytrabooster.utils.MessagesUtil;
 import com.google.common.collect.Lists;
@@ -83,6 +83,7 @@ public class SpawnerSettingsInventoryHolder extends ElytraBoosterInventoryHolder
 						spawner.getHolder().getBoost().getTrail().getName()),
 				getSettingConsumer("trail", spawner.getHolder().getBoost().getTrail().getName(),
 						StringSettingInventoryHolder.class));
+		registerClickConsumer(18, getDeleteItem(), getDeleteConsumer(spawner));
 		fillInventoryWith(Material.GRAY_STAINED_GLASS_PANE);
 	}
 

@@ -1,14 +1,14 @@
-package com.github.zamponimarco.elytrabooster.spawners;
+package com.github.zamponimarco.elytrabooster.boosters.spawners;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Location;
 
-import com.github.zamponimarco.elytrabooster.core.Booster;
+import com.github.zamponimarco.elytrabooster.boosters.Booster;
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 import com.github.zamponimarco.elytrabooster.entityholders.EntityHolder;
-import com.github.zamponimarco.elytrabooster.managers.BoosterManager;
+import com.github.zamponimarco.elytrabooster.managers.boosters.BoosterManager;
 
 public abstract class AbstractSpawner implements Booster{
 

@@ -1,27 +1,25 @@
-package com.github.zamponimarco.elytrabooster.spawners.factory;
+package com.github.zamponimarco.elytrabooster.boosters.factory;
 
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 
+import com.github.zamponimarco.elytrabooster.boosters.spawners.AbstractSpawner;
+import com.github.zamponimarco.elytrabooster.boosters.spawners.SphericSpawner;
 import com.github.zamponimarco.elytrabooster.boosts.Boost;
 import com.github.zamponimarco.elytrabooster.boosts.SimpleBoost;
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 import com.github.zamponimarco.elytrabooster.entities.Entity;
 import com.github.zamponimarco.elytrabooster.entities.FireworkEntity;
 import com.github.zamponimarco.elytrabooster.entityholders.EntityHolder;
-import com.github.zamponimarco.elytrabooster.managers.SpawnerManager;
-import com.github.zamponimarco.elytrabooster.spawners.AbstractSpawner;
-import com.github.zamponimarco.elytrabooster.spawners.SphericSpawner;
 import com.github.zamponimarco.elytrabooster.trails.BoostTrail;
 import com.github.zamponimarco.elytrabooster.trails.factory.BoostTrailFactory;
 
-public class SpawnerFactory {
+public class SpawnerFactory implements BoosterFactory {
 
 	@SuppressWarnings("unchecked")
-	public static AbstractSpawner buildSpawner(ElytraBooster plugin, SpawnerManager spawnerManager,
-			ConfigurationSection spawnerConfiguration) {
+	public static AbstractSpawner buildBooster(ElytraBooster plugin, ConfigurationSection spawnerConfiguration) {
 
 		String id = spawnerConfiguration.getName();
 
@@ -51,8 +49,8 @@ public class SpawnerFactory {
 		String entityString = spawnerConfiguration.getString("entity", "firework");
 		Class<? extends Entity> entityClass = FireworkEntity.class;
 		try {
-			entityClass = (Class<? extends Entity>) Class
-					.forName("com.github.zamponimarco.elytrabooster.entities." + WordUtils.capitalize(entityString) + "Entity");
+			entityClass = (Class<? extends Entity>) Class.forName(
+					"com.github.zamponimarco.elytrabooster.entities." + WordUtils.capitalize(entityString) + "Entity");
 		} catch (Exception e) {
 		}
 

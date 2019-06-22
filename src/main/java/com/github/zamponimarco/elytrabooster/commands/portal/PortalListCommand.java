@@ -5,9 +5,9 @@ import java.util.List;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.github.zamponimarco.elytrabooster.boosters.portals.AbstractPortal;
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 import com.github.zamponimarco.elytrabooster.gui.PortalsListInventoryHolder;
-import com.github.zamponimarco.elytrabooster.portals.AbstractPortal;
 import com.github.zamponimarco.elytrabooster.utils.MessagesUtil;
 import com.google.common.collect.Lists;
 
@@ -21,7 +21,7 @@ public class PortalListCommand extends PortalCommand {
 	@Override
 	protected void execute() {
 		Player player = (Player) sender;
-		List<AbstractPortal> portals = Lists.newArrayList(plugin.getPortalManager().getPortalsMap().values());
+		List<AbstractPortal> portals = Lists.newArrayList(plugin.getPortalManager().getBoostersMap().values());
 		portals.sort((p1, p2) -> (int) (p1.getCenter().distance(player.getLocation())
 				- p2.getCenter().distance(player.getLocation())));
 

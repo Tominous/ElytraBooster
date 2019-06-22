@@ -3,9 +3,9 @@ package com.github.zamponimarco.elytrabooster.commands.spawner;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.github.zamponimarco.elytrabooster.boosters.factory.SpawnerFactory;
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
-import com.github.zamponimarco.elytrabooster.managers.SpawnerManager;
-import com.github.zamponimarco.elytrabooster.spawners.factory.SpawnerFactory;
+import com.github.zamponimarco.elytrabooster.managers.boosters.SpawnerManager;
 import com.github.zamponimarco.elytrabooster.utils.MessagesUtil;
 
 public class SpawnerCreateCommand extends SpawnerCommand {
@@ -25,8 +25,8 @@ public class SpawnerCreateCommand extends SpawnerCommand {
 		}
 		String newSpawnerId = arguments[0];
 
-		if (!spawnerManager.getSpawnersMap().containsKey(newSpawnerId)) {
-			spawnerManager.setBooster(newSpawnerId, SpawnerFactory.buildSpawner(plugin, spawnerManager,
+		if (!spawnerManager.getBoostersMap().containsKey(newSpawnerId)) {
+			spawnerManager.setBooster(newSpawnerId, SpawnerFactory.buildBooster(plugin,
 					spawnerManager.createDefaultBoosterConfiguration(player, newSpawnerId)));
 			player.sendMessage(MessagesUtil.color("&aPortal created, &6ID: &a" + newSpawnerId));
 		} else {

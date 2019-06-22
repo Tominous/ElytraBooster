@@ -7,9 +7,9 @@ import org.apache.commons.lang.StringUtils;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.github.zamponimarco.elytrabooster.boosters.spawners.AbstractSpawner;
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 import com.github.zamponimarco.elytrabooster.gui.SpawnersListInventoryHolder;
-import com.github.zamponimarco.elytrabooster.spawners.AbstractSpawner;
 import com.github.zamponimarco.elytrabooster.utils.MessagesUtil;
 
 public class SpawnerNearCommand extends SpawnerCommand {
@@ -29,7 +29,7 @@ public class SpawnerNearCommand extends SpawnerCommand {
 			return;
 		}
 
-		List<AbstractSpawner> spawners = plugin.getSpawnerManager().getSpawnersMap().values().stream().filter(portal -> {
+		List<AbstractSpawner> spawners = plugin.getSpawnerManager().getBoostersMap().values().stream().filter(portal -> {
 			return portal.getCenter().distance(player.getLocation()) <= range;
 		}).collect(Collectors.toList());
 		spawners.sort((p1, p2) -> (int) (p1.getCenter().distance(player.getLocation())

@@ -11,7 +11,8 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.github.zamponimarco.elytrabooster.core.Booster;
+import com.github.zamponimarco.elytrabooster.boosters.Booster;
+import com.github.zamponimarco.elytrabooster.boosters.portals.AbstractPortal;
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 import com.github.zamponimarco.elytrabooster.gui.settings.BooleanSettingInventoryHolder;
 import com.github.zamponimarco.elytrabooster.gui.settings.DoubleSettingInventoryHolder;
@@ -19,7 +20,6 @@ import com.github.zamponimarco.elytrabooster.gui.settings.IntegerSettingInventor
 import com.github.zamponimarco.elytrabooster.gui.settings.SettingInventoryHolder;
 import com.github.zamponimarco.elytrabooster.gui.settings.StringSettingInventoryHolder;
 import com.github.zamponimarco.elytrabooster.outlines.ParticlePortalOutline;
-import com.github.zamponimarco.elytrabooster.portals.AbstractPortal;
 import com.github.zamponimarco.elytrabooster.utils.HeadsUtil;
 import com.github.zamponimarco.elytrabooster.utils.MessagesUtil;
 import com.google.common.collect.Lists;
@@ -98,6 +98,7 @@ public class PortalSettingsInventoryHolder extends ElytraBoosterInventoryHolder 
 		registerClickConsumer(26,
 				getPortalSetting(HeadsUtil.skullFromValue(SORTER_HEAD), "sorter", portal.getSorter().getName()),
 				getSettingConsumer("sorter", portal.getSorter().getName(), StringSettingInventoryHolder.class));
+		registerClickConsumer(18, getDeleteItem(), getDeleteConsumer(portal));
 		fillInventoryWith(Material.GRAY_STAINED_GLASS_PANE);
 	}
 

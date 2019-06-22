@@ -2,9 +2,9 @@ package com.github.zamponimarco.elytrabooster.commands.spawner;
 
 import org.bukkit.command.CommandSender;
 
+import com.github.zamponimarco.elytrabooster.boosters.spawners.AbstractSpawner;
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
-import com.github.zamponimarco.elytrabooster.managers.SpawnerManager;
-import com.github.zamponimarco.elytrabooster.spawners.AbstractSpawner;
+import com.github.zamponimarco.elytrabooster.managers.boosters.SpawnerManager;
 import com.github.zamponimarco.elytrabooster.utils.MessagesUtil;
 
 public class SpawnerDeleteCommand extends SpawnerCommand {
@@ -24,7 +24,7 @@ public class SpawnerDeleteCommand extends SpawnerCommand {
 		String id = arguments[0];
 
 		AbstractSpawner spawner;
-		if (spawnerManager.getSpawnersMap().containsKey(id)) {
+		if (spawnerManager.getBoostersMap().containsKey(id)) {
 			spawner = spawnerManager.getBooster(id);
 		} else {
 			invalidSpawner();

@@ -1,29 +1,28 @@
-
-package com.github.zamponimarco.elytrabooster.portals;
+package com.github.zamponimarco.elytrabooster.boosters.portals;
 
 import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
+import com.github.zamponimarco.elytrabooster.boosters.portals.utils.PortalUtils;
 import com.github.zamponimarco.elytrabooster.boosts.Boost;
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
-import com.github.zamponimarco.elytrabooster.outlines.BlockPortalOutline;
 import com.github.zamponimarco.elytrabooster.outlines.PortalOutline;
 import com.github.zamponimarco.elytrabooster.outlines.pointsorters.PointSorter;
-import com.github.zamponimarco.elytrabooster.portals.utils.PortalUtils;
 
 /**
- * Circle shaped portal class
+ * Square shaped portal class
  * 
  * @author Marco
  *
  */
-public class CirclePortal extends AbstractPortal {
+public class RectanglePortal extends AbstractPortal {
 
-	double radius;
+	double halfLength;
+	double halfHeight;
 
-	public CirclePortal(ElytraBooster plugin, String id, Location center, char axis, Boost boost, PortalOutline outline,
+	public RectanglePortal(ElytraBooster plugin, String id, Location center, char axis, Boost boost, PortalOutline outline,
 			List<UnionPortal> portalsUnion, int cooldown, PointSorter sorter, String measures) {
 		super(plugin, id, center, axis, boost, outline, portalsUnion, cooldown, sorter, measures);
 		try {
@@ -37,22 +36,28 @@ public class CirclePortal extends AbstractPortal {
 
 	@Override
 	protected void initMeasures() {
-		radius = Double.valueOf(measures);
+			String[] measuresArray = measures.split(";");
+			this.halfLength = Double.valueOf(measuresArray[0]);
+			this.halfHeight = Double.valueOf(measuresArray[1]);
 	}
 
 	@Override
 	protected List<Location> getPoints() {
-		return PortalUtils.getCircle(center, outline instanceof BlockPortalOutline, radius, axis);
+		return getRectangle();
 	}
 
 	@Override
 	protected boolean isInPortalArea(Location location, double epsilon) {
-		return PortalUtils.isInCirclePortalArea(location, center, radius, axis, epsilon);
+		return PortalUtils.isInRectanglePortalArea(center, halfHeight, halfLength, axis, location, epsilon);
+	}
+
+	private List<Location> getRectangle() {
+		return PortalUtils.getRectangle(center, axis, halfLength, halfHeight);
 	}
 
 	@Override
 	public String getShape() {
-		return "circle";
+		return halfHeight == halfHeight? "square" : "rectangle";
 	}
 
 }

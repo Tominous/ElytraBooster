@@ -5,10 +5,10 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
+import com.github.zamponimarco.elytrabooster.boosters.factory.SpawnerFactory;
+import com.github.zamponimarco.elytrabooster.boosters.spawners.AbstractSpawner;
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
-import com.github.zamponimarco.elytrabooster.managers.SpawnerManager;
-import com.github.zamponimarco.elytrabooster.spawners.AbstractSpawner;
-import com.github.zamponimarco.elytrabooster.spawners.factory.SpawnerFactory;
+import com.github.zamponimarco.elytrabooster.managers.boosters.SpawnerManager;
 
 public class SpawnerMoveCommand extends SpawnerCommand {
 
@@ -46,7 +46,7 @@ public class SpawnerMoveCommand extends SpawnerCommand {
 		
 		spawner.stopBoosterTask();
 		spawnerManager.saveConfig();
-		spawnerManager.setBooster(id, SpawnerFactory.buildSpawner(plugin, spawnerManager,
+		spawnerManager.setBooster(id, SpawnerFactory.buildBooster(plugin,
 				spawnerManager.getDataYaml().getConfigurationSection(id)));
 
 	}

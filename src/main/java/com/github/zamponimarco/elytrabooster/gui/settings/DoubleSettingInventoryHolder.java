@@ -1,15 +1,19 @@
 package com.github.zamponimarco.elytrabooster.gui.settings;
 
+import java.util.function.Consumer;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.HumanEntity;
+import org.bukkit.event.inventory.ClickType;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.github.zamponimarco.elytrabooster.core.Booster;
+import com.github.zamponimarco.elytrabooster.boosters.Booster;
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 import com.github.zamponimarco.elytrabooster.gui.factory.SettingsInventoryHolderFactory;
-import com.github.zamponimarco.elytrabooster.managers.BoosterManager;
+import com.github.zamponimarco.elytrabooster.managers.boosters.BoosterManager;
 import com.github.zamponimarco.elytrabooster.utils.HeadsUtil;
 import com.github.zamponimarco.elytrabooster.utils.MessagesUtil;
 
@@ -37,17 +41,17 @@ public class DoubleSettingInventoryHolder extends SettingInventoryHolder {
 		BoosterManager<?> boosterManager = booster.getDataManager();
 		this.inventory = Bukkit.createInventory(this, 27, MessagesUtil.color("&6&lModify &e&l" + key));
 		registerClickConsumer(11, getModifyItem(-0.01, HeadsUtil.skullFromValue(ARROW_LEFT_HEAD)),
-				e -> modifyAndReload(-0.01));
+				getConsumer(-0.01));
 		registerClickConsumer(10, getModifyItem(-0.1, HeadsUtil.skullFromValue(ARROW2_LEFT_HEAD)),
-				e -> modifyAndReload(-0.1));
+				getConsumer(-0.1));
 		registerClickConsumer(9, getModifyItem(-1.0, HeadsUtil.skullFromValue(ARROW3_LEFT_HEAD)),
-				e -> modifyAndReload(-1));
+				getConsumer(-1));
 		registerClickConsumer(15, getModifyItem(+0.01, HeadsUtil.skullFromValue(ARROW_RIGHT_HEAD)),
-				e -> modifyAndReload(+0.01));
+				getConsumer(+0.01));
 		registerClickConsumer(16, getModifyItem(+0.1, HeadsUtil.skullFromValue(ARROW2_RIGHT_HEAD)),
-				e -> modifyAndReload(+0.1));
+				getConsumer(+0.1));
 		registerClickConsumer(17, getModifyItem(+1.0, HeadsUtil.skullFromValue(ARROW3_RIGHT_HEAD)),
-				e -> modifyAndReload(+1));
+				getConsumer(+1));
 		registerClickConsumer(13, getConfirmItem(), e -> {
 			boosterManager.setParam(booster.getId(), key, String.valueOf(result));
 			booster = boosterManager.reloadBooster(booster);
@@ -59,6 +63,14 @@ public class DoubleSettingInventoryHolder extends SettingInventoryHolder {
 		registerClickConsumer(26, getBackItem(), e -> player.openInventory(
 				SettingsInventoryHolderFactory.buildSettingsInventoryHolder(plugin, booster).getInventory()));
 		fillInventoryWith(Material.GRAY_STAINED_GLASS_PANE);
+	}
+
+	private Consumer<InventoryClickEvent> getConsumer(double addition) {
+		return e -> {
+			if (e.getClick().equals(ClickType.LEFT)) {
+				modifyAndReload(addition);
+			}
+		};
 	}
 
 	private void modifyAndReload(double addition) {

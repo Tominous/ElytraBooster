@@ -13,6 +13,7 @@ import com.github.zamponimarco.elytrabooster.settings.Settings;
 public class SettingsManager implements DataManager {
 
 	private final static String FILENAME = "config.yml";
+	private final static String CONFIG_VERSION = "1.2";
 
 	private ElytraBooster plugin;
 
@@ -53,7 +54,7 @@ public class SettingsManager implements DataManager {
 	}
 
 	private void updateConfig() {
-		if (!settings.get(Settings.VERSION).equals(plugin.getDescription().getVersion())) {
+		if (!settings.get(Settings.VERSION).equals(CONFIG_VERSION)) {
 			dataFile.delete();
 			plugin.saveDefaultConfig();
 		}

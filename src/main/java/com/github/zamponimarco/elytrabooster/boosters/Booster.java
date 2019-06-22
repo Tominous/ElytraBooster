@@ -1,6 +1,6 @@
-package com.github.zamponimarco.elytrabooster.core;
+package com.github.zamponimarco.elytrabooster.boosters;
 
-import com.github.zamponimarco.elytrabooster.managers.BoosterManager;
+import com.github.zamponimarco.elytrabooster.managers.boosters.BoosterManager;
 
 public interface Booster {
 

@@ -1,4 +1,4 @@
-package com.github.zamponimarco.elytrabooster.portals.utils;
+package com.github.zamponimarco.elytrabooster.boosters.portals.utils;
 
 import java.util.ArrayList;
 import java.util.HashSet;

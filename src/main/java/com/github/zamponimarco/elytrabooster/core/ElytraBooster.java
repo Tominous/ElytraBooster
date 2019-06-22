@@ -12,9 +12,9 @@ import com.github.zamponimarco.elytrabooster.commands.executor.ElytraBoosterComm
 import com.github.zamponimarco.elytrabooster.listeners.InventoryClickListener;
 import com.github.zamponimarco.elytrabooster.listeners.PlayerChatListener;
 import com.github.zamponimarco.elytrabooster.listeners.PlayerGlideListener;
-import com.github.zamponimarco.elytrabooster.managers.PortalManager;
 import com.github.zamponimarco.elytrabooster.managers.SettingsManager;
-import com.github.zamponimarco.elytrabooster.managers.SpawnerManager;
+import com.github.zamponimarco.elytrabooster.managers.boosters.PortalManager;
+import com.github.zamponimarco.elytrabooster.managers.boosters.SpawnerManager;
 import com.github.zamponimarco.elytrabooster.settings.Settings;
 
 public class ElytraBooster extends JavaPlugin {
@@ -32,7 +32,7 @@ public class ElytraBooster extends JavaPlugin {
 
 	public void onDisable() {
 		getServer().getScheduler().cancelTasks(this);
-		spawnerManager.getSpawnersMap().values().forEach(spawner -> spawner.stopBoosterTask());
+		spawnerManager.getBoostersMap().values().forEach(spawner -> spawner.stopBoosterTask());
 	}
 
 	private void setUpFolder() {

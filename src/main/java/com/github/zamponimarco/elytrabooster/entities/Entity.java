@@ -38,6 +38,7 @@ public abstract class Entity {
 			if (!plugin.getStatusMap().get(player) && player.hasPermission("eb.boosters.boost")
 					&& player.getLocation().distance(location) <= 1.0) {
 				Bukkit.getPluginManager().callEvent(new PlayerBoostEvent(plugin, player, boost));
+				onActivation();
 				holderDespawn();
 			}
 		});
@@ -47,6 +48,9 @@ public abstract class Entity {
 		entityDespawn();
 		plugin.getServer().getScheduler().cancelTask(checkTasknumber);
 		holder.despawn(this);
+	}
+
+	public void onActivation() {
 	}
 
 	public abstract void spawn();
