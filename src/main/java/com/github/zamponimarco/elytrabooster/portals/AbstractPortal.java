@@ -28,7 +28,7 @@ import net.md_5.bungee.api.ChatColor;
  * @author Marco
  *
  */
-public abstract class AbstractPortal implements Booster{
+public abstract class AbstractPortal implements Booster {
 
 	// Instance variables area ---
 
@@ -107,7 +107,7 @@ public abstract class AbstractPortal implements Booster{
 	public BoosterManager<?> getDataManager() {
 		return plugin.getPortalManager();
 	}
-	
+
 	// ---
 
 	/**
@@ -150,7 +150,7 @@ public abstract class AbstractPortal implements Booster{
 	 */
 	protected void checkPlayersPassing() {
 		plugin.getStatusMap().keySet().forEach(player -> {
-			if (!onCooldown() && !plugin.getStatusMap().get(player) && player.hasPermission("eb.portals.boost")
+			if (!onCooldown() && !plugin.getStatusMap().get(player) && player.hasPermission("eb.boosters.boost")
 					&& isInUnionPortalArea(player.getLocation(), 0)) {
 				Bukkit.getPluginManager().callEvent(new PlayerBoostEvent(plugin, player, boost));
 				cooldown();

@@ -1,5 +1,6 @@
 package com.github.zamponimarco.elytrabooster.spawners.factory;
 
+import org.apache.commons.lang.WordUtils;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
@@ -7,6 +8,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import com.github.zamponimarco.elytrabooster.boosts.Boost;
 import com.github.zamponimarco.elytrabooster.boosts.SimpleBoost;
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
+import com.github.zamponimarco.elytrabooster.entities.Entity;
 import com.github.zamponimarco.elytrabooster.entities.FireworkEntity;
 import com.github.zamponimarco.elytrabooster.entityholders.EntityHolder;
 import com.github.zamponimarco.elytrabooster.managers.SpawnerManager;
@@ -17,6 +19,7 @@ import com.github.zamponimarco.elytrabooster.trails.factory.BoostTrailFactory;
 
 public class SpawnerFactory {
 
+	@SuppressWarnings("unchecked")
 	public static AbstractSpawner buildSpawner(ElytraBooster plugin, SpawnerManager spawnerManager,
 			ConfigurationSection spawnerConfiguration) {
 
@@ -45,7 +48,15 @@ public class SpawnerFactory {
 
 		Boost boost = new SimpleBoost(boostDuration, initialVelocity, finalVelocity, trail);
 
-		EntityHolder holder = new EntityHolder(plugin, FireworkEntity.class, maxEntities, boost);
+		String entityString = spawnerConfiguration.getString("entity", "firework");
+		Class<? extends Entity> entityClass = FireworkEntity.class;
+		try {
+			entityClass = (Class<? extends Entity>) Class
+					.forName("com.github.zamponimarco.elytrabooster.entities." + WordUtils.capitalize(entityString) + "Entity");
+		} catch (Exception e) {
+		}
+
+		EntityHolder holder = new EntityHolder(plugin, entityClass, maxEntities, boost);
 
 		int cooldown = spawnerConfiguration.getInt("cooldown", 60);
 

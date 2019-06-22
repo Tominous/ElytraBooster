@@ -43,14 +43,14 @@ public class PortalHelpCommand extends PortalCommand {
 	private void setUpPages() {
 		StringBuilder page = new StringBuilder();
 		page.append(MessagesUtil.header("ElytraBooster Help"));
-		page.append(MessagesUtil.color(String.format("&2/eb help &c[page] &7Print the help message.\n"
-				+ "&2/eb list &c[page] &7List portals, use argument [page] to print other pages.\n"
-				+ "&2/eb create &c[id] &7Create a new portal.\n" + "&2/eb delete &c[id] &7Deletes the given portal.\n"
-				+ "&2/eb move &c[id] <x> <y> <z> &7Move the portal to your location or to the given coords, if present.\n"
-				+ "&2/eb set &c[id] [param:value,...] &7Sets the params to the values given in input.\n"
-				+ "&2/eb near &c[radius] &7List all the portals within [radius] blocks.\n"
-				+ "&2/eb disable &c[id] &7Disable the portal named [id]\n"
-				+ "&2/eb enable &c[id] &7Enable the portal named [id]\n")));
+		page.append(MessagesUtil.color(String.format("&2/eb portal help &c[page] &7Print the portals help message.\n"
+				+ "&2/eb portal list &7List portals.\n"
+				+ "&2/eb portal create &c[id] &7Create a new portal.\n" + "&2/eb portal delete &c[id] &7Deletes the given portal.\n"
+				+ "&2/eb portal move &c[id] <x> <y> <z> &7Move the portal to your location or to the given coords, if present.\n"
+				+ "&2/eb portal set &c[id] [param:value,...] &7Sets the params to the values given in input.\n"
+				+ "&2/eb portal near &c[radius] &7List all the portals within [radius] blocks.\n"
+				+ "&2/eb portal disable &c[id] &7Disable the portal named [id]\n"
+				+ "&2/eb portal enable &c[id] &7Enable the portal named [id]\n")));
 		page.append(MessagesUtil.footer(1, 1));
 		pages.add(page.toString());
 	}

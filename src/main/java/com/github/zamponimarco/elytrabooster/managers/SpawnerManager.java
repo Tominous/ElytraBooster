@@ -121,6 +121,7 @@ public class SpawnerManager implements BoosterManager<AbstractSpawner> {
 			spawner.set(param, Integer.valueOf(value));
 			break;
 		case "trail":
+		case "entity":
 			spawner.set(param, value);
 			break;
 		default:

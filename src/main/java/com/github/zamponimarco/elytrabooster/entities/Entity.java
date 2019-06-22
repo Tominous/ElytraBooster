@@ -32,10 +32,9 @@ public abstract class Entity {
 
 	private void checkPlayersPassing() {
 		plugin.getStatusMap().keySet().forEach(player -> {
-			if (!plugin.getStatusMap().get(player) && player.hasPermission("eb.portals.boost")
+			if (!plugin.getStatusMap().get(player) && player.hasPermission("eb.boosters.boost")
 					&& player.getLocation().distance(location) <= 1.0) {
 				Bukkit.getPluginManager().callEvent(new PlayerBoostEvent(plugin, player, boost));
-				plugin.getServer().getScheduler().cancelTask(checkTasknumber);
 				holderDespawn();
 			}
 		});
@@ -43,6 +42,7 @@ public abstract class Entity {
 
 	public void holderDespawn() {
 		entityDespawn();
+		plugin.getServer().getScheduler().cancelTask(checkTasknumber);
 		holder.despawn(this);
 	}
 

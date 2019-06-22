@@ -35,11 +35,12 @@ public abstract class ElytraBoosterInventoryHolder implements InventoryHolder {
 		inventory.setItem(slot, item);
 		clickMap.put(slot, clickConsumer);
 	}
-	
+
 	public void fillInventoryWith(Material material) {
 		for (int i = 0; i < inventory.getSize(); i++) {
 			if (inventory.getItem(i) == null) {
-				registerClickConsumer(i, getPlaceholderItem(material), e -> {});
+				registerClickConsumer(i, getPlaceholderItem(material), e -> {
+				});
 			}
 		}
 	}

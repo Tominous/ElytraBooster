@@ -39,8 +39,8 @@ public class ElytraBoosterCommandExecutor implements CommandExecutor, TabComplet
 
 			boolean isSenderPlayer = sender instanceof Player;
 			String subType = args.length >= 1 ? args[0] : "";
-			String subCommand = null;
-			String[] arguments = null;
+			String subCommand = "";
+			String[] arguments = new String[0];
 
 			CommandFactory commandFactory = null;
 			switch (subType) {

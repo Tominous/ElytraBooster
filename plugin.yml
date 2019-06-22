@@ -31,9 +31,9 @@ permissions:
   eb.admin.set:
     description: Set portal parameters
     default: op
-  eb.portals.boost:
+  eb.boosters.boost:
     default: true
-  eb.portals.*:
+  eb.boosters.*:
     description: Wildcard portal usage permission
     default: true
     children:
@@ -54,5 +54,5 @@ permissions:
     description: Wildcard ElytraBooster permission
     default: op
     children: 
-      eb.portals.*: true
+      eb.boosters.*: true
       eb.admin.*: true

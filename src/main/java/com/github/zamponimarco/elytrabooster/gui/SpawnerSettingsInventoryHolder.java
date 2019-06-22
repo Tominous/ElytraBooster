@@ -32,8 +32,8 @@ public class SpawnerSettingsInventoryHolder extends ElytraBoosterInventoryHolder
 	private static final String MIN_RADIUS_HEAD = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvY2M4ZTdkNDZkNjkzMzQxZjkxZDI4NjcyNmYyNTU1ZWYxNTUxNGUzNDYwYjI3NWU5NzQ3ODQyYmM5ZTUzZGYifX19========";
 	private static final String MAX_RADIUS_HEAD = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTVhNzQwMzJhMjlmNzk0ZmQ1NjY0Yzg2N2VjYjQ0ZGE4MjE1ZDE2MGJmYzgwZDJiOTMzZTRiNTNjMWU5OWNhIn19fQ==========";
 	private static final String MAX_ENTITIES_HEAD = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTIxZDJjY2U5NTViZmZjZGE0Y2MwMzY3Yzg4NjQ0NDg4YjU5NWYyN2ZjZTE2N2I0MzRjYTViOGNkNDQ4ZCJ9fX0===========";
+	private static final String ENTITY_HEAD = "eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMzAyZjQ4ZjM0ZDIyZGVkNzQwNGY3NmU4YTEzMmFmNWQ3OTE5YzhkY2Q1MWRmNmU3YTg1ZGRmYWM4NWFiIn19fQ=============";
 
-	
 	private AbstractSpawner spawner;
 
 	public SpawnerSettingsInventoryHolder(ElytraBooster plugin, AbstractSpawner spawner) {
@@ -75,6 +75,9 @@ public class SpawnerSettingsInventoryHolder extends ElytraBoosterInventoryHolder
 						spawner.getHolder().getBoost().getBoostDuration()),
 				getSettingConsumer("boostDuration", spawner.getHolder().getBoost().getBoostDuration(),
 						IntegerSettingInventoryHolder.class));
+		registerClickConsumer(17,
+				getSpawnerSetting(HeadsUtil.skullFromValue(ENTITY_HEAD), "entity", spawner.getHolder().getEntity()),
+				getSettingConsumer("entity", spawner.getHolder().getEntity(), StringSettingInventoryHolder.class));
 		registerClickConsumer(26,
 				getSpawnerSetting(HeadsUtil.skullFromValue(TRAIL_HEAD), "trail",
 						spawner.getHolder().getBoost().getTrail().getName()),

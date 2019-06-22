@@ -9,19 +9,19 @@ import org.bukkit.Location;
 import com.github.zamponimarco.elytrabooster.boosts.Boost;
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 import com.github.zamponimarco.elytrabooster.entities.Entity;
-import com.github.zamponimarco.elytrabooster.entities.FireworkEntity;
+import com.github.zamponimarco.elytrabooster.entities.factory.EntityFactory;
 
 public class EntityHolder {
 
 	private ElytraBooster plugin;
-//	private Class<? extends Entity> entityClass;
+	private Class<? extends Entity> entityClass;
 	private List<Entity> entities;
 	private int maxEntities;
 	private Boost boost;
 
 	public EntityHolder(ElytraBooster plugin, Class<? extends Entity> entityClass, int maxEntities, Boost boost) {
 		this.plugin = plugin;
-//		this.entityClass = entityClass;
+		this.entityClass = entityClass;
 		this.maxEntities = maxEntities;
 		this.boost = boost;
 		this.entities = new ArrayList<Entity>();
@@ -37,7 +37,8 @@ public class EntityHolder {
 			double y = center.getY() + randomY * multiply + (Math.signum(randomX) > 0 ? minRadius : -minRadius);
 			double randomZ = r.nextDouble() * 2 - 1;
 			double z = center.getZ() + randomZ * multiply + (Math.signum(randomX) > 0 ? minRadius : -minRadius);
-			entities.add(new FireworkEntity(plugin, this, new Location(center.getWorld(), x, y, z), boost));
+			entities.add(EntityFactory.buildEntity(entityClass, plugin, this, new Location(center.getWorld(), x, y, z),
+					boost));
 		}
 	}
 
@@ -48,6 +49,13 @@ public class EntityHolder {
 
 	public List<Entity> getEntities() {
 		return entities;
+	}
+
+	public String getEntity() {
+		String name = entityClass.getName();
+		int start = name.lastIndexOf(".") + 1;
+		int end = name.lastIndexOf("Entity");
+		return entityClass.getName().substring(start, end).toLowerCase();
 	}
 
 	public int getMaxEntities() {

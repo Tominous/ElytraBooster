@@ -37,7 +37,7 @@ public class SpawnersListInventoryHolder extends ElytraBoosterInventoryHolder {
 		this.toList = spawners.stream().filter(spawner -> spawners.indexOf(spawner) >= (page - 1) * SPAWNER_NUMBER
 				&& spawners.indexOf(spawner) <= page * SPAWNER_NUMBER - 1).collect(Collectors.toList());
 		this.page = page;
-		
+
 		initializeInventory();
 	}
 
