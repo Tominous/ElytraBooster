@@ -60,8 +60,7 @@ public class DoubleSettingInventoryHolder extends SettingInventoryHolder {
 			player.sendMessage(MessagesUtil.color(
 					"&aPortal modified, &6ID: &a" + booster.getId() + ", &6" + key + ": &a" + String.valueOf(result)));
 		});
-		registerClickConsumer(26, getBackItem(), e -> player.openInventory(
-				SettingsInventoryHolderFactory.buildSettingsInventoryHolder(plugin, booster).getInventory()));
+		registerClickConsumer(26, getBackItem(), getBackConsumer());
 		fillInventoryWith(Material.GRAY_STAINED_GLASS_PANE);
 	}
 

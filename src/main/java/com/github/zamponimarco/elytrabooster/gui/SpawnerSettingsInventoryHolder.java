@@ -17,7 +17,8 @@ import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
 import com.github.zamponimarco.elytrabooster.gui.settings.DoubleSettingInventoryHolder;
 import com.github.zamponimarco.elytrabooster.gui.settings.IntegerSettingInventoryHolder;
 import com.github.zamponimarco.elytrabooster.gui.settings.SettingInventoryHolder;
-import com.github.zamponimarco.elytrabooster.gui.settings.StringSettingInventoryHolder;
+import com.github.zamponimarco.elytrabooster.gui.settings.enums.EntityEnumSettingInventoryHolder;
+import com.github.zamponimarco.elytrabooster.gui.settings.enums.TrailEnumSettingInventoryHolder;
 import com.github.zamponimarco.elytrabooster.utils.HeadsUtil;
 import com.github.zamponimarco.elytrabooster.utils.MessagesUtil;
 import com.google.common.collect.Lists;
@@ -77,12 +78,12 @@ public class SpawnerSettingsInventoryHolder extends ElytraBoosterInventoryHolder
 						IntegerSettingInventoryHolder.class));
 		registerClickConsumer(17,
 				getSpawnerSetting(HeadsUtil.skullFromValue(ENTITY_HEAD), "entity", spawner.getHolder().getEntity()),
-				getSettingConsumer("entity", spawner.getHolder().getEntity(), StringSettingInventoryHolder.class));
+				getSettingConsumer("entity", spawner.getHolder().getEntity(), EntityEnumSettingInventoryHolder.class));
 		registerClickConsumer(26,
 				getSpawnerSetting(HeadsUtil.skullFromValue(TRAIL_HEAD), "trail",
 						spawner.getHolder().getBoost().getTrail().getName()),
 				getSettingConsumer("trail", spawner.getHolder().getBoost().getTrail().getName(),
-						StringSettingInventoryHolder.class));
+						TrailEnumSettingInventoryHolder.class));
 		registerClickConsumer(18, getDeleteItem(), getDeleteConsumer(spawner));
 		fillInventoryWith(Material.GRAY_STAINED_GLASS_PANE);
 	}

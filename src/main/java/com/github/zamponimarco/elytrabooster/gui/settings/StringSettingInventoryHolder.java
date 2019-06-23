@@ -12,7 +12,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import com.github.zamponimarco.elytrabooster.boosters.Booster;
 import com.github.zamponimarco.elytrabooster.core.ElytraBooster;
-import com.github.zamponimarco.elytrabooster.gui.factory.SettingsInventoryHolderFactory;
 import com.github.zamponimarco.elytrabooster.utils.HeadsUtil;
 import com.github.zamponimarco.elytrabooster.utils.MessagesUtil;
 
@@ -36,8 +35,7 @@ public class StringSettingInventoryHolder extends SettingInventoryHolder impleme
 		this.inventory = Bukkit.createInventory(this, 27,
 				MessagesUtil.color(isBoosterCreation ? "&6&lCreate a " + key : "&6&lModify &e&l" + key));
 		registerClickConsumer(13, getStringItem(HeadsUtil.skullFromValue(MODIFY_HEAD)), e -> playerCanWrite());
-		registerClickConsumer(26, getBackItem(), e -> player.openInventory(
-				SettingsInventoryHolderFactory.buildSettingsInventoryHolder(plugin, booster).getInventory()));
+		registerClickConsumer(26, getBackItem(), getBackConsumer());
 		fillInventoryWith(Material.GRAY_STAINED_GLASS_PANE);
 	}
 

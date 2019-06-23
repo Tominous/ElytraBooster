@@ -1,5 +1,5 @@
-name: ElytraBooster
-version: 1.2.1
+name: ${name}
+version: ${version}
 main: com.github.zamponimarco.elytrabooster.core.ElytraBooster
 author: jummes
 api-version: 1.13

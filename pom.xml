@@ -4,23 +4,37 @@
 
   <groupId>com.github.zamponimarco</groupId>
   <artifactId>elytrabooster</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.2.2</version>
   <packaging>jar</packaging>
-
-  <name>elytrabooster</name>
-  <url>http://maven.apache.org</url>
-
+  <name>ElytraBooster</name>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
-  
+  	<build>
+    	<directory>C:\Users\Marco\Desktop\dasawd\plugins</directory>
+    	<plugins>
+        	<plugin>
+            	<artifactId>maven-compiler-plugin</artifactId>
+            	<version>3.7.0</version>
+            	<configuration>
+                 	<source>1.8</source>
+                	<target>1.8</target>
+               	</configuration>
+           	</plugin>
+      	 </plugins>
+     	 <resources>
+     		<resource>
+       			 <directory>src/main/resources</directory>
+     			 <filtering>true</filtering>
+  		    </resource>
+  		</resources>
+  	</build>
   <repositories>
     <repository>
         <id>spigot-repo</id>
         <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
     </repository>
   </repositories>
-
   <dependencies>
     <dependency>
       <groupId>org.spigotmc</groupId>

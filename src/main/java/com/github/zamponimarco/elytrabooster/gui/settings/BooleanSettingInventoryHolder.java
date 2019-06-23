@@ -33,8 +33,7 @@ public class BooleanSettingInventoryHolder extends SettingInventoryHolder {
 		registerClickConsumer(12, getBooleanItem(HeadsUtil.skullFromValue(TRUE_HEAD), true), getBooleanConsumer(true));
 		registerClickConsumer(14, getBooleanItem(HeadsUtil.skullFromValue(FALSE_HEAD), false),
 				getBooleanConsumer(false));
-		registerClickConsumer(26, getBackItem(), e -> player
-				.openInventory(SettingsInventoryHolderFactory.buildSettingsInventoryHolder(plugin, booster).getInventory()));
+		registerClickConsumer(26, getBackItem(), getBackConsumer());
 		fillInventoryWith(Material.GRAY_STAINED_GLASS_PANE);
 	}
 

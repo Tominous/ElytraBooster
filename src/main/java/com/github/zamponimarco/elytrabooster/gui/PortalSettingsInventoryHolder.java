@@ -19,6 +19,10 @@ import com.github.zamponimarco.elytrabooster.gui.settings.DoubleSettingInventory
 import com.github.zamponimarco.elytrabooster.gui.settings.IntegerSettingInventoryHolder;
 import com.github.zamponimarco.elytrabooster.gui.settings.SettingInventoryHolder;
 import com.github.zamponimarco.elytrabooster.gui.settings.StringSettingInventoryHolder;
+import com.github.zamponimarco.elytrabooster.gui.settings.enums.AxisEnumSettingInventoryHolder;
+import com.github.zamponimarco.elytrabooster.gui.settings.enums.ShapeEnumSettingInventoryHolder;
+import com.github.zamponimarco.elytrabooster.gui.settings.enums.SorterEnumSettingInventoryHolder;
+import com.github.zamponimarco.elytrabooster.gui.settings.enums.TrailEnumSettingInventoryHolder;
 import com.github.zamponimarco.elytrabooster.outlines.ParticlePortalOutline;
 import com.github.zamponimarco.elytrabooster.utils.HeadsUtil;
 import com.github.zamponimarco.elytrabooster.utils.MessagesUtil;
@@ -85,19 +89,19 @@ public class PortalSettingsInventoryHolder extends ElytraBoosterInventoryHolder 
 				getSettingConsumer("boostDuration", portal.getBoost().getBoostDuration(),
 						IntegerSettingInventoryHolder.class));
 		registerClickConsumer(21, getPortalSetting(HeadsUtil.skullFromValue(AXIS_HEAD), "axis", portal.getAxis()),
-				getSettingConsumer("axis", portal.getAxis(), StringSettingInventoryHolder.class));
+				getSettingConsumer("axis", portal.getAxis(), AxisEnumSettingInventoryHolder.class));
 		registerClickConsumer(22, getPortalSetting(HeadsUtil.skullFromValue(SHAPE_HEAD), "shape", portal.getShape()),
-				getSettingConsumer("shape", portal.getShape(), StringSettingInventoryHolder.class));
+				getSettingConsumer("shape", portal.getShape(), ShapeEnumSettingInventoryHolder.class));
 		registerClickConsumer(23,
 				getPortalSetting(HeadsUtil.skullFromValue(MEASURES_HEAD), "measures", portal.getMeasures()),
 				getSettingConsumer("measures", portal.getMeasures(), StringSettingInventoryHolder.class));
 		registerClickConsumer(17,
 				getPortalSetting(HeadsUtil.skullFromValue(TRAIL_HEAD), "trail", portal.getBoost().getTrail().getName()),
 				getSettingConsumer("trail", portal.getBoost().getTrail().getName(),
-						StringSettingInventoryHolder.class));
+						TrailEnumSettingInventoryHolder.class));
 		registerClickConsumer(26,
 				getPortalSetting(HeadsUtil.skullFromValue(SORTER_HEAD), "sorter", portal.getSorter().getName()),
-				getSettingConsumer("sorter", portal.getSorter().getName(), StringSettingInventoryHolder.class));
+				getSettingConsumer("sorter", portal.getSorter().getName(), SorterEnumSettingInventoryHolder.class));
 		registerClickConsumer(18, getDeleteItem(), getDeleteConsumer(portal));
 		fillInventoryWith(Material.GRAY_STAINED_GLASS_PANE);
 	}
