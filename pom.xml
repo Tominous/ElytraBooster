@@ -4,14 +4,14 @@
 
   <groupId>com.github.zamponimarco</groupId>
   <artifactId>elytrabooster</artifactId>
-  <version>1.2.2</version>
+  <version>1.2.3</version>
   <packaging>jar</packaging>
   <name>ElytraBooster</name>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   	<build>
-    	<directory>C:\Users\Marco\Desktop\dasawd\plugins</directory>
+    	<directory>C:\Users\Marco\Desktop\pp14\plugins</directory>
     	<plugins>
         	<plugin>
             	<artifactId>maven-compiler-plugin</artifactId>

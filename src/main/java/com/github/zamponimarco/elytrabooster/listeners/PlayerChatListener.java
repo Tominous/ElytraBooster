@@ -26,39 +26,44 @@ public class PlayerChatListener implements Listener {
 	public void onPlayerChat(AsyncPlayerChatEvent e) {
 		Map<HumanEntity, Map<Booster, String>> settingsMap = StringSettingInventoryHolder.getSettingsMap();
 		Player p = e.getPlayer();
-		boolean isThereBooster = !settingsMap.get(p).keySet().contains(null);
-		if (settingsMap != null && settingsMap.containsKey(p) && isThereBooster) {
-			runModifySyncTask(p, e.getMessage(), settingsMap);
-			e.setCancelled(true);
-		} else if (settingsMap != null && settingsMap.containsKey(p) && !isThereBooster) {
-			runCreateSyncTask(p, e.getMessage(), settingsMap);
-			e.setCancelled(true);
+		if (settingsMap != null && settingsMap.get(p) != null) {
+			boolean isThereBooster = !settingsMap.get(p).keySet().contains(null);
+			if (isThereBooster) {
+				runModifySyncTask(p, e.getMessage(), settingsMap);
+				e.setCancelled(true);
+			} else {
+				runCreateSyncTask(p, e.getMessage(), settingsMap);
+				e.setCancelled(true);
+			}
 		}
 	}
 
 	private void runCreateSyncTask(Player p, String value, Map<HumanEntity, Map<Booster, String>> settingsMap) {
-		String key = settingsMap.get(p).get(null);
-		BoosterManager<?> boosterManager = null;
-		switch (key) {
-		case "portal":
-			boosterManager = plugin.getPortalManager();
-			break;
-		case "spawner":
-			boosterManager = plugin.getSpawnerManager();
-			break;
-		}
+		plugin.getServer().getScheduler().runTask(plugin, () -> {
+			String key = settingsMap.get(p).get(null);
+			BoosterManager<?> boosterManager = null;
+			switch (key) {
+			case "portal":
+				boosterManager = plugin.getPortalManager();
+				break;
+			case "spawner":
+				boosterManager = plugin.getSpawnerManager();
+				break;
+			}
 
-		if (!value.equalsIgnoreCase("exit")) {
-			if (!boosterManager.getBoostersMap().containsKey(value)) {
-				boosterManager.createDefaultBoosterConfiguration(p, value);
-				boosterManager.addBooster(value);
-				p.sendMessage(MessagesUtil.color("&aBooster created, &6ID: &a" + value));
+			if (!value.equalsIgnoreCase("exit")) {
+				if (!boosterManager.getBoostersMap().containsKey(value)) {
+					boosterManager.createDefaultBoosterConfiguration(p, value);
+					boosterManager.addBooster(value);
+					p.sendMessage(MessagesUtil.color("&aBooster created, &6ID: &a" + value));
+				} else {
+					p.sendMessage((MessagesUtil.color("&cBooster passed in input is invalid")));
+				}
 			} else {
-				p.sendMessage((MessagesUtil.color("&cBooster passed in input is invalid")));
-			} 
-		} else {
-			p.sendMessage(MessagesUtil.color("&aBooster creation &6&lcancelled"));
-		}
+				p.sendMessage(MessagesUtil.color("&aBooster creation &6&lcancelled"));
+			}
+			settingsMap.remove(p);
+		});
 	}
 
 	private void runModifySyncTask(Player p, String value, Map<HumanEntity, Map<Booster, String>> settingsMap) {
